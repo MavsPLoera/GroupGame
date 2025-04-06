@@ -356,7 +356,7 @@ public class Player_Controller : MonoBehaviour
         else if (collision.gameObject.CompareTag("Enemy"))
         {
             //Going to assume collision is just a enemy always
-            float damage = 5f;
+            float damage = collision.gameObject.GetComponent<Enemy_Stats_Controller>().damage;
             if (playerHealth - damage > 0f)
             {
                 //Get enemy script component and get the damage value
