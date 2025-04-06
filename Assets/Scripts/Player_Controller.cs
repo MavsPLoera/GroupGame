@@ -114,9 +114,13 @@ public class Player_Controller : MonoBehaviour
         /*
          *          MAIN MOVEMENT CODE
          *          
-         *          
+         * Get the input values for the Horizontal and Vertical inputs
+         * send to update Facing driection to update the value movementDirection
          * 
+         * we know if the players input is nothing if this value is == to Vector2.zero
+         * we will set the animator the animator to the idle state if this is the case
          * 
+         * otherwise we will se the animator to walk, multiply the movement direction by speed since GetAxisRaw returns -1 - 1 values
          * 
          */
 
@@ -136,8 +140,22 @@ public class Player_Controller : MonoBehaviour
 
         rb.linearVelocity = movementDirection * playerMovementspeed;
 
+        /*
+         *          PLAYER ABILITIES CODE
+         *          
+         * This is the section of the program where abilities will be implemented        
+         * 
+         * abilities on fire1 fire2 and fire3
+         * 
+         * player by default is able to swing a sword, dash, and healing (IF THEY HAVE POTIONS)
+         * 
+         * players health will not go past MAXHEALTH
+         * 
+         * secondary ability and ultimate ability will be unlocked once the player completes the dungeons to unlock ability
+         * 
+         */
 
-
+        //Dash
         if (Input.GetKeyDown(KeyCode.Space) && canDash)
         {
             if (!(movementDirection.x == 0f && movementDirection.y == 0f))
@@ -146,37 +164,25 @@ public class Player_Controller : MonoBehaviour
             }
         }
 
-        /*
-         *          PLAYER ABILITIES CODE
-         *          
-         *          
-         * 
-         * 
-         * 
-         */
-
+        //Sword Swing
         if (Input.GetButton("Fire1") && !canSwing)
         {
             StartCoroutine(swing());
         }
 
+        //Secondary
         if (Input.GetButton("Fire2") && unlockedSecondaryMove && canSecondary)
         {
             StartCoroutine(secondaryMove());
         }
 
+        //Ultimate
         if (Input.GetButton("Fire3") && unlockedUltMove && canUlt)
         {
             StartCoroutine(ultimateMove());
         }
 
-        /*
-         * When payer presses H, check if the player has any potions on hand.
-         * If they have a potion on hand, USE IT!
-         * 
-         * player CANNOT be healed over 100HP
-         */
-
+        //Healing Self
         if (Input.GetKeyDown(KeyCode.H) && !healingSelf)
         {
             StartCoroutine(healPlayer());
@@ -185,13 +191,16 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator swing()
     {
+        //Set animator to swing and stop playign from being able to input and swing again.
         playerAnimator.Play("Player_Swing", 0);
         rb.linearVelocity = Vector2.zero;
         canSwing = true;
         canInput = false;
 
+        //Let the full animation play out. I am not sure why getting the length of the animation does not work but .6f does fine.
         yield return new WaitForSeconds(.6f);
 
+        //After the animation finished set the animation state to idle and allow player to be able to swing again and input.
         playerAnimator.Play("Player_Idle", 0);
         canInput = true;
         canSwing = false;
@@ -199,14 +208,15 @@ public class Player_Controller : MonoBehaviour
         yield return null;
     }
 
-    //Wanting to mirror the way in which a player heals in dark souls. Where the player slows down to heal before recieving it.
     public IEnumerator healPlayer()
     {
+        //When player is healing we want it to be similar to dark souls. So the players movementspeed is slowed down, and is unable to input until they heal.
         canSwing = false;
         canDash = false;
         float temp = playerMovementspeed;
         playerMovementspeed = temp * .75f;
 
+        //Small duration before the player is actually healed and will not go past Max Health
         yield return new WaitForSeconds(timeBeforeHealing);
 
         if (healingPotions > 0)
@@ -222,6 +232,7 @@ public class Player_Controller : MonoBehaviour
             healingPotions--;
         }
 
+        //Return player movespeed back to normal and allow player to use abilities again. Future notice I will need to disable other abilities as well
         yield return new WaitForSeconds(healingSlowdown);
         playerMovementspeed = temp;
         canSwing = true;
@@ -243,7 +254,7 @@ public class Player_Controller : MonoBehaviour
         /* 
          * When the player presses space take the direction the player is moving and set the linear velocity of the player to dash
          * 
-         * during this dashing time the player cannot input and cannot dash again until a cool down is up
+         * during this dashing, the player cannot input and cannot dash again until a cool down is up
          * 
          * NEED TO ALSO CHANGE THE HITBOXES TO NOT COLLIDE WITH BULLETS like enter the gungeon
          */
@@ -267,12 +278,19 @@ public class Player_Controller : MonoBehaviour
         invincible = false;
     }
 
-    //Can add quest completed method that is just a way for a quest to give the reward to the player
+    //[NOTE] Can add quest completed method that is just a way for a quest to give the reward to the player
 
 
-    //Use this for the animator to get the right animation state based on where the player was last left facing.
     private void updateFacingDirection(float x_raw, float y_raw)
     {
+        /*
+         * Depending on the input we will se the values for the animator to match the values we are facing
+         * 
+         * Wanted to have rigidity that you would have in old school games like legend of zelda or pokemon so I am mirroring that movement here.
+         * 
+         * One of the others things we need to do is change the sword hit box based on the direction the player is facing. Making sure the sword hitbox is consistent no matter the direction.
+         */
+
         if (y_raw == 1f)
         {
             facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
