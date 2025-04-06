@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Enemy
+  - HealthPickUp
+  - OtherPickUp
   layers:
   - Default
   - TransparentFX
@@ -12,10 +15,10 @@ TagManager:
   - Water
   - UI
   - 
-  - 
-  - 
-  - 
-  - 
+  - Enemies
+  - Player
+  - PickUps
+  - Feet
   - Props
   - Tilemap 04
   - Tilemap 03
@@ -40,6 +43,12 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1384053919
+    locked: 0
+  - name: Foreground
+    uniqueID: 1185521067
     locked: 0
   m_RenderingLayers:
   - Default
