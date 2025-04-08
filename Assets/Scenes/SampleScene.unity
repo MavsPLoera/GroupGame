@@ -2467,7 +2467,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 0.7}
+  m_Size: {x: 0.4, y: 0.55}
   m_EdgeRadius: 0
 --- !u!50 &640163215
 Rigidbody2D:
@@ -2513,6 +2513,7 @@ MonoBehaviour:
   playerHealth: 50
   swordDamage: 0
   healingAmount: 30
+  playerHitKnockBack: 3000
   healingPotions: 3
   playerLives: 3
   maxHealthPotions: 5
@@ -2532,7 +2533,7 @@ MonoBehaviour:
   healingSlowdown: 0.5
   secondaryCooldown: 0
   ultimateCooldown: 0
-  invulnerabilityTime: 0
+  invulnerabilityTime: 2
   audioSource: {fileID: 0}
   dashSound: {fileID: 0}
   playerLandSound: {fileID: 0}
@@ -2561,6 +2562,7 @@ MonoBehaviour:
   facingTowards: {fileID: 500656888}
   respawnPosition: {fileID: 0}
   swordController: {fileID: 0}
+  boxCollider: {fileID: 0}
   playerUI: {fileID: 0}
   playerAnimator: {fileID: 0}
 --- !u!212 &640163217
@@ -19546,7 +19548,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1393113942}
   - component: {fileID: 1393113943}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

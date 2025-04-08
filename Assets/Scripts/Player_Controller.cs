@@ -13,6 +13,7 @@ public class Player_Controller : MonoBehaviour
     public float playerHealth;
     public float swordDamage;
     public float healingAmount;
+    public float playerHitKnockBack;
     public int healingPotions = 3;
     public int playerLives = 3;
     public int maxHealthPotions = 5;
@@ -79,6 +80,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject facingTowards;
     public GameObject respawnPosition;
     public Sword_Controller swordController;
+    public BoxCollider2D boxCollider;
     public GameObject playerUI;
     public Animator playerAnimator;
     private Rigidbody2D rb;
@@ -93,6 +95,7 @@ public class Player_Controller : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
         swordController = facingTowards.GetComponent<Sword_Controller>();
+        boxCollider = GetComponent<BoxCollider2D>();
         canInput = true;
         playerHealth = maxHealth;
 
@@ -273,8 +276,14 @@ public class Player_Controller : MonoBehaviour
     //Change this to turn off collisions between enemies and the player
     private IEnumerator temporaryInvulnerability()
     {
+        //Disable input for the player for a second after getting knocked back
+
+        Debug.Log("Player Hit temp invuln");
         invincible = true;
+        boxCollider.enabled = false;
         yield return new WaitForSeconds(invulnerabilityTime);
+        boxCollider.enabled = true;
+        Debug.Log("Player invuln over");
         invincible = false;
     }
 
@@ -334,14 +343,22 @@ public class Player_Controller : MonoBehaviour
         //play animation
         //trigger gameover on UI
         //destroy gameobject
+        Destroy(gameObject);
     }
 
     public void TakeDamage(float damage)
     {
-        if(playerHealth - damage > 0f)
+        if(invincible)
+        {
+            return;
+        }
+
+        if((playerHealth - damage) > 0f)
         {
             //Get enemy script component and get the damage value
             playerHealth -= damage;
+            Debug.Log((facingTowards.transform.position - transform.position));
+            rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack );
             StartCoroutine(temporaryInvulnerability());
         }
         else if (((playerHealth - damage) < 0f) && ((playerLives - 1) < 0))
@@ -353,6 +370,7 @@ public class Player_Controller : MonoBehaviour
         {
             //Play animation of some sort then 
             //Make this coroutine
+            playerHealth = 0f;
             playerLives--;
             // gameObject.transform.position = respawnPosition.transform.position;
         }
