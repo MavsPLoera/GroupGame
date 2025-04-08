@@ -36,7 +36,7 @@ public class PlayerArrow_Controller : MonoBehaviour
         rb.AddForce(new Vector2(direction.x, direction.y) * speed);
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("ColliderTilemap"))
         {

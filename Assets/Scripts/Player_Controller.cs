@@ -85,6 +85,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject arrowSpawn;
     public GameObject respawnPosition;
     public Sword_Controller swordController;
+    public float timer = 0.0f;
     public Slider healthBarSlider;
     public Slider easeHealthBarSlider;
     public SpriteRenderer spriteRenderer;
@@ -125,9 +126,15 @@ public class Player_Controller : MonoBehaviour
             healthBarSlider.value = playerHealth;
         }
 
+        //Fix this
         if (easeHealthBarSlider.value != healthBarSlider.value)
         {
-            easeHealthBarSlider.value = Mathf.Lerp(easeHealthBarSlider.value, playerHealth, healthBarEaseTime);
+            timer += Time.deltaTime;
+            easeHealthBarSlider.value = Mathf.Lerp(easeHealthBarSlider.value, healthBarSlider.value, timer/healthBarEaseTime);
+        }
+        else
+        {
+            timer = 0.0f;
         }
 
         if (!canInput)
