@@ -20,6 +20,8 @@ public class Player_Controller : MonoBehaviour
     public int playerLives = 3;
     public int maxHealthPotions = 5;
     public float maxHealth = 100;
+    public float flickerAmount = 10;
+
 
     [Header("Player boolean conditions")]
     public bool canInput = true;
@@ -44,6 +46,7 @@ public class Player_Controller : MonoBehaviour
     public float ultimateCooldown;
     public float invulnerabilityTime;
     public float healthBarEaseTime;
+    public float flickerDuration;
 
     [Header("Player Quests")]
     public List<Quest> quests = new List<Quest>();
@@ -127,7 +130,7 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Fix this
-        if (easeHealthBarSlider.value != healthBarSlider.value)
+        if (easeHealthBarSlider.value != playerHealth)
         {
             timer += Time.deltaTime;
             easeHealthBarSlider.value = Mathf.Lerp(easeHealthBarSlider.value, healthBarSlider.value, timer/healthBarEaseTime);
@@ -322,21 +325,32 @@ public class Player_Controller : MonoBehaviour
     {
         rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
         playerAnimator.Play("Player_Hit", 0);
-        invincible = true;
         boxCollider.enabled = false;
 
         canInput = false;
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(.5f);
-
-        spriteRenderer.color = Color.white;
+        StartCoroutine(flickerSprite());
+        yield return new WaitForSeconds(.75f);
         playerAnimator.Play("Player_Idle", 0);
         canInput = true;
 
         yield return new WaitForSeconds(invulnerabilityTime);
 
         boxCollider.enabled = true;
+    }
+
+    //Need to line this up with invulnerability time
+    private IEnumerator flickerSprite()
+    {
+        invincible = true;
+        for (int i = 0; i < flickerAmount; i++)
+        {
+            spriteRenderer.color = new Color(255f, 0f, 0f, .25f);
+            yield return new WaitForSeconds(flickerDuration);
+            spriteRenderer.color = new Color(255f, 0f, 0f, 1f);
+            yield return new WaitForSeconds(flickerDuration);
+        }
         invincible = false;
+        spriteRenderer.color = Color.white;
     }
 
     //[NOTE] Can add quest completed method that is just a way for a quest to give the reward to the player
@@ -414,6 +428,7 @@ public class Player_Controller : MonoBehaviour
             //Get enemy script component and get the damage value
             playerHealth -= damage;
             rb.linearVelocity = Vector2.zero;
+            //StartCoroutine(flickerSprite());
             StartCoroutine(temporaryInvulnerability());
         }
         else if (((playerHealth - damage) < 0f) && ((playerLives - 1) < 0))
