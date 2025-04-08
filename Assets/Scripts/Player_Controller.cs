@@ -336,6 +336,28 @@ public class Player_Controller : MonoBehaviour
         //destroy gameobject
     }
 
+    public void TakeDamage(float damage)
+    {
+        if(playerHealth - damage > 0f)
+        {
+            //Get enemy script component and get the damage value
+            playerHealth -= damage;
+            StartCoroutine(temporaryInvulnerability());
+        }
+        else if (((playerHealth - damage) < 0f) && ((playerLives - 1) < 0))
+        {
+            //Game over sequence
+            gameOver();
+        }
+        else
+        {
+            //Play animation of some sort then 
+            //Make this coroutine
+            playerLives--;
+            // gameObject.transform.position = respawnPosition.transform.position;
+        }
+    }
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("HealthPickUp"))
@@ -352,29 +374,6 @@ public class Player_Controller : MonoBehaviour
         else if (collision.gameObject.CompareTag("OtherPickUp")) //change the name of otherpickup to what the name 
         {
             //do other thing
-        }
-        else if (collision.gameObject.CompareTag("Enemy"))
-        {
-            //Going to assume collision is just a enemy always
-            float damage = collision.gameObject.GetComponent<Enemy_Stats_Controller>().damage;
-            if (playerHealth - damage > 0f)
-            {
-                //Get enemy script component and get the damage value
-                playerHealth -= damage;
-                StartCoroutine(temporaryInvulnerability());
-            }
-            else if (((playerHealth - damage) < 0f) && ((playerLives - 1) < 0))
-            {
-                //Game over sequence
-                gameOver();
-            }
-            else
-            {
-                //Play animation of some sort then 
-                //Make this coroutine
-                playerLives--;
-                gameObject.transform.position = respawnPosition.transform.position;
-            }
         }
     }
 }

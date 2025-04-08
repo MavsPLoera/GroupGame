@@ -2,20 +2,27 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
-using UnityEngine.EventSystems;
 
 public class Enemy_M01_Controller : MonoBehaviour
 {
+    // Enemy Melee 01
+    // Moves toward player and attackes when in range.
+
     [Header("M01 Misc.")]
-    public Enemy_Stats_Controller stats;
     public List<GameObject> drops;
     public TextMeshProUGUI text;
     public string[] textList;
 
-    private float _health, _damage, _speed;
+    [Header("Stats.")]
+    public float health;
+    public float damage;
+    public float speedMin;
+    public float speedMax;
+
+    private float _speed;
     private Rigidbody2D _rb;
     private Transform _playerTransform;
-    private bool _isKnockedback = false, _isHorizontal = true;
+    private bool _isKnockedback = false;
     private readonly bool _debug = false;
 
     public void TakeDamage(float damage)
@@ -28,7 +35,7 @@ public class Enemy_M01_Controller : MonoBehaviour
         StartCoroutine(DamageColor());
         StartCoroutine(DamageText());
 
-        if(_health <= 0)
+        if(health <= 0)
         {
             if(_debug) Debug.Log($"{gameObject.name} Dead");
             OnDeath();
@@ -38,14 +45,8 @@ public class Enemy_M01_Controller : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
 
-        // Get assoc. stats.
-        float _speedMin = stats.speedMin;
-        float _speedMax = stats.speedMax;
-        _health = stats.health;
-        _damage = stats.damage;
-
         // Get random speed between _speedMax and _speedMin.
-        _speed = Random.Range(_speedMin, _speedMax);
+        _speed = Random.Range(speedMin, speedMax);
     }
 
     private void Update()
@@ -60,7 +61,7 @@ public class Enemy_M01_Controller : MonoBehaviour
             // Get vector in direction of player.
             Vector2 moveDirection = (_playerTransform.transform.position - transform.position);
 
-            // Check distance. Stop if close to player.
+            // Check distance. Stop if in range to player OR if colliding with another enemy.
             float distance = moveDirection.magnitude;
             if(distance <= 1)
             {
@@ -78,14 +79,13 @@ public class Enemy_M01_Controller : MonoBehaviour
 
     private void MoveToward(Vector2 moveDirection)
     {
-        // Move along a single axis (X/Y) until aligned, then switch.
-        // Doing this to mirror 4-directional player movement.
-        if(_isHorizontal)
+        // Move along either X or Y axis. Prefer moving toward the axis
+        // enemy is closest aligning to.
+        if(Mathf.Abs(moveDirection.x) < Mathf.Abs(moveDirection.y))
         {
-            if(Mathf.Abs(moveDirection.x) < 0.1f)
+            if(Mathf.Abs(moveDirection.x) <= 0.05f)
             {
-                // Switch axis if X close to 0.
-                _isHorizontal = false;
+                moveDirection = new Vector2(0, moveDirection.y).normalized;
             }
             else
             {
@@ -94,10 +94,9 @@ public class Enemy_M01_Controller : MonoBehaviour
         }
         else
         {
-            if(Mathf.Abs(moveDirection.y) < 0.1f)
+            if(Mathf.Abs(moveDirection.y) <= 0.05f)
             {
-                // Switch axis if Y close to 0.
-                _isHorizontal = true;
+                moveDirection = new Vector2(moveDirection.x, 0).normalized;
             }
             else
             {
@@ -148,5 +147,21 @@ public class Enemy_M01_Controller : MonoBehaviour
         text.text = textList[Random.Range(0, textList.Length)];
         yield return new WaitForSeconds(3);
         text.text = "";
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+        }
     }
 }
