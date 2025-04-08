@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5029310014807683556}
   - component: {fileID: 1415682021260250457}
   - component: {fileID: 2331278422551046817}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,11 +146,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6864959804078986235}
   - component: {fileID: 343195214212274243}
-  - component: {fileID: 7632368339291025692}
   - component: {fileID: 1444904500774615230}
   - component: {fileID: 6494943659988389713}
   - component: {fileID: 2854308136271678245}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Enemy_M01
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -166,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 2534991156718531147}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.7, y: 2.7824478, z: 2.873656}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -217,7 +216,7 @@ SpriteRenderer:
   m_SortingLayerID: 1185521067
   m_SortingLayer: 2
   m_SortingOrder: 4
-  m_Sprite: {fileID: -1011880802010920795, guid: 3739c649784521445a76d3a76cbcb373, type: 3}
+  m_Sprite: {fileID: -1341026365798975373, guid: 8c3be3e5fa90d534898945f80da74d8e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -228,22 +227,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7632368339291025692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2534991156718531147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23d2296bfe3a7474ebf7f9204d8c16c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 20
-  damage: 10
-  speedMin: 2
-  speedMax: 4
 --- !u!114 &1444904500774615230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,10 +239,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11a8bc430fcaf9498c0c92f5b6a51eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 7632368339291025692}
   drops: []
   text: {fileID: 0}
   textList: []
+  health: 20
+  damage: 10
+  speedMin: 3
+  speedMax: 4
 --- !u!50 &6494943659988389713
 Rigidbody2D:
   serializedVersion: 5
@@ -345,7 +331,7 @@ GameObject:
   - component: {fileID: 1197227851105220639}
   - component: {fileID: 8700142860690138208}
   - component: {fileID: 6463666163945455944}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
