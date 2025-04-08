@@ -47,9 +47,9 @@ public class Ranged_Attack_Controller : MonoBehaviour
     {
         // ** TODO: corr. SFX and particle systems **
 
-        // Get vector in the direction of the collision. Add offset.
-        Vector3 spawnDirection = (collision.transform.position - gameObject.transform.parent.position);
-        Vector3 spawnPosition = gameObject.transform.parent.position + spawnDirection * .2f;
+        // Get vector in the direction of the collision.
+        Vector3 spawnDirection = (collision.transform.position - gameObject.transform.parent.position).normalized;
+        Vector3 spawnPosition = gameObject.transform.parent.position + spawnDirection * 0.5f;
 
         // Spawn projectile and set its stats.
         GameObject spawnedProjectile = Instantiate(projectile, spawnPosition, gameObject.transform.rotation);
