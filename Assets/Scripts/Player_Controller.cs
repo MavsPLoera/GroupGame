@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player_Controller : MonoBehaviour
@@ -15,9 +16,10 @@ public class Player_Controller : MonoBehaviour
     public float healingAmount;
     public float playerHitKnockBack;
     public int healingPotions = 3;
+    public int arrows = 15;
     public int playerLives = 3;
     public int maxHealthPotions = 5;
-    public int maxHealth = 100;
+    public float maxHealth = 100;
 
     [Header("Player boolean conditions")]
     public bool canInput = true;
@@ -38,8 +40,10 @@ public class Player_Controller : MonoBehaviour
     public float timeBeforeHealing;
     public float healingSlowdown;
     public float secondaryCooldown;
+    public float ultimateDuration;
     public float ultimateCooldown;
     public float invulnerabilityTime;
+    public float healthBarEaseTime;
 
     [Header("Player Quests")]
     public List<Quest> quests = new List<Quest>();
@@ -78,8 +82,14 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Player Misc.")]
     public GameObject facingTowards;
+    public GameObject arrowSpawn;
     public GameObject respawnPosition;
     public Sword_Controller swordController;
+    public Slider healthBarSlider;
+    public Slider easeHealthBarSlider;
+    public SpriteRenderer spriteRenderer;
+    public GameObject arrow;
+    public Color hurtColor;
     public BoxCollider2D boxCollider;
     public GameObject playerUI;
     public Animator playerAnimator;
@@ -96,6 +106,7 @@ public class Player_Controller : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         swordController = facingTowards.GetComponent<Sword_Controller>();
         boxCollider = GetComponent<BoxCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         canInput = true;
         playerHealth = maxHealth;
 
@@ -109,6 +120,16 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (healthBarSlider.value != playerHealth)
+        {
+            healthBarSlider.value = playerHealth;
+        }
+
+        if (easeHealthBarSlider.value != healthBarSlider.value)
+        {
+            easeHealthBarSlider.value = Mathf.Lerp(easeHealthBarSlider.value, playerHealth, healthBarEaseTime);
+        }
+
         if (!canInput)
         {
             return;
@@ -244,12 +265,28 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator secondaryMove()
     {
-        yield return null;
+        canSecondary = false;
+        rb.linearVelocity = Vector2.zero;
+        playerAnimator.Play("Player_Secondary", 0);
+        canInput = false;
+
+        yield return new WaitForSeconds(.333f);
+
+        Instantiate(arrow, arrowSpawn.transform.position, gameObject.transform.rotation);
+        playerAnimator.Play("Player_Idle", 0);
+        canSecondary = true;
+        canInput = true;
     }
 
     public IEnumerator ultimateMove()
     {
-        yield return null;
+        canUlt = false;
+        playerHealth = maxHealth;
+        yield return new WaitForSeconds(ultimateDuration);
+        //Do other stuff
+
+        yield return new WaitForSeconds(ultimateCooldown);
+        canUlt = true;
     }
 
     public IEnumerator dash(Vector2 movement)
@@ -276,14 +313,22 @@ public class Player_Controller : MonoBehaviour
     //Change this to turn off collisions between enemies and the player
     private IEnumerator temporaryInvulnerability()
     {
-        //Disable input for the player for a second after getting knocked back
-
-        Debug.Log("Player Hit temp invuln");
+        rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
+        playerAnimator.Play("Player_Hit", 0);
         invincible = true;
         boxCollider.enabled = false;
+
+        canInput = false;
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(.5f);
+
+        spriteRenderer.color = Color.white;
+        playerAnimator.Play("Player_Idle", 0);
+        canInput = true;
+
         yield return new WaitForSeconds(invulnerabilityTime);
+
         boxCollider.enabled = true;
-        Debug.Log("Player invuln over");
         invincible = false;
     }
 
@@ -303,6 +348,7 @@ public class Player_Controller : MonoBehaviour
         if (y_raw == 1f)
         {
             facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(0f, .6f, 0f) + transform.position;
             movementDirection = new Vector2(0f, 1).normalized;
             playerAnimator.SetFloat("moveX", 0);
             playerAnimator.SetFloat("moveY", 1);
@@ -311,6 +357,7 @@ public class Player_Controller : MonoBehaviour
         else if (y_raw == -1f)
         {
             facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(0f, -.6f, 0f) + transform.position;
             movementDirection = new Vector2(0f, -1).normalized;
             playerAnimator.SetFloat("moveX", 0);
             playerAnimator.SetFloat("moveY", -1);
@@ -319,6 +366,7 @@ public class Player_Controller : MonoBehaviour
         else if (x_raw == 1f)
         {
             facingTowards.transform.position = new Vector3(1f, 0f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(.6f, 0f, 0f) + transform.position;
             movementDirection = new Vector2(1, 0f).normalized;
             playerAnimator.SetFloat("moveX", 1);
             playerAnimator.SetFloat("moveY", 0);
@@ -327,6 +375,7 @@ public class Player_Controller : MonoBehaviour
         else if (x_raw == -1f)
         {
             facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;
             movementDirection = new Vector2(-1, 0f).normalized;
             playerAnimator.SetFloat("moveX", -1);
             playerAnimator.SetFloat("moveY", 0);
@@ -357,8 +406,7 @@ public class Player_Controller : MonoBehaviour
         {
             //Get enemy script component and get the damage value
             playerHealth -= damage;
-            Debug.Log((facingTowards.transform.position - transform.position));
-            rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack );
+            rb.linearVelocity = Vector2.zero;
             StartCoroutine(temporaryInvulnerability());
         }
         else if (((playerHealth - damage) < 0f) && ((playerLives - 1) < 0))
