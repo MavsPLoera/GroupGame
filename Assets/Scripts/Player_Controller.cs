@@ -439,7 +439,6 @@ public class Player_Controller : MonoBehaviour
             //Get enemy script component and get the damage value
             playerHealth -= damage;
             rb.linearVelocity = Vector2.zero;
-            //StartCoroutine(flickerSprite());
             StartCoroutine(temporaryInvulnerability());
         }
         else if (((playerHealth - damage) < 0f) && ((playerLives - 1) < 0))

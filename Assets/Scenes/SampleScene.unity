@@ -3723,7 +3723,7 @@ MonoBehaviour:
   ultimateDuration: 0
   ultimateCooldown: 0
   invulnerabilityTime: 2
-  healthBarEaseTime: 0.01
+  healthBarEaseTime: 1
   flickerDuration: 0
   audioSource: {fileID: 0}
   dashSound: {fileID: 0}
