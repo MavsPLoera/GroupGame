@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -12,10 +14,14 @@ public class Player_Controller : MonoBehaviour
     public float playerHealth;
     public float swordDamage;
     public float healingAmount;
+    public float playerHitKnockBack;
     public int healingPotions = 3;
+    public int arrows = 15;
     public int playerLives = 3;
     public int maxHealthPotions = 5;
-    public int maxHealth = 100;
+    public float maxHealth = 100;
+    public float flickerAmount = 10;
+
 
     [Header("Player boolean conditions")]
     public bool canInput = true;
@@ -36,8 +42,11 @@ public class Player_Controller : MonoBehaviour
     public float timeBeforeHealing;
     public float healingSlowdown;
     public float secondaryCooldown;
+    public float ultimateDuration;
     public float ultimateCooldown;
     public float invulnerabilityTime;
+    public float healthBarEaseTime;
+    public float flickerDuration;
 
     [Header("Player Quests")]
     public List<Quest> quests = new List<Quest>();
@@ -76,8 +85,16 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Player Misc.")]
     public GameObject facingTowards;
+    public GameObject arrowSpawn;
     public GameObject respawnPosition;
     public Sword_Controller swordController;
+    public float timer = 0.0f;
+    public Slider healthBarSlider;
+    public Slider easeHealthBarSlider;
+    public SpriteRenderer spriteRenderer;
+    public GameObject arrow;
+    public Color hurtColor;
+    public BoxCollider2D boxCollider;
     public GameObject playerUI;
     public Animator playerAnimator;
     private Rigidbody2D rb;
@@ -86,24 +103,14 @@ public class Player_Controller : MonoBehaviour
     //Use this to access the player. No need to drag player gameobject to retrieve the script. There is only one player so this should be fine.
     public static Player_Controller instance;
 
-    private void Awake()
-    {
-        if(!instance)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
         swordController = facingTowards.GetComponent<Sword_Controller>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         canInput = true;
         playerHealth = maxHealth;
 
@@ -111,11 +118,28 @@ public class Player_Controller : MonoBehaviour
         healingPotions = 3;
 
         quests.Add(new Quest("TestTitle", "Test Description", "Test Reward"));
+        instance = this;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (healthBarSlider.value != playerHealth)
+        {
+            healthBarSlider.value = playerHealth;
+        }
+
+        //Fix this
+        if (easeHealthBarSlider.value != playerHealth)
+        {
+            timer += Time.deltaTime;
+            easeHealthBarSlider.value = Mathf.Lerp(easeHealthBarSlider.value, healthBarSlider.value, timer/healthBarEaseTime);
+        }
+        else
+        {
+            timer = 0.0f;
+        }
+
         if (!canInput)
         {
             return;
@@ -251,12 +275,28 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator secondaryMove()
     {
-        yield return null;
+        canSecondary = false;
+        rb.linearVelocity = Vector2.zero;
+        playerAnimator.Play("Player_Secondary", 0);
+        canInput = false;
+
+        yield return new WaitForSeconds(.333f);
+
+        Instantiate(arrow, arrowSpawn.transform.position, gameObject.transform.rotation);
+        playerAnimator.Play("Player_Idle", 0);
+        canSecondary = true;
+        canInput = true;
     }
 
     public IEnumerator ultimateMove()
     {
-        yield return null;
+        canUlt = false;
+        playerHealth = maxHealth;
+        yield return new WaitForSeconds(ultimateDuration);
+        //Do other stuff
+
+        yield return new WaitForSeconds(ultimateCooldown);
+        canUlt = true;
     }
 
     public IEnumerator dash(Vector2 movement)
@@ -283,9 +323,34 @@ public class Player_Controller : MonoBehaviour
     //Change this to turn off collisions between enemies and the player
     private IEnumerator temporaryInvulnerability()
     {
-        invincible = true;
+        rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
+        playerAnimator.Play("Player_Hit", 0);
+        boxCollider.enabled = false;
+
+        canInput = false;
+        StartCoroutine(flickerSprite());
+        yield return new WaitForSeconds(.75f);
+        playerAnimator.Play("Player_Idle", 0);
+        canInput = true;
+
         yield return new WaitForSeconds(invulnerabilityTime);
+
+        boxCollider.enabled = true;
+    }
+
+    //Need to line this up with invulnerability time
+    private IEnumerator flickerSprite()
+    {
+        invincible = true;
+        for (int i = 0; i < flickerAmount; i++)
+        {
+            spriteRenderer.color = new Color(255f, 0f, 0f, .25f);
+            yield return new WaitForSeconds(flickerDuration);
+            spriteRenderer.color = new Color(255f, 0f, 0f, 1f);
+            yield return new WaitForSeconds(flickerDuration);
+        }
         invincible = false;
+        spriteRenderer.color = Color.white;
     }
 
     //[NOTE] Can add quest completed method that is just a way for a quest to give the reward to the player
@@ -304,6 +369,7 @@ public class Player_Controller : MonoBehaviour
         if (y_raw == 1f)
         {
             facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(0f, .6f, 0f) + transform.position;
             movementDirection = new Vector2(0f, 1).normalized;
             playerAnimator.SetFloat("moveX", 0);
             playerAnimator.SetFloat("moveY", 1);
@@ -312,6 +378,7 @@ public class Player_Controller : MonoBehaviour
         else if (y_raw == -1f)
         {
             facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(0f, -.6f, 0f) + transform.position;
             movementDirection = new Vector2(0f, -1).normalized;
             playerAnimator.SetFloat("moveX", 0);
             playerAnimator.SetFloat("moveY", -1);
@@ -320,6 +387,7 @@ public class Player_Controller : MonoBehaviour
         else if (x_raw == 1f)
         {
             facingTowards.transform.position = new Vector3(1f, 0f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(.6f, 0f, 0f) + transform.position;
             movementDirection = new Vector2(1, 0f).normalized;
             playerAnimator.SetFloat("moveX", 1);
             playerAnimator.SetFloat("moveY", 0);
@@ -328,6 +396,7 @@ public class Player_Controller : MonoBehaviour
         else if (x_raw == -1f)
         {
             facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;
             movementDirection = new Vector2(-1, 0f).normalized;
             playerAnimator.SetFloat("moveX", -1);
             playerAnimator.SetFloat("moveY", 0);
@@ -344,14 +413,22 @@ public class Player_Controller : MonoBehaviour
         //play animation
         //trigger gameover on UI
         //destroy gameobject
+        Destroy(gameObject);
     }
 
     public void TakeDamage(float damage)
     {
-        if(playerHealth - damage > 0f)
+        if(invincible)
+        {
+            return;
+        }
+
+        if((playerHealth - damage) > 0f)
         {
             //Get enemy script component and get the damage value
             playerHealth -= damage;
+            rb.linearVelocity = Vector2.zero;
+            //StartCoroutine(flickerSprite());
             StartCoroutine(temporaryInvulnerability());
         }
         else if (((playerHealth - damage) < 0f) && ((playerLives - 1) < 0))
@@ -363,6 +440,7 @@ public class Player_Controller : MonoBehaviour
         {
             //Play animation of some sort then 
             //Make this coroutine
+            playerHealth = 0f;
             playerLives--;
             // gameObject.transform.position = respawnPosition.transform.position;
         }

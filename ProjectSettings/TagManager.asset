@@ -8,6 +8,7 @@ TagManager:
   - HealthPickUp
   - OtherPickUp
   - ColliderTilemap
+  - Bullet
   layers:
   - Default
   - TransparentFX
