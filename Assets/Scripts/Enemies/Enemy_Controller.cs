@@ -20,7 +20,7 @@ public class Enemy_Controller : MonoBehaviour
     private Rigidbody2D _rb;
     private Transform _playerTransform;
     private bool _isKnockedback = false;
-    private readonly bool _debug = false;
+    private readonly bool _debug = true;
 
     public void TakeDamage(float damage)
     {
@@ -103,7 +103,7 @@ public class Enemy_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+            // collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
         }
     }
 
@@ -111,7 +111,7 @@ public class Enemy_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+            // collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
         }
     }
 }
