@@ -3,37 +3,35 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 
-public class Enemy_ENV01_Controller : MonoBehaviour
+public class Enemy_Controller : MonoBehaviour
 {
-    // Enemy Environmental 01
-    // Moves back and forth on collision.
-    
-    [Header("ENV01 Misc.")]
+    // Enemy Controller
+    // Handles generic enemy functions.
+
+    [Header("M01 Misc.")]
     public List<GameObject> drops;
     public TextMeshProUGUI text;
     public string[] textList;
-    public Vector2 moveDirection;
 
     [Header("Stats.")]
     public float health;
     public float damage;
-    public float speedMin;
-    public float speedMax;
 
-    private float _speed;
     private Rigidbody2D _rb;
+    private Transform _playerTransform;
     private bool _isKnockedback = false;
-    private readonly bool _debug = true;
+    private readonly bool _debug = false;
 
     public void TakeDamage(float damage)
     {
         if(_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
+        health -= damage;
 
         // ** TODO: corr. SFX and particle systems **
 
-        StartCoroutine(Knockback());
+        // StartCoroutine(Knockback());
         StartCoroutine(DamageColor());
-        StartCoroutine(DamageText());
+        // StartCoroutine(DamageText());
 
         if(health <= 0)
         {
@@ -44,27 +42,13 @@ public class Enemy_ENV01_Controller : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-
-        // Get random speed between _speedMax and _speedMin.
-        _speed = Random.Range(speedMin, speedMax);
-    }
-
-    private void Update()
-    {
-        if(!_isKnockedback)
-        {
-            Move(moveDirection);
-        }
-    }
-
-    private void Move(Vector2 moveDirection)
-    {
-       _rb.linearVelocity = moveDirection * _speed;
+        _playerTransform = Player_Controller.instance.transform;
     }
 
     private void OnDeath()
     {
         // Drop item.
+        /*
         int dropChance = Random.Range(0, 100);
         if(dropChance <= 10)
         {
@@ -76,6 +60,7 @@ public class Enemy_ENV01_Controller : MonoBehaviour
             // Drop gold.
             Instantiate(drops[0], transform.position, transform.rotation);
         }
+        */
         Destroy(gameObject);
     }
 
@@ -105,16 +90,20 @@ public class Enemy_ENV01_Controller : MonoBehaviour
         text.text = "";
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.transform.parent.CompareTag("Player"))
+        {
+            float damage = collision.gameObject.transform.parent.GetComponent<Player_Controller>().swordDamage;
+            TakeDamage(damage);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
-        }
-        if(collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("ColliderTilemap"))
-        {
-            // Switch directions.
-            moveDirection *= -1;
         }
     }
 

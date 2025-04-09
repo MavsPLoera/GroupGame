@@ -145,7 +145,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6864959804078986235}
-  - component: {fileID: -3624763629208027769}
+  - component: {fileID: 5580007150448214731}
+  - component: {fileID: 6116992080232185449}
   - component: {fileID: 343195214212274243}
   - component: {fileID: 6494943659988389713}
   - component: {fileID: 2854308136271678245}
@@ -172,7 +173,7 @@ Transform:
   - {fileID: 7770940670735185894}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-3624763629208027769
+--- !u!114 &5580007150448214731
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,17 +182,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 2534991156718531147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d45651c558d3f34a9f5b6626986c36b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7313c8836481e2641ba0aa8061b8ac0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMin: 3
+  speedMax: 4
+  moveDirection: {x: 0, y: 1}
+--- !u!114 &6116992080232185449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2534991156718531147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f10b05545227a5449f8c6e5921bdbe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   drops: []
   text: {fileID: 0}
   textList: []
-  moveDirection: {x: 0, y: 1}
   health: 10
   damage: 10
-  speedMin: 3
-  speedMax: 4
 --- !u!212 &343195214212274243
 SpriteRenderer:
   m_ObjectHideFlags: 0

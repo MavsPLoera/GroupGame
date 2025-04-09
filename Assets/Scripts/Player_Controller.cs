@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -87,6 +86,18 @@ public class Player_Controller : MonoBehaviour
     //Use this to access the player. No need to drag player gameobject to retrieve the script. There is only one player so this should be fine.
     public static Player_Controller instance;
 
+    private void Awake()
+    {
+        if(!instance)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -100,7 +111,6 @@ public class Player_Controller : MonoBehaviour
         healingPotions = 3;
 
         quests.Add(new Quest("TestTitle", "Test Description", "Test Reward"));
-        instance = this;
     }
 
     // Update is called once per frame

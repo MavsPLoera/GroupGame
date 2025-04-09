@@ -151,7 +151,6 @@ MonoBehaviour:
   projectileSpeed: 20
   attackCooldownTime: 5
   projectile: {fileID: 5940506869999924925, guid: a93ac4a6a01ac0443a2faede23d11f7d, type: 3}
-  aligned: 0
 --- !u!58 &2403937993119602907
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -333,7 +332,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2708838967533537990}
-  - component: {fileID: 5364693547133019497}
+  - component: {fileID: 9029042584395842317}
+  - component: {fileID: 8901860884937894362}
   - component: {fileID: 967094512275337348}
   - component: {fileID: 1658725110234123479}
   - component: {fileID: 6684743817454125721}
@@ -361,7 +361,7 @@ Transform:
   - {fileID: 6725300290823112426}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5364693547133019497
+--- !u!114 &9029042584395842317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -370,7 +370,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 9046974501502460405}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46b43ea0888b3c7489e2bd2a1f4a17b7, type: 3}
+  m_Script: {fileID: 11500000, guid: b44655ea71a7b1546933e0228aed40e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMin: 2
+  speedMax: 3
+--- !u!114 &8901860884937894362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9046974501502460405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f10b05545227a5449f8c6e5921bdbe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   drops: []
@@ -378,8 +392,6 @@ MonoBehaviour:
   textList: []
   health: 20
   damage: 10
-  speedMin: 2
-  speedMax: 3
 --- !u!212 &967094512275337348
 SpriteRenderer:
   m_ObjectHideFlags: 0
