@@ -92,7 +92,7 @@ public class Enemy_Controller : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.transform.parent.CompareTag("Player"))
+        if(collision.gameObject.transform.parent && collision.gameObject.transform.parent.CompareTag("Player"))
         {
             float damage = collision.gameObject.transform.parent.GetComponent<Player_Controller>().swordDamage;
             TakeDamage(damage);
