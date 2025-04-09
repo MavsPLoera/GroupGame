@@ -94,6 +94,7 @@ public class Enemy_Controller : MonoBehaviour
     {
         if(collision.gameObject.transform.parent && collision.gameObject.transform.parent.CompareTag("Player"))
         {
+            if(_debug) Debug.Log($"Sword Hit");
             float damage = collision.gameObject.transform.parent.GetComponent<Player_Controller>().swordDamage;
             TakeDamage(damage);
         }
