@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1902976882557841740}
   - component: {fileID: 3685495454639677430}
   - component: {fileID: -8315320498796955191}
-  m_Layer: 7
+  m_Layer: 12
   m_Name: PlayerArrow
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   speed: 550
-  damage: 0
+  damage: 10
 --- !u!61 &-8315320498796955191
 BoxCollider2D:
   m_ObjectHideFlags: 0

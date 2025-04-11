@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 
 public class PlayerArrow_Controller : MonoBehaviour
 {
@@ -43,9 +45,10 @@ public class PlayerArrow_Controller : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             Destroy(gameObject);
         }
-        if (collision.gameObject.CompareTag("Enemy"))
+        else if (collision.gameObject.CompareTag("Enemy"))
         {
             rb.linearVelocity = Vector2.zero;
+            collision.gameObject.GetComponent<Enemy_Controller>().TakeDamage(damage);
             Destroy(gameObject);
         }
     }

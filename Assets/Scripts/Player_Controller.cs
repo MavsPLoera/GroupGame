@@ -15,9 +15,10 @@ public class Player_Controller : MonoBehaviour
     public float swordDamage;
     public float healingAmount;
     public float playerHitKnockBack;
-    public int healingPotions = 3;
-    public int arrows = 15;
-    public int playerLives = 3;
+    public int healingPotions = 3; //Make UI element
+    public int arrows = 15; //Make UI Element
+    public int maxArrows = 15;
+    public int playerLives = 3; //Make UI Element
     public int maxHealthPotions = 5;
     public float maxHealth = 100;
     public float flickerAmount = 10;
@@ -41,12 +42,12 @@ public class Player_Controller : MonoBehaviour
     public float dashCooldown;
     public float timeBeforeHealing;
     public float healingSlowdown;
-    public float secondaryCooldown;
     public float ultimateDuration;
     public float ultimateCooldown;
     public float invulnerabilityTime;
     public float healthBarEaseTime;
     public float flickerDuration;
+    public float reloadCoolDown;
 
     [Header("Player Quests")]
     public List<Quest> quests = new List<Quest>();
@@ -67,7 +68,7 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Player Particle Systems")]
     public ParticleSystem healingParticles;
-    public ParticleSystem dashDustParticles; //used for when player initially jumps and lands back on the ground
+    public ParticleSystem dashDustParticles;
     public ParticleSystem dashCooldonRefreshedParticles;
     public ParticleSystem secondaryMoveParticles;
     public ParticleSystem ultimateParticles;
@@ -88,6 +89,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject arrowSpawn;
     public GameObject respawnPosition;
     public Sword_Controller swordController;
+    public GameObject ultLight;
     public float timer = 0.0f;
     public Slider healthBarSlider;
     public Slider easeHealthBarSlider;
@@ -125,6 +127,7 @@ public class Player_Controller : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         canInput = true;
         playerHealth = maxHealth;
+        arrows = maxArrows;
 
         //Default amount of healing potions
         healingPotions = 3;
@@ -200,6 +203,12 @@ public class Player_Controller : MonoBehaviour
          * 
          */
 
+        //Ultimate
+        if (Input.GetKeyDown(KeyCode.R) && unlockedUltMove && canUlt)
+        {
+            StartCoroutine(ultimateMove());
+        }
+
         //Dash
         if (Input.GetKeyDown(KeyCode.Space) && canDash)
         {
@@ -216,15 +225,9 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Secondary
-        if (Input.GetButton("Fire2") && unlockedSecondaryMove && canSecondary)
+        if (Input.GetButton("Fire2") && unlockedSecondaryMove && canSecondary && !(arrows <= 0))
         {
             StartCoroutine(secondaryMove());
-        }
-
-        //Ultimate
-        if (Input.GetButton("Fire3") && unlockedUltMove && canUlt)
-        {
-            StartCoroutine(ultimateMove());
         }
 
         //Healing Self
@@ -294,20 +297,48 @@ public class Player_Controller : MonoBehaviour
         yield return new WaitForSeconds(.333f);
 
         Instantiate(arrow, arrowSpawn.transform.position, gameObject.transform.rotation);
+        arrows--;
+
+        if(arrows <= 0)
+        {
+            StartCoroutine(reloadArrows());
+        }
+
         playerAnimator.Play("Player_Idle", 0);
         canSecondary = true;
         canInput = true;
     }
 
+    public IEnumerator reloadArrows()
+    {
+        yield return new WaitForSeconds(reloadCoolDown);
+        arrows = maxArrows;
+    }
+
     public IEnumerator ultimateMove()
     {
         canUlt = false;
+        canInput = false;
         playerHealth = maxHealth;
+        rb.linearVelocity = Vector2.zero;
+        playerAnimator.Play("Player_Ult", 0);
+        ultLight.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(.333f);
+
+        canInput = true;
+        playerAnimator.Play("Player_Idle", 0);
+
         yield return new WaitForSeconds(ultimateDuration);
-        //Do other stuff
+        ultLight.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(ultimateCooldown);
         canUlt = true;
+    }
+
+    public IEnumerator ultAlmostOver()
+    {
+        yield return null;
     }
 
     public IEnumerator dash(Vector2 movement)
@@ -389,7 +420,7 @@ public class Player_Controller : MonoBehaviour
         else if (y_raw == -1f)
         {
             facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
-            arrowSpawn.transform.position = new Vector3(0f, -.6f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(0f, -.7f, 0f) + transform.position;
             movementDirection = new Vector2(0f, -1).normalized;
             playerAnimator.SetFloat("moveX", 0);
             playerAnimator.SetFloat("moveY", -1);
