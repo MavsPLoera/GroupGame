@@ -367,7 +367,7 @@ public class Player_Controller : MonoBehaviour
     {
         rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
         playerAnimator.Play("Player_Hit", 0);
-        boxCollider.enabled = false;
+        invincible = true;
 
         canInput = false;
         StartCoroutine(flickerSprite());
@@ -376,7 +376,7 @@ public class Player_Controller : MonoBehaviour
         canInput = true;
 
         yield return new WaitForSeconds(invulnerabilityTime);
-
+        invincible = false;
         boxCollider.enabled = true;
     }
 
