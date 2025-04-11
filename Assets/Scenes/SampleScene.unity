@@ -4354,10 +4354,8 @@ MonoBehaviour:
   playerCamera: {fileID: 519420028}
   player: {fileID: 640163213}
   crossFade: {fileID: 920173020}
-  transitionTime: 2
+  transitionTime: 1.5
   crossfadeAnimator: {fileID: 920173021}
-  cameraController: {fileID: 0}
-  dungeonController: {fileID: 0}
   enterOverworldSound: {fileID: 0}
   enterDungeonSound: {fileID: 0}
 --- !u!61 &546905230
@@ -38053,10 +38051,8 @@ MonoBehaviour:
   playerCamera: {fileID: 519420028}
   player: {fileID: 640163213}
   crossFade: {fileID: 920173020}
-  transitionTime: 2
+  transitionTime: 1.5
   crossfadeAnimator: {fileID: 920173021}
-  cameraController: {fileID: 0}
-  dungeonController: {fileID: 0}
   enterOverworldSound: {fileID: 0}
   enterDungeonSound: {fileID: 0}
 --- !u!61 &1005149381
