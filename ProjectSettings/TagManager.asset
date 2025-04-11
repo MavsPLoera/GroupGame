@@ -9,6 +9,8 @@ TagManager:
   - OtherPickUp
   - ColliderTilemap
   - Bullet
+  - DungeonWarp
+  - OverworldWarp
   layers:
   - Default
   - TransparentFX

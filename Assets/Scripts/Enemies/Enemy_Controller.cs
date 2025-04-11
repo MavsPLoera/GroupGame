@@ -104,7 +104,7 @@ public class Enemy_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            //collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
         }
     }
 
@@ -112,7 +112,7 @@ public class Enemy_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            //collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
         }
     }
 }

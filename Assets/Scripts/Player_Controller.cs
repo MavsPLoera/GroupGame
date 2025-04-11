@@ -365,33 +365,30 @@ public class Player_Controller : MonoBehaviour
     //Change this to turn off collisions between enemies and the player
     private IEnumerator temporaryInvulnerability()
     {
+        invincible = true;
         rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
         playerAnimator.Play("Player_Hit", 0);
         invincible = true;
 
         canInput = false;
-        StartCoroutine(flickerSprite());
-        yield return new WaitForSeconds(.75f);
+        yield return StartCoroutine(flickerSprite());
         playerAnimator.Play("Player_Idle", 0);
         canInput = true;
 
-        yield return new WaitForSeconds(invulnerabilityTime);
+        //yield return new WaitForSeconds(invulnerabilityTime);
         invincible = false;
-        boxCollider.enabled = true;
     }
 
     //Need to line this up with invulnerability time
     private IEnumerator flickerSprite()
     {
-        invincible = true;
         for (int i = 0; i < flickerAmount; i++)
         {
-            spriteRenderer.color = new Color(255f, 0f, 0f, .25f);
+            spriteRenderer.color = new Color(255f, 0f, 0f, 255f);
             yield return new WaitForSeconds(flickerDuration);
-            spriteRenderer.color = new Color(255f, 0f, 0f, 1f);
+            spriteRenderer.color = new Color(0f, 0f, 0f, 255f);
             yield return new WaitForSeconds(flickerDuration);
         }
-        invincible = false;
         spriteRenderer.color = Color.white;
     }
 
