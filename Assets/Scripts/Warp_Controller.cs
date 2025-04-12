@@ -7,9 +7,9 @@ public class Warp_Controller : MonoBehaviour
     public GameObject dungeonManager;
     public GameObject playerCamera;
     public GameObject player;
-    public GameObject crossFade;
+    public GameObject crossFadeIn;
+    public GameObject crossFadeOut;
     public float transitionTime = 1f;
-    public Animator crossfadeAnimator;
     public AudioClip enterOverworldSound;
     public AudioClip enterDungeonSound;
     private Camera_Controller cameraController;
@@ -45,12 +45,13 @@ public class Warp_Controller : MonoBehaviour
          */
 
         Player_Controller.instance.canInput = false;
-        crossFade.SetActive(true);
-        crossfadeAnimator.SetTrigger("Start");
+        crossFadeIn.SetActive(true);
 
         yield return new WaitForSeconds(transitionTime);
 
-        crossFade.SetActive(false);
+        //Cross fade in complete, no cross fade out to new destination.
+        crossFadeIn.SetActive(false);
+        crossFadeOut.SetActive(true);
         player.gameObject.transform.position = warpDestination.position;
         playerCamera.transform.position = new Vector3(warpDestination.position.x, warpDestination.position.y, -100f);
 
@@ -65,6 +66,9 @@ public class Warp_Controller : MonoBehaviour
             cameraController.inDungeon = false;
         }
    
+        yield return new WaitForSeconds(transitionTime);
+
+        crossFadeOut.SetActive(false);
         Player_Controller.instance.canInput = true;
     }
 }
