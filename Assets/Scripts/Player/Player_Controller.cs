@@ -21,6 +21,7 @@ public class Player_Controller : MonoBehaviour
     public int playerLives = 3; //Make UI Element
     public int maxHealthPotions = 5;
     public float maxHealth = 100;
+    public float gold = 0;
     public float flickerAmount = 10;
 
 
@@ -95,7 +96,6 @@ public class Player_Controller : MonoBehaviour
     public Slider easeHealthBarSlider;
     public SpriteRenderer spriteRenderer;
     public GameObject arrow;
-    public Color hurtColor;
     public BoxCollider2D boxCollider;
     public GameObject playerUI;
     public Animator playerAnimator;
@@ -143,7 +143,7 @@ public class Player_Controller : MonoBehaviour
             healthBarSlider.value = playerHealth;
         }
 
-        //Fix this
+        //Fix this, slider is not lerpign properlly
         if (easeHealthBarSlider.value != playerHealth)
         {
             timer += Time.deltaTime;
@@ -363,20 +363,25 @@ public class Player_Controller : MonoBehaviour
     }
 
     //Change this to turn off collisions between enemies and the player
+    //Need to make the collisions between enemies and player last longer to prevent multiple hits.
     private IEnumerator temporaryInvulnerability()
     {
+        //BECAREFUL ABOUT THIS LINE, IF WE CHANGE THE LAYERS THIS WILL BE WRONG
+        Physics2D.IgnoreLayerCollision(7, 8, true);
+        
         invincible = true;
         rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
         playerAnimator.Play("Player_Hit", 0);
         invincible = true;
-
         canInput = false;
+
         yield return StartCoroutine(flickerSprite());
+
         playerAnimator.Play("Player_Idle", 0);
         canInput = true;
-
-        //yield return new WaitForSeconds(invulnerabilityTime);
         invincible = false;
+
+        Physics2D.IgnoreLayerCollision(7, 8, false);
     }
 
     //Need to line this up with invulnerability time
@@ -391,9 +396,6 @@ public class Player_Controller : MonoBehaviour
         }
         spriteRenderer.color = Color.white;
     }
-
-    //[NOTE] Can add quest completed method that is just a way for a quest to give the reward to the player
-
 
     private void updateFacingDirection(float x_raw, float y_raw)
     {
@@ -447,6 +449,11 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    private void gameWin()
+    {
+
+    }
+
     private void gameOver()
     {
         //play animation
@@ -469,23 +476,40 @@ public class Player_Controller : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             StartCoroutine(temporaryInvulnerability());
         }
-        else if (((playerHealth - damage) < 0f) && ((playerLives - 1) < 0))
+        else if (((playerHealth - damage) <= 0f) && ((playerLives - 1) <= 0))
         {
             //Game over sequence
+            //Update slider
             gameOver();
         }
         else
         {
+            //note still not working with the dungeon controller, need to also make the enemies go back to where they were and open the doors.
+
             //Play animation of some sort then 
             //Make this coroutine
-            playerHealth = 0f;
+
+            //Disable the collision between enemies and the player. Do this until the layers are set in stone
+
+            //Send player back to spawn we could change this before enter each area but for now this works.
+            gameObject.transform.position = respawnPosition.transform.position;
+
+            //Added if statement just incase we are adding enemies in overworld.
+            if (Dungeon_Controller.instance.inDungeon || Camera_Controller.instance.inDungeon)
+            {
+                Dungeon_Controller.instance.inDungeon = false;
+                Camera_Controller.instance.inDungeon = false;
+            }
+
             playerLives--;
-            // gameObject.transform.position = respawnPosition.transform.position;
+            playerHealth = maxHealth;
         }
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log("Collided");
+        //Need to call to update UI when I collide with different things
         if (collision.gameObject.CompareTag("HealthPickUp"))
         {
             if ((healingPotions + 1) >= maxHealthPotions)
@@ -499,7 +523,25 @@ public class Player_Controller : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("OtherPickUp")) //change the name of otherpickup to what the name 
         {
-            //do other thing
+            gold++;
+            
+        }
+        else if(collision.gameObject.CompareTag("UnlockSecondary"))
+        {
+            //Baseline unlock ability can add more to this like lights and what not.
+            unlockedSecondaryMove = true;
+            Destroy(collision.gameObject);
+        }
+        else if(collision.gameObject.CompareTag("UnlockUlt"))
+        {
+            //Baseline unlock ability can add more to this like lights and what not.
+            unlockedUltMove = true;
+            Destroy(collision.gameObject);
+        }
+        else if(collision.gameObject.CompareTag("Win")) //Doesnt have to be like this but you get the idea
+        {
+            gameWin();
+            canInput = false;
         }
     }
 }

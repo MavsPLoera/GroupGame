@@ -11,6 +11,9 @@ TagManager:
   - Bullet
   - DungeonWarp
   - OverworldWarp
+  - UnlockSecondary
+  - UnlockUlt
+  - Win
   layers:
   - Default
   - TransparentFX

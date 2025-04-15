@@ -12,13 +12,9 @@ public class Warp_Controller : MonoBehaviour
     public float transitionTime = 1f;
     public AudioClip enterOverworldSound;
     public AudioClip enterDungeonSound;
-    private Camera_Controller cameraController;
-    private Dungeon_Controller dungeonController;
 
     void Start()
     {
-        dungeonController = dungeonManager.GetComponent<Dungeon_Controller>();
-        cameraController = playerCamera.GetComponent<Camera_Controller>();
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -57,13 +53,15 @@ public class Warp_Controller : MonoBehaviour
 
         if (gameObject.CompareTag("DungeonWarp"))
         {
-            dungeonController.inDungeon = true;
-            cameraController.inDungeon = true;
+            //Insert Audio Clip here
+            Dungeon_Controller.instance.inDungeon = true;
+            Camera_Controller.instance.inDungeon = true;
         }
         else if (gameObject.CompareTag("OverworldWarp"))
         {
-            dungeonController.inDungeon = false;
-            cameraController.inDungeon = false;
+            //Insert Audio Clip here
+            Dungeon_Controller.instance.inDungeon = false;
+            Camera_Controller.instance.inDungeon = false;
         }
    
         yield return new WaitForSeconds(transitionTime);
