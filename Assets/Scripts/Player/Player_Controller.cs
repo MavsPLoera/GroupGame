@@ -369,7 +369,6 @@ public class Player_Controller : MonoBehaviour
         //BECAREFUL ABOUT THIS LINE, IF WE CHANGE THE LAYERS THIS WILL BE WRONG
         Physics2D.IgnoreLayerCollision(7, 8, true);
         
-        invincible = true;
         rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
         playerAnimator.Play("Player_Hit", 0);
         invincible = true;
@@ -471,7 +470,7 @@ public class Player_Controller : MonoBehaviour
 
         if((playerHealth - damage) > 0f)
         {
-            //Get enemy script component and get the damage value
+            invincible = true;
             playerHealth -= damage;
             rb.linearVelocity = Vector2.zero;
             StartCoroutine(temporaryInvulnerability());
