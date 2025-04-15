@@ -484,6 +484,7 @@ public class Player_Controller : MonoBehaviour
         }
         else
         {
+            Debug.Log("Player Die");
             //note still not working with the dungeon controller, need to also make the enemies go back to where they were and open the doors.
 
             //Play animation of some sort then 
@@ -508,7 +509,6 @@ public class Player_Controller : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Collided");
         //Need to call to update UI when I collide with different things
         if (collision.gameObject.CompareTag("HealthPickUp"))
         {

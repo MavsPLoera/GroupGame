@@ -4789,6 +4789,37 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &489852810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 489852811}
+  m_Layer: 0
+  m_Name: Respawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &489852811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489852810}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1189947516}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &500656888
 GameObject:
   m_ObjectHideFlags: 0
@@ -5742,6 +5773,7 @@ MonoBehaviour:
   playerLives: 3
   maxHealthPotions: 5
   maxHealth: 100
+  gold: 0
   flickerAmount: 3
   canInput: 1
   canDash: 1
@@ -5789,7 +5821,7 @@ MonoBehaviour:
   swingLeftSize: {x: 0.25, y: 1}
   facingTowards: {fileID: 500656888}
   arrowSpawn: {fileID: 1650516412}
-  respawnPosition: {fileID: 0}
+  respawnPosition: {fileID: 489852810}
   swordController: {fileID: 0}
   ultLight: {fileID: 110808371}
   timer: 0
@@ -5797,7 +5829,6 @@ MonoBehaviour:
   easeHealthBarSlider: {fileID: 478465584}
   spriteRenderer: {fileID: 0}
   arrow: {fileID: 3907125966181714432, guid: 1efa10fdbb5470d479411fda98946c09, type: 3}
-  hurtColor: {r: 1, g: 1, b: 1, a: 0}
   boxCollider: {fileID: 0}
   playerUI: {fileID: 0}
   playerAnimator: {fileID: 0}
@@ -42330,6 +42361,38 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1825525493}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1189947515
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1189947516}
+  m_Layer: 0
+  m_Name: TempObjects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1189947516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189947515}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 489852811}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1285570612
 PrefabInstance:
@@ -91650,3 +91713,4 @@ SceneRoots:
   - {fileID: 640163218}
   - {fileID: 1825525493}
   - {fileID: 113844454}
+  - {fileID: 1189947516}
