@@ -42163,13 +42163,19 @@ MonoBehaviour:
   enterOverworldSound: {fileID: 0}
   enterDungeonSound: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!1 &1022044549
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
 --- !u!1 &1017843859
 =======
 --- !u!1 &1022044549
 >>>>>>> 45d4a59001088be03e7d66569db89b9420974666
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 GameObject:
   m_ObjectHideFlags: 0
@@ -42179,7 +42185,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
   - component: {fileID: 1017843860}
   - component: {fileID: 1017843861}
@@ -42194,6 +42203,9 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &1017843860
 =======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   - component: {fileID: 1022044550}
   - component: {fileID: 1022044551}
@@ -42206,6 +42218,10 @@ GameObject:
   m_IsActive: 0
 --- !u!4 &1022044550
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 45d4a59001088be03e7d66569db89b9420974666
+>>>>>>> Stashed changes
 =======
 >>>>>>> 45d4a59001088be03e7d66569db89b9420974666
 >>>>>>> Stashed changes
@@ -42215,7 +42231,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
   m_GameObject: {fileID: 1017843859}
   serializedVersion: 2
@@ -42228,6 +42247,9 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1017843861
 SpriteRenderer:
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   m_GameObject: {fileID: 1022044549}
@@ -42242,6 +42264,10 @@ SpriteRenderer:
 --- !u!114 &1022044551
 MonoBehaviour:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 45d4a59001088be03e7d66569db89b9420974666
+>>>>>>> Stashed changes
 =======
 >>>>>>> 45d4a59001088be03e7d66569db89b9420974666
 >>>>>>> Stashed changes
@@ -42250,7 +42276,10 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
   m_GameObject: {fileID: 1017843859}
   m_Enabled: 1
@@ -42374,6 +42403,9 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   m_GameObject: {fileID: 1022044549}
@@ -42505,6 +42537,10 @@ Transform:
   m_PrefabInstance: {fileID: 1042302814}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 45d4a59001088be03e7d66569db89b9420974666
+>>>>>>> Stashed changes
 =======
 >>>>>>> 45d4a59001088be03e7d66569db89b9420974666
 >>>>>>> Stashed changes
