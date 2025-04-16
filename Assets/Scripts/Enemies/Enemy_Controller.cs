@@ -14,7 +14,6 @@ public class Enemy_Controller : MonoBehaviour
         Skeleton_Ranged
     }
 
-
     [Header("Enemy Misc.")]
     public List<GameObject> drops;
     public TextMeshProUGUI text;
@@ -46,15 +45,10 @@ public class Enemy_Controller : MonoBehaviour
 
     private void Update()
     {
-        if(_rb.linearVelocity != Vector2.zero)
+        if(_animator)
         {
-            string animation = string.Concat(enemyType, "_Walk");
-            _animator.Play(animation, 0);
-        }
-        else
-        {
-            string animation = string.Concat(enemyType, "_Idle");
-            _animator.Play(animation, 0);
+            _animator.SetFloat("moveX", _rb.linearVelocity.x);
+            _animator.SetFloat("moveY", _rb.linearVelocity.y);
         }
     }
 
