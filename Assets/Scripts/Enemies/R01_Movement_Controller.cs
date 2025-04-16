@@ -7,6 +7,7 @@ public class R01_Movement_Controller : MonoBehaviour
     public float speedMax;
 
     private Transform _playerTransform;
+    private Enemy_Controller _enemyController;
     private float _speed;
     private Rigidbody2D _rb;
     private bool _isKnockedback = false;
@@ -15,13 +16,14 @@ public class R01_Movement_Controller : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerTransform = Player_Controller.instance.transform;
+        _enemyController = GetComponent<Enemy_Controller>();
         // Get random speed between _speedMax and _speedMin.
         _speed = Random.Range(speedMin, speedMax);
     }
     
     private void Update()
     {
-        if(_playerTransform && !_isKnockedback)
+        if(_playerTransform && !_isKnockedback && !_enemyController.isInAnimation)
         {
             // Get vector in direction of player.
             Vector2 moveDirection = (_playerTransform.transform.position - transform.position);

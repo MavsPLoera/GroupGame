@@ -19,7 +19,8 @@ public class Enemy_Controller : MonoBehaviour
     public TextMeshProUGUI text;
     public string[] textList;
     public float flickerAmount;
-    public EnemyType enemyType;
+    public EnemyType enemyType; // ATM used for triggering appropriate animation for each enemy type.
+    public bool isInAnimation;
 
     [Header("Enemy Stats.")]
     public float health;
@@ -45,27 +46,38 @@ public class Enemy_Controller : MonoBehaviour
 
     private void Update()
     {
-        if(_animator)
+        if(_animator && !isInAnimation) // The first condition is TEMP.
         {
             _animator.SetFloat("moveX", _rb.linearVelocity.x);
             _animator.SetFloat("moveY", _rb.linearVelocity.y);
+
+            if(_rb.linearVelocity != Vector2.zero)
+            {
+                string animation = System.String.Concat(enemyType, "_Walk");
+                _animator.Play(animation, 0);
+            }
+            else
+            {
+                string animation = System.String.Concat(enemyType, "_Idle");
+                _animator.Play(animation, 0);
+            }
         }
     }
 
     public void TakeDamage(float damage)
     {
-        if (_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
+        if(_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
         health -= damage;
 
         // ** TODO: corr. SFX and particle systems **
 
         // StartCoroutine(Knockback());
-        StartCoroutine(DamageColor());
+        StartCoroutine(FlickerSprite());
         // StartCoroutine(DamageText());
 
-        if (health <= 0)
+        if(health <= 0)
         {
-            if (_debug) Debug.Log($"{gameObject.name} Dead");
+            if(_debug) Debug.Log($"{gameObject.name} Dead");
             OnDeath();
         }
     }
@@ -89,6 +101,43 @@ public class Enemy_Controller : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.transform.parent && collision.gameObject.transform.parent.CompareTag("Player"))
+        {
+            if(_debug) Debug.Log($"Sword Hit");
+            if(_animator && !isInAnimation) // This first condition is TEMP.
+            {
+                StartCoroutine(Hit());
+            }    
+            float damage = collision.gameObject.transform.parent.GetComponent<Player_Controller>().swordDamage;
+            TakeDamage(damage);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            if(_animator && !isInAnimation) // This first condition is TEMP.
+            {
+                StartCoroutine(Swing());
+            }
+            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            if(_animator && !isInAnimation) // This first condition is TEMP.
+            {
+                StartCoroutine(Swing());
+            }
+            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+        }
+    }
     private IEnumerator Knockback()
     {
         // Pauses movement on knockback.
@@ -100,7 +149,7 @@ public class Enemy_Controller : MonoBehaviour
         _isKnockedback = false;
     }
 
-    private IEnumerator DamageColor()
+    private IEnumerator FlickerSprite()
     {
         Color32 origColor = _spriteRenderer.color;
         for (int i = 0; i < flickerAmount; i++)
@@ -120,29 +169,25 @@ public class Enemy_Controller : MonoBehaviour
         text.text = "";
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private IEnumerator Swing()
     {
-        if(collision.gameObject.transform.parent && collision.gameObject.transform.parent.CompareTag("Player"))
-        {
-            if(_debug) Debug.Log($"Sword Hit");
-            float damage = collision.gameObject.transform.parent.GetComponent<Player_Controller>().swordDamage;
-            TakeDamage(damage);
-        }
+        string animation = System.String.Concat(enemyType, "_Swing");
+        isInAnimation = true;
+        _rb.linearVelocity = Vector2.zero;
+        _animator.Play(animation, 0);
+        // Allow animation to complete.
+        yield return new WaitForSeconds(.6f);
+        isInAnimation = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private IEnumerator Hit()
     {
-        if(collision.gameObject.CompareTag("Player"))
-        {
-            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag("Player"))
-        {
-            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
-        }
+        string animation = System.String.Concat(enemyType, "_Hit");
+        isInAnimation = true;
+        _rb.linearVelocity = Vector2.zero;
+        _animator.Play(animation, 0);
+        // Allow animation to complete.
+        yield return new WaitForSeconds(.6f);
+        isInAnimation = false;
     }
 }

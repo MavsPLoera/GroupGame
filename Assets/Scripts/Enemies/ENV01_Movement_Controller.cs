@@ -10,6 +10,7 @@ public class ENV01_Movement_Controller : MonoBehaviour
     [Header("ENV01 Misc.")]
     public Vector2 moveDirection;
 
+    private Enemy_Controller _enemyController;
     private float _speed;
     private Rigidbody2D _rb;
     private bool _isKnockedback = false;
@@ -17,13 +18,14 @@ public class ENV01_Movement_Controller : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _enemyController = GetComponent<Enemy_Controller>();
         // Get random speed between _speedMax and _speedMin.
         _speed = Random.Range(speedMin, speedMax);
     }
 
     private void Update()
     {
-        if(!_isKnockedback)
+        if(!_isKnockedback && !_enemyController.isInAnimation)
         {
             Move(moveDirection);
         }
