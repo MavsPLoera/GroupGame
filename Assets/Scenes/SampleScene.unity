@@ -6394,7 +6394,7 @@ MonoBehaviour:
   healingSelf: 0
   canSecondary: 1
   canUlt: 1
-  canSwing: 0
+  canSwing: 1
   unlockedSecondaryMove: 1
   unlockedUltMove: 1
   invincible: 0

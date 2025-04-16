@@ -219,7 +219,7 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Sword Swing
-        if (Input.GetButton("Fire1") && !canSwing)
+        if (Input.GetButton("Fire1") && canSwing)
         {
             StartCoroutine(swing());
         }
@@ -242,7 +242,7 @@ public class Player_Controller : MonoBehaviour
         //Set animator to swing and stop playign from being able to input and swing again.
         playerAnimator.Play("Player_Swing", 0);
         rb.linearVelocity = Vector2.zero;
-        canSwing = true;
+        canSwing = false;
         canInput = false;
 
         //Let the full animation play out. I am not sure why getting the length of the animation does not work but .6f does fine.
@@ -251,9 +251,7 @@ public class Player_Controller : MonoBehaviour
         //After the animation finished set the animation state to idle and allow player to be able to swing again and input.
         playerAnimator.Play("Player_Idle", 0);
         canInput = true;
-        canSwing = false;
-
-        yield return null;
+        canSwing = true;
     }
 
     public IEnumerator healPlayer()
