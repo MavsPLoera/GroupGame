@@ -6012,7 +6012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &619394801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6108,7 +6108,7 @@ Transform:
   m_GameObject: {fileID: 619587964}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -127.48, y: -3.41, z: 0.18077338}
+  m_LocalPosition: {x: -127.48, y: -4.38, z: 0.18077338}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6674,8 +6674,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 1.5323997, y: -1.8936, z: 0}
-    m_Extent: {x: 11.438601, y: 7.9401, z: 0}
+    m_Center: {x: 1.5318499, y: -2.8075001, z: 0}
+    m_Extent: {x: 11.43805, y: 8.8522005, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -6688,8 +6688,12 @@ MonoBehaviour:
   m_ShapePath:
   - {x: -9.706459, y: -3.6186237, z: 0}
   - {x: -3.684761, y: -3.644684, z: 0}
-  - {x: -3.6422806, y: -9.619089, z: 0}
-  - {x: 3.7491302, y: -9.634148, z: 0}
+  - {x: -3.6787643, y: -9.692047, z: 0}
+  - {x: -0.49835968, y: -9.709099, z: 0}
+  - {x: -0.49835968, y: -11.460085, z: 0}
+  - {x: 0.5960083, y: -11.460085, z: 0}
+  - {x: 0.63248444, y: -9.696939, z: 0}
+  - {x: 3.7491302, y: -9.719265, z: 0}
   - {x: 3.7142487, y: -3.6756358, z: 0}
   - {x: 9.808922, y: -3.695954, z: 0}
   - {x: 12.7415085, y: -3.6954293, z: 0}
