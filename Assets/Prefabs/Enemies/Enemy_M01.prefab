@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 700232533123440314}
   - component: {fileID: 6494943659988389713}
   - component: {fileID: 2854308136271678245}
+  - component: {fileID: 6954501391211128452}
   m_Layer: 7
   m_Name: Enemy_M01
   m_TagString: Enemy
@@ -257,8 +258,11 @@ MonoBehaviour:
   drops: []
   text: {fileID: 0}
   textList: []
+  flickerAmount: 3
+  enemyType: 1
   health: 20
   damage: 10
+  flickerDuration: 0.1
 --- !u!50 &6494943659988389713
 Rigidbody2D:
   serializedVersion: 5
@@ -332,6 +336,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.7}
   m_EdgeRadius: 0
+--- !u!95 &6954501391211128452
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2534991156718531147}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3039280d3903714408c95f4215a82d46, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6479572433443448648
 GameObject:
   m_ObjectHideFlags: 0

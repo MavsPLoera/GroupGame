@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class M01_Movement_Controller : MonoBehaviour
 {
-    [Header("Stats.")]
+    [Header("M01 Stats.")]
     public float speedMin;
     public float speedMax;
 
@@ -26,7 +26,7 @@ public class M01_Movement_Controller : MonoBehaviour
             // Get vector in direction of player.
             Vector2 moveDirection = (_playerTransform.transform.position - transform.position);
 
-            // Check distance. Stop if in range to player OR if colliding with another enemy.
+            // Check distance. Stop if in range to player.
             float distance = moveDirection.magnitude;
             if(distance <= 1)
             {

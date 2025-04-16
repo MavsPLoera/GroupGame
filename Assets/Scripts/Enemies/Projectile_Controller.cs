@@ -13,10 +13,16 @@ public class Projectile_Controller : MonoBehaviour
     public void SetTarget(Vector3 direction)
     {
         _rb = GetComponent<Rigidbody2D>();
+        ChangeDirection(direction);
         _rb.AddForce(direction * speed);
     }
 
-    void Update()
+    private void ChangeDirection(Vector3 direction)
+    {
+        // *** TODO ***
+    }
+
+    private void Update()
     {
         lifespan -= Time.deltaTime;
         if(lifespan <= 0)

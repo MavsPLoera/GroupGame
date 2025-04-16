@@ -203,8 +203,11 @@ MonoBehaviour:
   drops: []
   text: {fileID: 0}
   textList: []
+  flickerAmount: 3
+  enemyType: 0
   health: 10
   damage: 10
+  flickerDuration: 0.1
 --- !u!212 &343195214212274243
 SpriteRenderer:
   m_ObjectHideFlags: 0

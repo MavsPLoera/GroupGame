@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class ENV01_Movement_Controller : MonoBehaviour
 {
-    [Header("Stats.")]
+    [Header("ENV01 Stats.")]
     public float speedMin;
     public float speedMax;
 

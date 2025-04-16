@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class R01_Movement_Controller : MonoBehaviour
 {
-    [Header("Stats.")]
+    [Header("R01 Stats.")]
     public float speedMin;
     public float speedMax;
 
