@@ -13,6 +13,7 @@ public class Player_Controller : MonoBehaviour
     public float playerRollSpeed;
     public float playerHealth;
     public float swordDamage;
+    public float swordDamageUltIncrease = 5f;
     public float healingAmount;
     public float playerHitKnockBack;
     public int healingPotions = 3; //Make UI element
@@ -322,21 +323,20 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Ult", 0);
         ultLight.gameObject.SetActive(true);
 
+        swordDamage += swordDamageUltIncrease;
+
         yield return new WaitForSeconds(.333f);
 
         canInput = true;
         playerAnimator.Play("Player_Idle", 0);
 
         yield return new WaitForSeconds(ultimateDuration);
+
         ultLight.gameObject.SetActive(false);
+        swordDamage -= swordDamageUltIncrease;
 
         yield return new WaitForSeconds(ultimateCooldown);
         canUlt = true;
-    }
-
-    public IEnumerator ultAlmostOver()
-    {
-        yield return null;
     }
 
     public IEnumerator dash(Vector2 movement)
@@ -364,6 +364,11 @@ public class Player_Controller : MonoBehaviour
     //Need to make the collisions between enemies and player last longer to prevent multiple hits.
     private IEnumerator temporaryInvulnerability()
     {
+        //Fix to resolve player inputs not being detected
+        canSwing = true;
+        canSecondary = true;
+        canUlt = true;
+
         //BECAREFUL ABOUT THIS LINE, IF WE CHANGE THE LAYERS THIS WILL BE WRONG
         Physics2D.IgnoreLayerCollision(7, 8, true);
         

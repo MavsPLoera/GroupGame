@@ -8,8 +8,7 @@ public class PlayerArrow_Controller : MonoBehaviour
     public float speed;
     public float damage;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         changeDirection(Player_Controller.instance.facingTowards.transform.position - Player_Controller.instance.gameObject.transform.position);
