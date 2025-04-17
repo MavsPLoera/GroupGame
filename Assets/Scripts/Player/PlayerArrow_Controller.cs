@@ -40,15 +40,15 @@ public class PlayerArrow_Controller : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("ColliderTilemap"))
-        {
-            rb.linearVelocity = Vector2.zero;
-            Destroy(gameObject);
-        }
-        else if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             rb.linearVelocity = Vector2.zero;
             collision.gameObject.GetComponent<Enemy_Controller>().TakeDamage(damage);
+            Destroy(gameObject);
+        }
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            rb.linearVelocity = Vector2.zero;
             Destroy(gameObject);
         }
     }
