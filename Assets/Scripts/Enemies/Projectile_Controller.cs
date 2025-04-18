@@ -13,13 +13,15 @@ public class Projectile_Controller : MonoBehaviour
     public void SetTarget(Vector3 direction)
     {
         _rb = GetComponent<Rigidbody2D>();
-        ChangeDirection(direction);
+        ChangeDirection(direction.normalized);
         _rb.AddForce(direction * speed);
     }
 
     private void ChangeDirection(Vector3 direction)
     {
         // *** TODO ***
+        float rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, rotation);
     }
 
     private void Update()
