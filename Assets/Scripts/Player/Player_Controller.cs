@@ -451,9 +451,23 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
-    private void gameWin()
+    //Sample game win
+    private IEnumerator gameWin()
     {
+        canInput = false;
+        rb.linearVelocity = Vector2.zero;
 
+        //play animation
+        playerAnimator.Play("Player_Ult", 0);
+        crossFadeIn.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        //trigger gameover on UI
+
+        //destroy gameobject
+
+        Destroy(gameObject);
     }
 
     private IEnumerator gameOver()
