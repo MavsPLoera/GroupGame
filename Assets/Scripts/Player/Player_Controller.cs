@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -100,6 +97,7 @@ public class Player_Controller : MonoBehaviour
     public BoxCollider2D boxCollider;
     public GameObject playerUI;
     public Animator playerAnimator;
+    public GameObject crossFadeIn;
     private Rigidbody2D rb;
     private Vector2 movementDirection;
 
@@ -310,6 +308,7 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator reloadArrows()
     {
+        //Short duration before the player is able to shoot again. The magically reloading bow takes time to reload.
         yield return new WaitForSeconds(reloadCoolDown);
         arrows = maxArrows;
     }
@@ -323,6 +322,7 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Ult", 0);
         ultLight.gameObject.SetActive(true);
 
+        //Increase damage during ult
         swordDamage += swordDamageUltIncrease;
 
         yield return new WaitForSeconds(.333f);
@@ -333,6 +333,7 @@ public class Player_Controller : MonoBehaviour
         yield return new WaitForSeconds(ultimateDuration);
 
         ultLight.gameObject.SetActive(false);
+        //Removed increase damage when ult is on cooldown
         swordDamage -= swordDamageUltIncrease;
 
         yield return new WaitForSeconds(ultimateCooldown);
@@ -386,7 +387,6 @@ public class Player_Controller : MonoBehaviour
         Physics2D.IgnoreLayerCollision(7, 8, false);
     }
 
-    //Need to line this up with invulnerability time
     private IEnumerator flickerSprite()
     {
         for (int i = 0; i < flickerAmount; i++)
@@ -456,12 +456,58 @@ public class Player_Controller : MonoBehaviour
 
     }
 
-    private void gameOver()
+    private IEnumerator gameOver()
     {
+        canInput = false;
+        rb.linearVelocity = Vector2.zero;
+
         //play animation
+        playerAnimator.Play("Player_Hit", 0);
+        crossFadeIn.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
         //trigger gameover on UI
+
         //destroy gameobject
+
         Destroy(gameObject);
+    }
+
+    private IEnumerator loseLife()
+    {
+        canInput = false;
+        invincible = true;
+
+        rb.linearVelocity = Vector2.zero;
+
+        //play animation
+        playerAnimator.Play("Player_Hit", 0);
+        crossFadeIn.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        //Update the players spawn to the town, move camera after the player has been moved to the same position.
+        gameObject.transform.position = respawnPosition.transform.position;
+        Camera_Controller.instance.gameObject.transform.position = gameObject.transform.position;
+
+        //If the player was in the dungeon then we have to let the controllers know the player is no longer in the dungeon
+        if (Dungeon_Controller.instance.inDungeon || Camera_Controller.instance.inDungeon)
+        {
+            Dungeon_Controller.instance.inDungeon = false;
+            Camera_Controller.instance.inDungeon = false;
+        }
+
+        //Minus the player lives and set maxHealth back to full
+        playerLives--;
+        playerHealth = maxHealth;
+
+        yield return new WaitForSeconds(.25f);
+
+        //Disable the crossfade to let the player see again and allow them to input.
+        crossFadeIn.SetActive(false);
+        canInput = true;
+        invincible = false;
     }
 
     public void TakeDamage(float damage)
@@ -471,10 +517,10 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        if((playerHealth - damage) > 0f)
+        playerHealth -= damage;
+        if ((playerHealth - damage) > 0f)
         {
             invincible = true;
-            playerHealth -= damage;
             rb.linearVelocity = Vector2.zero;
             StartCoroutine(temporaryInvulnerability());
         }
@@ -482,30 +528,12 @@ public class Player_Controller : MonoBehaviour
         {
             //Game over sequence
             //Update slider
-            gameOver();
+            StartCoroutine(gameOver());
         }
         else
         {
-            Debug.Log("Player Die");
-            //note still not working with the dungeon controller, need to also make the enemies go back to where they were and open the doors.
 
-            //Play animation of some sort then 
-            //Make this coroutine
-
-            //Disable the collision between enemies and the player. Do this until the layers are set in stone
-
-            //Send player back to spawn we could change this before enter each area but for now this works.
-            gameObject.transform.position = respawnPosition.transform.position;
-
-            //Added if statement just incase we are adding enemies in overworld.
-            if (Dungeon_Controller.instance.inDungeon || Camera_Controller.instance.inDungeon)
-            {
-                Dungeon_Controller.instance.inDungeon = false;
-                Camera_Controller.instance.inDungeon = false;
-            }
-
-            playerLives--;
-            playerHealth = maxHealth;
+            StartCoroutine(loseLife());
         }
     }
 
@@ -526,7 +554,6 @@ public class Player_Controller : MonoBehaviour
         else if (collision.gameObject.CompareTag("OtherPickUp")) //change the name of otherpickup to what the name 
         {
             gold++;
-            
         }
         else if(collision.gameObject.CompareTag("UnlockSecondary"))
         {
