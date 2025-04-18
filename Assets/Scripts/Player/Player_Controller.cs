@@ -238,7 +238,7 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator swing()
     {
-        //Set animator to swing and stop playign from being able to input and swing again.
+        //Set animator to swing and stop player from being able to input and swing again.
         playerAnimator.Play("Player_Swing", 0);
         rb.linearVelocity = Vector2.zero;
         canSwing = false;
@@ -286,6 +286,7 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator secondaryMove()
     {
+        //Prevent the player from shooting multiple arrows at the same time, let the animation fully play out before creating an arrow.
         canSecondary = false;
         rb.linearVelocity = Vector2.zero;
         playerAnimator.Play("Player_Secondary", 0);
@@ -295,12 +296,14 @@ public class Player_Controller : MonoBehaviour
 
         Instantiate(arrow, arrowSpawn.transform.position, gameObject.transform.rotation);
         arrows--;
-
+        
+        //If the player is out of arrows the magical bow will magically reload.
         if(arrows <= 0)
         {
             StartCoroutine(reloadArrows());
         }
 
+        //Set player back to idle.
         playerAnimator.Play("Player_Idle", 0);
         canSecondary = true;
         canInput = true;
@@ -315,6 +318,7 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator ultimateMove()
     {
+        //Same as previous coroutines but for ULT. 
         canUlt = false;
         canInput = false;
         playerHealth = maxHealth;
@@ -327,6 +331,7 @@ public class Player_Controller : MonoBehaviour
 
         yield return new WaitForSeconds(.333f);
 
+        //Player is able to input after intimidation animation
         canInput = true;
         playerAnimator.Play("Player_Idle", 0);
 
@@ -546,7 +551,6 @@ public class Player_Controller : MonoBehaviour
         }
         else
         {
-
             StartCoroutine(loseLife());
         }
     }
@@ -584,6 +588,7 @@ public class Player_Controller : MonoBehaviour
         else if(collision.gameObject.CompareTag("Win")) //Doesnt have to be like this but you get the idea
         {
             gameWin();
+            Destroy(collision.gameObject);
             canInput = false;
         }
     }
