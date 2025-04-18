@@ -154,9 +154,9 @@ public class Enemy_Controller : MonoBehaviour
         Color32 origColor = _spriteRenderer.color;
         for (int i = 0; i < flickerAmount; i++)
         {
-            _spriteRenderer.color = Color.red;
+            _spriteRenderer.color = new Color(255f, 0f, 0f, 255f);
             yield return new WaitForSeconds(flickerDuration);
-            _spriteRenderer.color = Color.white;
+            _spriteRenderer.color = new Color(0f, 0f, 0f, 255f);
             yield return new WaitForSeconds(flickerDuration);
         }
         _spriteRenderer.color = origColor;
