@@ -98,11 +98,13 @@ public class Enemy_Controller : MonoBehaviour
 
         StartCoroutine(Knockback(direction));
         StartCoroutine(FlickerSprite());
+        /*
         int textChance = Random.Range(0, 100);
         if(textChance <= 25)
         {
             StartCoroutine(DisplayText(TextType.Damage));
         }
+        */
 
         if(health <= 0)
         {
@@ -150,8 +152,8 @@ public class Enemy_Controller : MonoBehaviour
             {
             }    
             float damage = collision.gameObject.transform.parent.GetComponent<Player_Controller>().swordDamage;
-            // * Not sure why the vector needs to be this direction instead of the opposite.
-            Vector2 direction = (collision.gameObject.transform.position - gameObject.transform.position).normalized;
+            // Vector2 direction = (collision.gameObject.transform.position - transform.position).normalized;
+            Vector2 direction = (transform.position - Player_Controller.instance.transform.position).normalized;
             TakeDamage(damage, direction);
         }
     }
@@ -238,12 +240,31 @@ public class Enemy_Controller : MonoBehaviour
 
     public IEnumerator Swing()
     {
-        if(_attackCooldown) yield break;
         string animation = System.String.Concat(enemyType, "_Swing");
         isInAnimation = true;
         // Freeze X, Y, and Z.
         _rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        _animator.Play(animation, 0);
+        if(enemyType != EnemyType.Skeleton_Ranged)
+        {
+            _animator.Play(animation, 0);
+        }
+        // Allow animation to complete.
+        yield return new WaitForSeconds(.6f);
+        // Freeze Z.
+        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        isInAnimation = false;
+    }
+
+    public IEnumerator Shoot()
+    {
+        string animation = System.String.Concat(enemyType, "_Shoot");
+        isInAnimation = true;
+        // Freeze X, Y, and Z.
+        _rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        if (enemyType == EnemyType.Skeleton_Ranged)
+        {
+            _animator.Play(animation, 0);
+        }
         // Allow animation to complete.
         yield return new WaitForSeconds(.6f);
         // Freeze Z.

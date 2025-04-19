@@ -59,8 +59,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1185521067
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &2154752919708467408
 MonoBehaviour:
@@ -307,8 +307,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.2
+  m_fontSize: 0.3
+  m_fontSizeBase: 0.3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -426,7 +426,6 @@ MonoBehaviour:
   knockbackAmount: 125
   enemyType: 2
   isInAnimation: 0
-  isKnockedback: 0
   health: 20
   damage: 10
   flickerDuration: 0.1

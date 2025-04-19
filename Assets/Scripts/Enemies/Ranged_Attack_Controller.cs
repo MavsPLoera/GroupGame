@@ -15,7 +15,14 @@ public class Ranged_Attack_Controller : MonoBehaviour
     public GameObject projectile;
 
     private bool _onCooldown = false;
+    private Enemy_Controller _enemyController;
+
     private readonly bool _debug = true;
+
+    private void Start()
+    {
+        _enemyController = transform.parent.GetComponent<Enemy_Controller>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -45,8 +52,6 @@ public class Ranged_Attack_Controller : MonoBehaviour
 
     private void Attack(Collider2D collision)
     {
-        // ** TODO: corr. SFX and particle systems **
-
         // Get vector in the direction of the collision.
         Vector3 spawnDirection = (collision.transform.position - gameObject.transform.parent.position).normalized;
         Vector3 spawnPosition = gameObject.transform.parent.position + spawnDirection * 0.65f;
@@ -57,6 +62,7 @@ public class Ranged_Attack_Controller : MonoBehaviour
         spawnedProjectile.GetComponent<Projectile_Controller>().speed = projectileSpeed;
         spawnedProjectile.GetComponent<Projectile_Controller>().damage = projectileDamage;
         spawnedProjectile.GetComponent<Projectile_Controller>().SetTarget(spawnDirection);
+        StartCoroutine(_enemyController.Shoot());
     }
 
     private IEnumerator AttackCooldown()
