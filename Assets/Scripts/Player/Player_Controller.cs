@@ -514,6 +514,7 @@ public class Player_Controller : MonoBehaviour
         if (Dungeon_Controller.instance.inDungeon || Camera_Controller.instance.inDungeon)
         {
             Dungeon_Controller.instance.inDungeon = false;
+            Dungeon_Controller.instance.ResetRoom();
             Camera_Controller.instance.inDungeon = false;
         }
 

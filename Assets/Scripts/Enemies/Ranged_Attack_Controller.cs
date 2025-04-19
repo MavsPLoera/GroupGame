@@ -65,4 +65,10 @@ public class Ranged_Attack_Controller : MonoBehaviour
         yield return new WaitForSeconds(attackCooldownTime);
         _onCooldown = false;
     }
+
+    private void OnDisable()
+    {
+        // Reset cooldown.
+        _onCooldown = false;
+    }
 }

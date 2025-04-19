@@ -22,9 +22,9 @@ public class Dungeon_Controller: MonoBehaviour
         public GameObject light;
         public GameObject roomCollider;
         public List<GameObject> enemies;
-        public List<GameObject> teleports;
         public List<GameObject> doors;
         public bool isCleared = false;
+        public Vector2[] enemyStartPositions;
     }
 
     [Header("Dungeon Controller Misc.")]
@@ -36,7 +36,7 @@ public class Dungeon_Controller: MonoBehaviour
     
     public static Dungeon_Controller instance;
 
-    private readonly bool _debug = false;
+    private readonly bool _debug = true;
 
     private void Awake()
     {
@@ -55,10 +55,10 @@ public class Dungeon_Controller: MonoBehaviour
         if(currentRoom != null && !currentRoom.isCleared)
         {
             // Continually check enemies. If all dead, set isCleared and open doors.
-            List<GameObject> currentEnemies = currentRoom.enemies.Where(enemy => enemy != null).ToList();
+            List<GameObject> currentEnemies = currentRoom.enemies.Where(enemy => enemy.activeSelf != false).ToList();
             if(currentEnemies.Count == 0)
             {
-                if(_debug) Debug.Log($"Cleared");
+                if(_debug) Debug.Log($"{currentRoomIndex + 1} Cleared (Update)");
                 currentRoom.isCleared = true;
                 currentRoom.doors.ForEach(door => door.SetActive(false));
             }
@@ -70,6 +70,12 @@ public class Dungeon_Controller: MonoBehaviour
         // Get current room and turn on light.
         currentRoom = dungeons[dungeonIndex].rooms[roomIndex];
         currentRoom.light.SetActive(true);
+        currentDungeonIndex = dungeonIndex;
+        currentRoomIndex = roomIndex;
+        if(currentRoom.enemyStartPositions == null || currentRoom.enemyStartPositions.Length == 0)
+        {
+            currentRoom.enemyStartPositions = new Vector2[currentRoom.enemies.Count];
+        }
 
         // Change camera position.
         Vector3 newCameraPosition = currentRoom.roomCollider.GetComponent<BoxCollider2D>().bounds.center;
@@ -87,14 +93,21 @@ public class Dungeon_Controller: MonoBehaviour
 
         if(!currentRoom.isCleared)
         {
-            if(_debug) Debug.Log($"Not Cleared");
+            if(_debug) Debug.Log($"{currentRoomIndex + 1} Not Cleared (Enter Room)");
+            // Store enemy start positions.
+            /*
+            for(int i = 0; i < currentRoom.enemies.Count; i++)
+            {
+                currentRoom.enemyStartPositions[i] = currentRoom.enemies[i].transform.position;
+            }
+            */
             // Close doors and set isActive for all enemies in current room.
             currentRoom.doors.ForEach(door => door.SetActive(true));
             currentRoom.enemies.ForEach(enemy => enemy.SetActive(true));
         }
         else
         {
-            if(_debug) Debug.Log($"Cleared");
+            if(_debug) Debug.Log($"{currentRoomIndex + 1} Cleared (Enter Room)");
             currentRoom.doors.ForEach(door => door.SetActive(false));
         }
     }
@@ -104,5 +117,22 @@ public class Dungeon_Controller: MonoBehaviour
         // Get current room and turn off light.
         DungeonRoom currentRoom = dungeons[dungeonIndex].rooms[roomIndex];
         currentRoom.light.SetActive(false);
+    }
+
+    public void ResetRoom()
+    {
+        // Reset current room state on death.
+        currentRoom.enemies.ForEach(enemy => enemy.SetActive(false));
+        /*
+        for (int i = 0; i < currentRoom.enemies.Count; i++)
+        {
+            currentRoom.enemies[i].transform.position = currentRoom.enemyStartPositions[i];
+        }
+        */
+        currentRoom.doors.ForEach(door => door.SetActive(false));
+        currentRoom.isCleared = false;
+        currentRoom = null;
+        currentDungeonIndex = -1;
+        currentRoomIndex = -1;
     }
 }

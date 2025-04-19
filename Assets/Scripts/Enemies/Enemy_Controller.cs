@@ -32,6 +32,9 @@ public class Enemy_Controller : MonoBehaviour
     private Animator _animator;
     private Rigidbody2D _rb;
     private Transform _playerTransform;
+    private Vector2 _originalPosition; // Reset to original position in OnDisable()
+    private Color32 _originalColor;
+    private float _originalHealth;
     private SpriteRenderer _spriteRenderer;
     private bool _isKnockedback = false;
     private readonly bool _debug = true;
@@ -42,6 +45,9 @@ public class Enemy_Controller : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _playerTransform = Player_Controller.instance.transform;
+        _originalPosition = transform.position;
+        _originalColor = _spriteRenderer.color;
+        _originalHealth = health;
     }
 
     private void Update()
@@ -98,7 +104,8 @@ public class Enemy_Controller : MonoBehaviour
             Instantiate(drops[0], transform.position, transform.rotation);
         }
         */
-        Destroy(gameObject);
+        // Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -151,7 +158,6 @@ public class Enemy_Controller : MonoBehaviour
 
     private IEnumerator FlickerSprite()
     {
-        Color32 origColor = _spriteRenderer.color;
         for (int i = 0; i < flickerAmount; i++)
         {
             _spriteRenderer.color = Color.red;
@@ -159,7 +165,7 @@ public class Enemy_Controller : MonoBehaviour
             _spriteRenderer.color = Color.white;
             yield return new WaitForSeconds(flickerDuration);
         }
-        _spriteRenderer.color = origColor;
+        _spriteRenderer.color = _originalColor;
     }
 
     private IEnumerator DamageText()
@@ -188,6 +194,15 @@ public class Enemy_Controller : MonoBehaviour
         _animator.Play(animation, 0);
         // Allow animation to complete.
         yield return new WaitForSeconds(.6f);
+        isInAnimation = false;
+    }
+
+    private void OnDisable()
+    {
+        // Reset enemy stats and position.
+        transform.position = _originalPosition;
+        _spriteRenderer.color = _originalColor;
+        health = _originalHealth;
         isInAnimation = false;
     }
 }
