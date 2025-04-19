@@ -12,7 +12,7 @@ public class Camera_Controller : MonoBehaviour
 
     private void Awake()
     {
-        if (!instance)
+        if(!instance)
         {
             instance = this;
         }

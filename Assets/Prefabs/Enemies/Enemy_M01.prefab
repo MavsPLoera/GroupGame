@@ -256,13 +256,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drops: []
-  text: {fileID: 0}
-  textList: []
+  text: {fileID: 2331278422551046817}
+  genericTextList:
+  - '*rattle*'
+  damageTextList:
+  - '*rattle*'
   flickerAmount: 3
+  knockbackAmount: 125
   enemyType: 1
+  isInAnimation: 0
+  isKnockedback: 0
   health: 20
   damage: 10
   flickerDuration: 0.1
+  attackCooldownTime: 0
 --- !u!50 &6494943659988389713
 Rigidbody2D:
   serializedVersion: 5
@@ -376,7 +383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7770940670735185894
 RectTransform:
   m_ObjectHideFlags: 0
@@ -417,8 +424,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1185521067
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &8700142860690138208
 MonoBehaviour:

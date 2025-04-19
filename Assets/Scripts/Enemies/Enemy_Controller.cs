@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 
 public class Enemy_Controller : MonoBehaviour
 {
@@ -14,12 +15,20 @@ public class Enemy_Controller : MonoBehaviour
         Skeleton_Ranged
     }
 
+    private enum TextType
+    {
+        Generic,
+        Damage
+    }
+
     [Header("Enemy Misc.")]
     public List<GameObject> drops;
     public TextMeshProUGUI text;
-    public string[] textList;
+    public string[] genericTextList;
+    public string[] damageTextList;
     public float flickerAmount;
-    public EnemyType enemyType; // ATM used for triggering appropriate animation for each enemy type.
+    public float knockbackAmount;
+    public EnemyType enemyType; // ATM used for triggering appropriate animations for each enemy type.
     public bool isInAnimation;
 
     [Header("Enemy Stats.")]
@@ -28,15 +37,16 @@ public class Enemy_Controller : MonoBehaviour
 
     [Header("Enemy Cooldowns")]
     public float flickerDuration;
+    public float attackCooldownTime;
 
     private Animator _animator;
     private Rigidbody2D _rb;
     private Transform _playerTransform;
-    private Vector2 _originalPosition; // Reset to original position in OnDisable()
+    private Vector2 _originalPosition;
     private Color32 _originalColor;
     private float _originalHealth;
     private SpriteRenderer _spriteRenderer;
-    private bool _isKnockedback = false;
+    private bool _attackCooldown = false;
     private readonly bool _debug = true;
 
     private void Start()
@@ -48,11 +58,12 @@ public class Enemy_Controller : MonoBehaviour
         _originalPosition = transform.position;
         _originalColor = _spriteRenderer.color;
         _originalHealth = health;
+        GetComponentInChildren<Canvas>().worldCamera = Camera_Controller.instance.GetComponent<Camera>();
     }
 
     private void Update()
     {
-        if(_animator && !isInAnimation) // The first condition is TEMP.
+        if(!isInAnimation)
         {
             _animator.SetFloat("moveX", _rb.linearVelocity.x);
             _animator.SetFloat("moveY", _rb.linearVelocity.y);
@@ -70,21 +81,42 @@ public class Enemy_Controller : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector2 direction)
     {
         if(_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
         health -= damage;
 
-        // ** TODO: corr. SFX and particle systems **
+        // Constrain direction to single axis.
+        if(Mathf.Abs(direction.x) >= Mathf.Abs(direction.y)) 
+        {
+            direction = new Vector2(direction.x, 0);
+        }
+        else
+        {
+            direction = new Vector2(0, direction.y);
+        }
 
-        // StartCoroutine(Knockback());
+        StartCoroutine(Knockback(direction));
         StartCoroutine(FlickerSprite());
-        // StartCoroutine(DamageText());
+        int textChance = Random.Range(0, 100);
+        if(textChance <= 25)
+        {
+            StartCoroutine(DisplayText(TextType.Damage));
+        }
 
         if(health <= 0)
         {
             if(_debug) Debug.Log($"{gameObject.name} Dead");
             OnDeath();
+        }
+    }
+
+    public void Attack(Collision2D collision)
+    {
+        if(!isInAnimation)
+        {
+            StartCoroutine(Swing());
+            collision?.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
         }
     }
 
@@ -105,7 +137,8 @@ public class Enemy_Controller : MonoBehaviour
         }
         */
         // Destroy(gameObject);
-        gameObject.SetActive(false);
+        StartCoroutine(Death());
+        // gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -113,12 +146,13 @@ public class Enemy_Controller : MonoBehaviour
         if(collision.gameObject.transform.parent && collision.gameObject.transform.parent.CompareTag("Player"))
         {
             if(_debug) Debug.Log($"Sword Hit");
-            if(_animator && !isInAnimation) // This first condition is TEMP.
+            if(!isInAnimation) 
             {
-                StartCoroutine(Hit());
             }    
             float damage = collision.gameObject.transform.parent.GetComponent<Player_Controller>().swordDamage;
-            TakeDamage(damage);
+            // * Not sure why the vector needs to be this direction instead of the opposite.
+            Vector2 direction = (collision.gameObject.transform.position - gameObject.transform.position).normalized;
+            TakeDamage(damage, direction);
         }
     }
 
@@ -126,11 +160,7 @@ public class Enemy_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            if(_animator && !isInAnimation) // This first condition is TEMP.
-            {
-                StartCoroutine(Swing());
-            }
-            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+            Attack(collision);
         }
     }
 
@@ -138,63 +168,17 @@ public class Enemy_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            if(_animator && !isInAnimation) // This first condition is TEMP.
-            {
-                StartCoroutine(Swing());
-            }
-            collision.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+            Attack(collision);
         }
     }
-    private IEnumerator Knockback()
-    {
-        // Pauses movement on knockback.
-        _isKnockedback = true;
-        _rb.linearVelocity = Vector2.zero;
-        _rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        yield return new WaitForSeconds(2);
-        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        _isKnockedback = false;
-    }
 
-    private IEnumerator FlickerSprite()
+    private void OnEnable()
     {
-        for (int i = 0; i < flickerAmount; i++)
+        int textChance = Random.Range(0, 100);
+        if(textChance <= 10)
         {
-            _spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(flickerDuration);
-            _spriteRenderer.color = Color.white;
-            yield return new WaitForSeconds(flickerDuration);
+            StartCoroutine(DisplayText(TextType.Generic));
         }
-        _spriteRenderer.color = _originalColor;
-    }
-
-    private IEnumerator DamageText()
-    {
-        text.text = textList[Random.Range(0, textList.Length)];
-        yield return new WaitForSeconds(3);
-        text.text = "";
-    }
-
-    private IEnumerator Swing()
-    {
-        string animation = System.String.Concat(enemyType, "_Swing");
-        isInAnimation = true;
-        _rb.linearVelocity = Vector2.zero;
-        _animator.Play(animation, 0);
-        // Allow animation to complete.
-        yield return new WaitForSeconds(.6f);
-        isInAnimation = false;
-    }
-
-    private IEnumerator Hit()
-    {
-        string animation = System.String.Concat(enemyType, "_Hit");
-        isInAnimation = true;
-        _rb.linearVelocity = Vector2.zero;
-        _animator.Play(animation, 0);
-        // Allow animation to complete.
-        yield return new WaitForSeconds(.6f);
-        isInAnimation = false;
     }
 
     private void OnDisable()
@@ -204,5 +188,86 @@ public class Enemy_Controller : MonoBehaviour
         _spriteRenderer.color = _originalColor;
         health = _originalHealth;
         isInAnimation = false;
+        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    //
+    // -- COROUTINES -- 
+    //
+
+    private IEnumerator Knockback(Vector2 direction)
+    {
+        if(_debug) Debug.Log($"{gameObject.name} Knockbacked");
+        string animation = System.String.Concat(enemyType, "_Death");
+        isInAnimation = true;
+        _rb.linearVelocity = Vector2.zero;
+        _rb.AddForce(direction * knockbackAmount);
+        _animator.Play(animation, 0);
+        yield return new WaitForSeconds(.6f);
+        isInAnimation = false;
+    }
+
+    private IEnumerator FlickerSprite()
+    {
+        for(int i = 0; i < flickerAmount; i++)
+        {
+            _spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(flickerDuration);
+            _spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(flickerDuration);
+        }
+        _spriteRenderer.color = _originalColor;
+    }
+
+    private IEnumerator DisplayText(TextType textType)
+    {
+        switch(textType)
+        {
+            case TextType.Generic:
+                text.text = genericTextList[Random.Range(0, genericTextList.Length)];
+                break;
+            case TextType.Damage:
+                text.text = damageTextList[Random.Range(0, damageTextList.Length)];
+                break;
+            default:
+                break;
+        }
+        yield return new WaitForSeconds(3);
+        text.text = "";
+    }
+
+    public IEnumerator Swing()
+    {
+        if(_attackCooldown) yield break;
+        string animation = System.String.Concat(enemyType, "_Swing");
+        isInAnimation = true;
+        // Freeze X, Y, and Z.
+        _rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        _animator.Play(animation, 0);
+        // Allow animation to complete.
+        yield return new WaitForSeconds(.6f);
+        // Freeze Z.
+        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        isInAnimation = false;
+    }
+
+    private IEnumerator Death()
+    {
+        string animation = System.String.Concat(enemyType, "_Death");
+        isInAnimation = true;
+        // Freeze X, Y, and Z.
+        _rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        _animator.Play(animation, 0);
+        // Allow animation to complete.
+        yield return new WaitForSeconds(.6f);
+        isInAnimation = false;
+        gameObject.SetActive(false);
+    }
+
+    private IEnumerator AttackCooldown()
+    {
+        _attackCooldown = true;
+        yield return new WaitForSeconds(attackCooldownTime);
+        _attackCooldown = false;
     }
 }

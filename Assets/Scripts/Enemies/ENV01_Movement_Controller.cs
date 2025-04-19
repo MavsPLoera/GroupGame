@@ -13,7 +13,6 @@ public class ENV01_Movement_Controller : MonoBehaviour
     private Enemy_Controller _enemyController;
     private float _speed;
     private Rigidbody2D _rb;
-    private bool _isKnockedback = false;
 
     private void Start()
     {
@@ -25,7 +24,7 @@ public class ENV01_Movement_Controller : MonoBehaviour
 
     private void Update()
     {
-        if(!_isKnockedback && !_enemyController.isInAnimation)
+        if(!_enemyController.isInAnimation)
         {
             Move(moveDirection);
         }

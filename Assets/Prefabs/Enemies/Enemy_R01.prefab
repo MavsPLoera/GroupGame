@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3983477057114018080
 RectTransform:
   m_ObjectHideFlags: 0
@@ -365,6 +365,7 @@ GameObject:
   - component: {fileID: 967094512275337348}
   - component: {fileID: 1658725110234123479}
   - component: {fileID: 6684743817454125721}
+  - component: {fileID: -1193625683908398169}
   m_Layer: 7
   m_Name: Enemy_R01
   m_TagString: Enemy
@@ -416,13 +417,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drops: []
-  text: {fileID: 0}
-  textList: []
+  text: {fileID: 9030038061949605964}
+  genericTextList:
+  - '*rattle*'
+  damageTextList:
+  - '*rattle*'
   flickerAmount: 3
+  knockbackAmount: 125
   enemyType: 2
+  isInAnimation: 0
+  isKnockedback: 0
   health: 20
   damage: 10
   flickerDuration: 0.1
+  attackCooldownTime: 0
 --- !u!212 &967094512275337348
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -551,3 +559,25 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.7}
   m_EdgeRadius: 0
+--- !u!95 &-1193625683908398169
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9046974501502460405}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: da79d3eee25eaf94fbd411cb81496587, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -42,7 +42,8 @@ public class PlayerArrow_Controller : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             rb.linearVelocity = Vector2.zero;
-            collision.gameObject.GetComponent<Enemy_Controller>().TakeDamage(damage);
+            Vector2 direction = (collision.gameObject.transform.position - gameObject.transform.position).normalized;
+            collision.gameObject.GetComponent<Enemy_Controller>().TakeDamage(damage, direction);
             Destroy(gameObject);
         }
         if (!collision.gameObject.CompareTag("Player"))

@@ -10,7 +10,6 @@ public class R01_Movement_Controller : MonoBehaviour
     private Enemy_Controller _enemyController;
     private float _speed;
     private Rigidbody2D _rb;
-    private bool _isKnockedback = false;
 
     private void Start()
     {
@@ -23,7 +22,7 @@ public class R01_Movement_Controller : MonoBehaviour
     
     private void Update()
     {
-        if(_playerTransform && !_isKnockedback && !_enemyController.isInAnimation)
+        if(_playerTransform && !_enemyController.isInAnimation)
         {
             // Get vector in direction of player.
             Vector2 moveDirection = (_playerTransform.transform.position - transform.position);
@@ -32,8 +31,6 @@ public class R01_Movement_Controller : MonoBehaviour
             float distance = moveDirection.magnitude;
             if(distance <= 3.5f)
             {
-                // ** TODO: if within a certain range
-                // of the player, perform attack animation. **
                 _rb.linearVelocity = Vector2.zero;
             }
             else

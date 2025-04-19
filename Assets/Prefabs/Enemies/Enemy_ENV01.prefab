@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 343195214212274243}
   - component: {fileID: 6494943659988389713}
   - component: {fileID: 2854308136271678245}
+  - component: {fileID: -6070823199748317107}
   m_Layer: 7
   m_Name: Enemy_ENV01
   m_TagString: Enemy
@@ -201,13 +202,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drops: []
-  text: {fileID: 0}
-  textList: []
+  text: {fileID: 2331278422551046817}
+  genericTextList:
+  - '*rattle*'
+  damageTextList:
+  - '*rattle*'
   flickerAmount: 3
+  knockbackAmount: 125
   enemyType: 0
+  isInAnimation: 0
+  isKnockedback: 0
   health: 10
   damage: 10
   flickerDuration: 0.1
+  attackCooldownTime: 0
 --- !u!212 &343195214212274243
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -336,6 +344,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.7}
   m_EdgeRadius: 0
+--- !u!95 &-6070823199748317107
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2534991156718531147}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0229f32f2a051c247b88052790f5ee2c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6479572433443448648
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,7 +384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7770940670735185894
 RectTransform:
   m_ObjectHideFlags: 0

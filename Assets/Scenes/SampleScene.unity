@@ -6220,7 +6220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &619394801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97873,41 +97873,41 @@ MonoBehaviour:
       roomCollider: {fileID: 80904770}
       enemies:
       - {fileID: 2794946445754573198}
-      teleports: []
       doors:
       - {fileID: 295199717}
       - {fileID: 538215392}
       isCleared: 1
+      enemyStartPositions: []
     - light: {fileID: 903136849}
       roomCollider: {fileID: 751865768}
       enemies:
       - {fileID: 2655684927835858702}
       - {fileID: 16739294}
       - {fileID: 1142819554}
-      teleports: []
       doors:
       - {fileID: 2034864867}
       isCleared: 0
+      enemyStartPositions: []
     - light: {fileID: 173065000}
       roomCollider: {fileID: 964741024}
       enemies:
       - {fileID: 777492630}
       - {fileID: 760871882}
-      teleports: []
       doors:
       - {fileID: 1839002235}
       - {fileID: 4378073}
       - {fileID: 1735698906}
       isCleared: 0
+      enemyStartPositions: []
     - light: {fileID: 321217192}
       roomCollider: {fileID: 778486691}
       enemies:
       - {fileID: 1308179630}
       - {fileID: 468535670}
-      teleports: []
       doors:
       - {fileID: 884060766}
       isCleared: 0
+      enemyStartPositions: []
     - light: {fileID: 1022044549}
       roomCollider: {fileID: 217340547}
       enemies:
@@ -97915,10 +97915,10 @@ MonoBehaviour:
       - {fileID: 1489492218}
       - {fileID: 397738370}
       - {fileID: 1900733885}
-      teleports: []
       doors:
       - {fileID: 1513222136}
       isCleared: 0
+      enemyStartPositions: []
     isCleared: 0
   currentDungeonIndex: 0
   currentRoomIndex: 0
@@ -97926,9 +97926,9 @@ MonoBehaviour:
     light: {fileID: 0}
     roomCollider: {fileID: 0}
     enemies: []
-    teleports: []
     doors: []
     isCleared: 0
+    enemyStartPositions: []
   inDungeon: 0
 --- !u!4 &1721942154
 Transform:
