@@ -19,7 +19,7 @@ public class Dungeon_Controller: MonoBehaviour
     [System.Serializable]
     public class DungeonRoom
     {
-        public GameObject light;
+        public List<GameObject> lights;
         public GameObject roomCollider;
         public List<GameObject> enemies;
         public List<GameObject> doors;
@@ -35,8 +35,7 @@ public class Dungeon_Controller: MonoBehaviour
     public bool inDungeon = true;
     
     public static Dungeon_Controller instance;
-
-    private readonly bool _debug = true;
+    private readonly bool _debug = false;
 
     private void Awake()
     {
@@ -69,7 +68,7 @@ public class Dungeon_Controller: MonoBehaviour
     {
         // Get current room and turn on light.
         currentRoom = dungeons[dungeonIndex].rooms[roomIndex];
-        currentRoom.light.SetActive(true);
+        currentRoom.lights.ForEach(light => light.SetActive(true));
         currentDungeonIndex = dungeonIndex;
         currentRoomIndex = roomIndex;
         if(currentRoom.enemyStartPositions == null || currentRoom.enemyStartPositions.Length == 0)
@@ -116,7 +115,7 @@ public class Dungeon_Controller: MonoBehaviour
     {
         // Get current room and turn off light.
         DungeonRoom currentRoom = dungeons[dungeonIndex].rooms[roomIndex];
-        currentRoom.light.SetActive(false);
+        currentRoom.lights.ForEach(light => light.SetActive(false));
     }
 
     public void ResetRoom()

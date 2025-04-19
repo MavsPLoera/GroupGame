@@ -262,7 +262,7 @@ MonoBehaviour:
   damageTextList:
   - '*rattle*'
   flickerAmount: 3
-  knockbackAmount: 125
+  knockbackAmount: 90
   enemyType: 1
   isInAnimation: 0
   health: 20

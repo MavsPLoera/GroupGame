@@ -16,8 +16,7 @@ public class Ranged_Attack_Controller : MonoBehaviour
 
     private bool _onCooldown = false;
     private Enemy_Controller _enemyController;
-
-    private readonly bool _debug = true;
+    private readonly bool _debug = false;
 
     private void Start()
     {

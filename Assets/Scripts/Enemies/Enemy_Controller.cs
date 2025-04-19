@@ -47,7 +47,7 @@ public class Enemy_Controller : MonoBehaviour
     private float _originalHealth;
     private SpriteRenderer _spriteRenderer;
     private bool _attackCooldown = false;
-    private readonly bool _debug = true;
+    private readonly bool _debug = false;
 
     private void Start()
     {
@@ -87,6 +87,7 @@ public class Enemy_Controller : MonoBehaviour
         health -= damage;
 
         // Constrain direction to single axis.
+        /*
         if(Mathf.Abs(direction.x) >= Mathf.Abs(direction.y)) 
         {
             direction = new Vector2(direction.x, 0);
@@ -95,9 +96,11 @@ public class Enemy_Controller : MonoBehaviour
         {
             direction = new Vector2(0, direction.y);
         }
+        */
 
         StartCoroutine(Knockback(direction));
         StartCoroutine(FlickerSprite());
+
         /*
         int textChance = Random.Range(0, 100);
         if(textChance <= 25)
@@ -140,7 +143,6 @@ public class Enemy_Controller : MonoBehaviour
         */
         // Destroy(gameObject);
         StartCoroutine(Death());
-        // gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -152,8 +154,9 @@ public class Enemy_Controller : MonoBehaviour
             {
             }    
             float damage = collision.gameObject.transform.parent.GetComponent<Player_Controller>().swordDamage;
-            // Vector2 direction = (collision.gameObject.transform.position - transform.position).normalized;
-            Vector2 direction = (transform.position - Player_Controller.instance.transform.position).normalized;
+            // Testing...
+            // Vector2 direction = (transform.position - Player_Controller.instance.transform.position).normalized;
+            Vector2 direction = (Player_Controller.instance.facingTowards.transform.position - Player_Controller.instance.transform.position).normalized;
             TakeDamage(damage, direction);
         }
     }

@@ -8,7 +8,7 @@ public class Projectile_Controller : MonoBehaviour
     public float lifespan;
 
     private Rigidbody2D _rb;
-    private readonly bool _debug = true;
+    private readonly bool _debug = false;
 
     public void SetTarget(Vector3 direction)
     {

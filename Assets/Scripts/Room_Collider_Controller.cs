@@ -14,7 +14,7 @@ public class Room_Collider_Controller : MonoBehaviour
     public int roomIndex;
     public int dungeonIndex;
 
-    private bool _debug = true;
+    private bool _debug = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
