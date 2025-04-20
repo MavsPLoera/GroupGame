@@ -230,7 +230,8 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Healing Self
-        if (Input.GetKeyDown(KeyCode.H) && !healingSelf)
+        //Need to change key that player uses to heal.
+        if (Input.GetKeyDown(KeyCode.H) && !healingSelf && (healingPotions != 0))
         {
             StartCoroutine(healPlayer());
         }
@@ -258,27 +259,28 @@ public class Player_Controller : MonoBehaviour
         //When player is healing we want it to be similar to dark souls. So the players movementspeed is slowed down, and is unable to input until they heal.
         canSwing = false;
         canDash = false;
+        healingSelf = true;
+
         float temp = playerMovementspeed;
         playerMovementspeed = temp * .75f;
 
         //Small duration before the player is actually healed and will not go past Max Health
         yield return new WaitForSeconds(timeBeforeHealing);
 
-        if (healingPotions > 0)
+        if (playerHealth + healingAmount > maxHealth)
         {
-            if (playerHealth + healingAmount > maxHealth)
-            {
-                playerHealth = maxHealth;
-            }
-            else
-            {
-                playerHealth += healingAmount;
-            }
-            healingPotions--;
+            playerHealth = maxHealth;
         }
+        else
+        {
+            playerHealth += healingAmount;
+        }
+        healingPotions--;
 
         //Return player movespeed back to normal and allow player to use abilities again. Future notice I will need to disable other abilities as well
         yield return new WaitForSeconds(healingSlowdown);
+
+        healingSelf = false;
         playerMovementspeed = temp;
         canSwing = true;
         canDash = true;
