@@ -118,10 +118,12 @@ public class Enemy_Controller : MonoBehaviour
 
     public void Attack(Collision2D collision)
     {
-        if(!isInAnimation)
+        if(!isInAnimation && !_attackCooldown)
         {
             StartCoroutine(Swing());
-            collision?.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+            // collision?.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
+            Player_Controller.instance.TakeDamage(damage);
+            StartCoroutine(AttackCooldown());
         }
     }
 
@@ -193,6 +195,7 @@ public class Enemy_Controller : MonoBehaviour
         _spriteRenderer.color = _originalColor;
         health = _originalHealth;
         isInAnimation = false;
+        _attackCooldown = false;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
@@ -291,7 +294,9 @@ public class Enemy_Controller : MonoBehaviour
     private IEnumerator AttackCooldown()
     {
         _attackCooldown = true;
+        isInAnimation = true;
         yield return new WaitForSeconds(attackCooldownTime);
         _attackCooldown = false;
+        isInAnimation = false;
     }
 }

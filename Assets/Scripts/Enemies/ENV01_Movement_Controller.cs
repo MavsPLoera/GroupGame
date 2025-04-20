@@ -11,6 +11,7 @@ public class ENV01_Movement_Controller : MonoBehaviour
     public Vector2 moveDirection;
 
     private Enemy_Controller _enemyController;
+    private Transform _playerTransform;
     private float _speed;
     private Rigidbody2D _rb;
 
@@ -18,6 +19,7 @@ public class ENV01_Movement_Controller : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _enemyController = GetComponent<Enemy_Controller>();
+        _playerTransform = Player_Controller.instance.transform;
         // Get random speed between _speedMax and _speedMin.
         _speed = Random.Range(speedMin, speedMax);
     }
@@ -26,7 +28,21 @@ public class ENV01_Movement_Controller : MonoBehaviour
     {
         if(!_enemyController.isInAnimation)
         {
-            Move(moveDirection);
+            // Get vector in direction of player.
+            Vector2 playerDirection = (_playerTransform.transform.position - transform.position);
+
+            // Check distance. Stop if in range to player.
+            float distance = playerDirection.magnitude;
+            if(distance <= 1f)
+            {
+                _rb.linearVelocity = Vector2.zero;
+                // TEMP. To replace with hitbox on animation (?).
+                _enemyController.Attack(null);
+            }
+            else
+            {
+                Move(moveDirection);
+            }
         }
     }
 

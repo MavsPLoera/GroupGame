@@ -268,7 +268,7 @@ MonoBehaviour:
   health: 20
   damage: 10
   flickerDuration: 0.1
-  attackCooldownTime: 0
+  attackCooldownTime: 2
 --- !u!50 &6494943659988389713
 Rigidbody2D:
   serializedVersion: 5
