@@ -5711,7 +5711,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -6874,6 +6874,7 @@ GameObject:
   m_Component:
   - component: {fileID: 719649545}
   - component: {fileID: 719649546}
+  - component: {fileID: 719649547}
   m_Layer: 0
   m_Name: Torch Light
   m_TagString: Untagged
@@ -6948,6 +6949,18 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &719649547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719649544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6951b8c8c26f1d74ab62e766a74fbf7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &745015620
 GameObject:
   m_ObjectHideFlags: 0
@@ -45243,6 +45256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 866456491}
   - component: {fileID: 866456492}
+  - component: {fileID: 866456493}
   m_Layer: 0
   m_Name: 'Torch Light '
   m_TagString: Untagged
@@ -45305,7 +45319,7 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 1
+  m_PointLightInnerRadius: 0.1
   m_PointLightOuterRadius: 4
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
@@ -45317,6 +45331,18 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &866456493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866456490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6951b8c8c26f1d74ab62e766a74fbf7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &884060766 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3556962101012395782, guid: 4f1e1961979be3146b96743581006407, type: 3}
@@ -98085,7 +98111,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dungeons:
   - rooms:
-    - light: {fileID: 1737685647}
+    - lights:
+      - {fileID: 719649544}
+      - {fileID: 866456490}
+      - {fileID: 1737685647}
       roomCollider: {fileID: 80904770}
       enemies:
       - {fileID: 2794946445754573198}
@@ -98094,7 +98123,8 @@ MonoBehaviour:
       - {fileID: 538215392}
       isCleared: 1
       enemyStartPositions: []
-    - light: {fileID: 903136849}
+    - lights:
+      - {fileID: 903136849}
       roomCollider: {fileID: 751865768}
       enemies:
       - {fileID: 2655684927835858702}
@@ -98104,7 +98134,8 @@ MonoBehaviour:
       - {fileID: 2034864867}
       isCleared: 0
       enemyStartPositions: []
-    - light: {fileID: 173065000}
+    - lights:
+      - {fileID: 173065000}
       roomCollider: {fileID: 964741024}
       enemies:
       - {fileID: 777492630}
@@ -98115,7 +98146,8 @@ MonoBehaviour:
       - {fileID: 1735698906}
       isCleared: 0
       enemyStartPositions: []
-    - light: {fileID: 321217192}
+    - lights:
+      - {fileID: 321217192}
       roomCollider: {fileID: 778486691}
       enemies:
       - {fileID: 1308179630}
@@ -98124,7 +98156,8 @@ MonoBehaviour:
       - {fileID: 884060766}
       isCleared: 0
       enemyStartPositions: []
-    - light: {fileID: 1022044549}
+    - lights:
+      - {fileID: 1022044549}
       roomCollider: {fileID: 217340547}
       enemies:
       - {fileID: 1609599356}
@@ -98139,7 +98172,7 @@ MonoBehaviour:
   currentDungeonIndex: 0
   currentRoomIndex: 0
   currentRoom:
-    light: {fileID: 0}
+    lights: []
     roomCollider: {fileID: 0}
     enemies: []
     doors: []
@@ -100935,6 +100968,55 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3556962101012395782, guid: 4f1e1961979be3146b96743581006407, type: 3}
   m_PrefabInstance: {fileID: 1839002233}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1874926315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1874926317}
+  - component: {fileID: 1874926316}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1874926316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874926315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 1
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 8fc0f4b759b55d3448d48641c402592f, type: 2}
+--- !u!4 &1874926317
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874926315}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.42893, y: 88.52721, z: -2.309997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1880671461
 GameObject:
   m_ObjectHideFlags: 0
@@ -102717,3 +102799,4 @@ SceneRoots:
   - {fileID: 1825525493}
   - {fileID: 113844454}
   - {fileID: 1189947516}
+  - {fileID: 1874926317}
