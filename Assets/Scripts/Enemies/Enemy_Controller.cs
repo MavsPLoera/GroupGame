@@ -120,6 +120,7 @@ public class Enemy_Controller : MonoBehaviour
     {
         if(!isInAnimation && !_attackCooldown)
         {
+            // TEMP
             StartCoroutine(Swing());
             // collision?.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
             Player_Controller.instance.TakeDamage(damage);
@@ -295,6 +296,7 @@ public class Enemy_Controller : MonoBehaviour
     {
         _attackCooldown = true;
         isInAnimation = true;
+        _rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(attackCooldownTime);
         _attackCooldown = false;
         isInAnimation = false;
