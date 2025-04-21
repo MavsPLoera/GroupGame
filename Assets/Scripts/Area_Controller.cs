@@ -60,12 +60,7 @@ public class Area_Controller : MonoBehaviour
         if(areaIndex < 0 || areaIndex >= areas.Count) return;
 
         currentArea = null;
-        StartCoroutine(FadeText(currentLocationText, 1, 0, 0.75f));
-    }
-
-    private void OnDestroy()
-    {
-        StopAllCoroutines();
+        if(instance) StartCoroutine(FadeText(currentLocationText, 1, 0, 0.75f));
     }
 
     private IEnumerator LocationDiscovered()
