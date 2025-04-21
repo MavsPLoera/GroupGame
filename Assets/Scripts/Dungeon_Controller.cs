@@ -77,6 +77,17 @@ public class Dungeon_Controller: MonoBehaviour
             currentRoom.enemyStartPositions = new Vector2[currentRoom.enemies.Count];
         }
 
+        // (?) is there a better solution for this?
+        if (!currentRoom.isCleared)
+        {
+            currentRoom.enemies.ForEach(enemy =>
+            {
+                enemy.SetActive(true);
+                enemy.GetComponent<Enemy_Controller>().isInAnimation = true;
+            });
+        }
+        // ****************************************
+
         // Change camera position.
         Vector3 newCameraPosition = currentRoom.roomCollider.GetComponent<BoxCollider2D>().bounds.center;
         newCameraPosition.z = -100;
@@ -87,7 +98,10 @@ public class Dungeon_Controller: MonoBehaviour
                 if(_debug) Debug.Log($"{currentRoomIndex + 1} Not Cleared (Enter Room)");
                 // Close doors and set isActive for all enemies in current room.
                 currentRoom.doors.ForEach(door => door.SetActive(true));
-                currentRoom.enemies.ForEach(enemy => enemy.SetActive(true));
+                // currentRoom.enemies.ForEach(enemy => enemy.SetActive(true));
+                currentRoom.enemies.ForEach(enemy => {
+                    enemy.GetComponent<Enemy_Controller>().isInAnimation = false;
+                });
             }
             else
             {
