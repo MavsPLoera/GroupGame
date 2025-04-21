@@ -8,28 +8,29 @@ public class PlayerArrow_Controller : MonoBehaviour
     public float speed;
     public float damage;
 
-    public void Awake()
+    public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         changeDirection(Player_Controller.instance.facingTowards.transform.position - Player_Controller.instance.gameObject.transform.position);
         Destroy(gameObject, 5f);
     }
 
+    //Reason for .5 is because of floating point bug that happens with facing.
     public void changeDirection(Vector3 direction)
     {
-        if (direction.x == 0f && direction.y == 1f)
+        if (direction.x == 0f && direction.y >= .5f)
         {
             transform.rotation = Quaternion.Euler(0f, 0f, 90f);
         }
-        else if (direction.x == 0f && direction.y == -1f)
+        else if (direction.x == 0f && direction.y <= -.5f)
         {
             transform.rotation = Quaternion.Euler(0f, 0f, -90f);
         }
-        else if (direction.x == 1f && direction.y == 0f)
+        else if (direction.x >= .5f && direction.y == 0f)
         {
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
-        else if (direction.x == -1f && direction.y == 0f)
+        else if (direction.x <= -.5f && direction.y == 0f)
         {
             transform.rotation = Quaternion.Euler(0f, 0f, 180f);
         }
