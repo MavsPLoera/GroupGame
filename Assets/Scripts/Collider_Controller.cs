@@ -21,7 +21,7 @@ public class Collider_Controller : MonoBehaviour
     public int areaIndex;
     public Collider_Type colliderType;
 
-    private bool _debug = false;
+    private readonly bool _debug = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

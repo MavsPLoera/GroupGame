@@ -35,7 +35,7 @@ public class Dungeon_Controller: MonoBehaviour
     public bool isTransitioning = false;
 
     public static Dungeon_Controller instance;
-    private readonly bool _debug = true;
+    private readonly bool _debug = false;
 
     private void Awake()
     {

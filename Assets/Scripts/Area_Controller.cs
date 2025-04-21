@@ -32,7 +32,7 @@ public class Area_Controller : MonoBehaviour
 
     private void Awake()
     {
-        if (!instance)
+        if(!instance)
         {
             instance = this;
         }
@@ -51,11 +51,8 @@ public class Area_Controller : MonoBehaviour
         {
             StartCoroutine(LocationDiscovered());
         }
-        else
-        {
-            currentLocationText.text = currentArea.name;
-            StartCoroutine(FadeText(currentLocationText, 0, 1));
-        }
+        currentLocationText.text = currentArea.name;
+        StartCoroutine(FadeText(currentLocationText, 0, 1, 0.75f));
     }
 
     public void ExitArea(int areaIndex)
@@ -63,28 +60,28 @@ public class Area_Controller : MonoBehaviour
         if(areaIndex < 0 || areaIndex >= areas.Count) return;
 
         currentArea = null;
-        StartCoroutine(FadeText(currentLocationText, 1, 0));
+        StartCoroutine(FadeText(currentLocationText, 1, 0, 0.75f));
     }
 
     private IEnumerator LocationDiscovered()
     {
-        locationDiscoveredText.text = $"Discovered {currentArea.name}";
-        yield return StartCoroutine(FadeText(locationDiscoveredText, 0, 1));
-        yield return new WaitForSeconds(textDisplayDuration);
-        yield return StartCoroutine(FadeText(locationDiscoveredText, 1, 0));
-        locationDiscoveredText.text = "";
         currentArea.isDiscovered = true;
-        currentLocationText.text = currentArea.name;
-        StartCoroutine(FadeText(currentLocationText, 0, 1));
+        locationDiscoveredText.text = $"Discovered {currentArea.name}";
+        yield return StartCoroutine(FadeText(locationDiscoveredText, 0, 1, 0.75f));
+        yield return new WaitForSeconds(textDisplayDuration);
+        yield return StartCoroutine(FadeText(locationDiscoveredText, 1, 0, 0.75f));
+        locationDiscoveredText.text = "";
     }
 
-    private IEnumerator FadeText(TextMeshProUGUI text, float currentAlpha, float targetAlpha)
+    private IEnumerator FadeText(TextMeshProUGUI text, float currentAlpha, float targetAlpha, float transitionTime)
     {
         Color originalColor = text.color;
         text.alpha = currentAlpha;
-        while(Mathf.Abs(currentAlpha - targetAlpha) >= 0.01f)
+        float time = 0;
+        while(time < transitionTime)
         {
-            currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, 4 * Time.deltaTime);
+            time += Time.deltaTime;
+            currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, time / transitionTime);
             text.color = new Color(originalColor.r, originalColor.g, originalColor.b, currentAlpha);
             yield return null;
         }

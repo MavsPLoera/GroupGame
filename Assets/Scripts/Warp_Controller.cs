@@ -44,6 +44,7 @@ public class Warp_Controller : MonoBehaviour
         crossFadeIn.SetActive(true);
 
         yield return new WaitForSeconds(transitionTime);
+        Area_Controller.instance.currentLocationText.text = "";
 
         //Cross fade in complete, no cross fade out to new destination.
         crossFadeIn.SetActive(false);
