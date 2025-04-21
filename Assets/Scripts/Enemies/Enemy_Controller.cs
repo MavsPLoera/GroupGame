@@ -86,18 +86,6 @@ public class Enemy_Controller : MonoBehaviour
         if(_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
         health -= damage;
 
-        // Constrain direction to single axis.
-        /*
-        if(Mathf.Abs(direction.x) >= Mathf.Abs(direction.y)) 
-        {
-            direction = new Vector2(direction.x, 0);
-        }
-        else
-        {
-            direction = new Vector2(0, direction.y);
-        }
-        */
-
         StartCoroutine(Knockback(direction));
         StartCoroutine(FlickerSprite());
 
@@ -199,11 +187,8 @@ public class Enemy_Controller : MonoBehaviour
         isInAnimation = false;
         _attackCooldown = false;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        StopAllCoroutines();
     }
-
-    //
-    // -- COROUTINES -- 
-    //
 
     private IEnumerator Knockback(Vector2 direction)
     {

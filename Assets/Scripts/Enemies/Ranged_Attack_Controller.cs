@@ -25,7 +25,7 @@ public class Ranged_Attack_Controller : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             if(_debug) Debug.Log($"{gameObject.transform.parent.name} Collision Enter Player");
-            if(!_onCooldown)
+            if(!_onCooldown && !_enemyController.isInAnimation)
             {
                 Attack(collision);
                 StartCoroutine(AttackCooldown());
@@ -38,7 +38,7 @@ public class Ranged_Attack_Controller : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             if(_debug) Debug.Log($"{gameObject.transform.parent.name} Collision Stay Player");
-            if(!_onCooldown)
+            if(!_onCooldown && !_enemyController.isInAnimation)
             {
                 Attack(collision);
                 StartCoroutine(AttackCooldown());

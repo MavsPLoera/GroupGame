@@ -63,6 +63,11 @@ public class Area_Controller : MonoBehaviour
         StartCoroutine(FadeText(currentLocationText, 1, 0, 0.75f));
     }
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
     private IEnumerator LocationDiscovered()
     {
         currentArea.isDiscovered = true;
