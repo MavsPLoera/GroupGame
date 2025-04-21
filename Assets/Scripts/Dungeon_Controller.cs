@@ -9,6 +9,8 @@ public class Dungeon_Controller: MonoBehaviour
     // Manages enemies, lighting, camera movement, etc.
     // for each dungeon.
 
+    // (?) might merge this with Area_Controller.
+
     [System.Serializable]
     public class Dungeon
     {
@@ -24,7 +26,6 @@ public class Dungeon_Controller: MonoBehaviour
         public List<GameObject> enemies;
         public List<GameObject> doors;
         public bool isCleared = false;
-        public Vector2[] enemyStartPositions;
     }
 
     [Header("Dungeon Controller Misc.")]
@@ -67,36 +68,33 @@ public class Dungeon_Controller: MonoBehaviour
 
     public void EnterRoom(int dungeonIndex, int roomIndex)
     {
-        // Get current room and turn on light.
+        // Get current room, set vars., and turn on lights.
         currentRoom = dungeons[dungeonIndex].rooms[roomIndex];
         currentRoom.lights.ForEach(light => light.SetActive(true));
         currentDungeonIndex = dungeonIndex;
         currentRoomIndex = roomIndex;
-        if(currentRoom.enemyStartPositions == null || currentRoom.enemyStartPositions.Length == 0)
-        {
-            currentRoom.enemyStartPositions = new Vector2[currentRoom.enemies.Count];
-        }
 
-        // (?) is there a better solution for this?
+        // Enable enemies and freeze their positions.
         if (!currentRoom.isCleared)
         {
+            // (?) is there a better solution for this?
             currentRoom.enemies.ForEach(enemy =>
             {
                 enemy.SetActive(true);
                 enemy.GetComponent<Enemy_Controller>().isInAnimation = true;
             });
         }
-        // ****************************************
 
-        // Change camera position.
+        // Update camera position.
         Vector3 newCameraPosition = currentRoom.roomCollider.GetComponent<BoxCollider2D>().bounds.center;
         newCameraPosition.z = -100;
         StartCoroutine(Camera_Controller.instance.UpdatePosition(newCameraPosition, () =>
         {
+            // Once the camera has repositioned, check for isCleared.
             if(!currentRoom.isCleared)
             {
                 if(_debug) Debug.Log($"{currentRoomIndex + 1} Not Cleared (Enter Room)");
-                // Close doors and set isActive for all enemies in current room.
+                // Close doors and unfreeze all enemies in current room.
                 currentRoom.doors.ForEach(door => door.SetActive(true));
                 // currentRoom.enemies.ForEach(enemy => enemy.SetActive(true));
                 currentRoom.enemies.ForEach(enemy => {
