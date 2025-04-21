@@ -1,0 +1,1464 @@
+fileFormatVersion: 2
+guid: 63cbd1bfb56c91c4b8eed30a0eca540e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -59967494778094682
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_0
+  - first:
+      213: 4907581178415083556
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_1
+  - first:
+      213: -3045126804828643868
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_2
+  - first:
+      213: 3869034192459866725
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_3
+  - first:
+      213: 3171325726776666854
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_4
+  - first:
+      213: -6294798186868149262
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_5
+  - first:
+      213: -1803448140180645827
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_6
+  - first:
+      213: -415851691331068657
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_7
+  - first:
+      213: 7799404694938406614
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_8
+  - first:
+      213: 6893561569723515392
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_9
+  - first:
+      213: 5510979438430201614
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_10
+  - first:
+      213: -3594918822682309649
+    second: Grand_Forests_ICED-OVER-CANOPY-LEAVES_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ab7ea791e3fa2ff0800000000000000
+      internalID: -59967494778094682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 420f2dd841b3b1440800000000000000
+      internalID: 4907581178415083556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ed1b260e498db5d0800000000000000
+      internalID: -3045126804828643868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5622969591291b530800000000000000
+      internalID: 3869034192459866725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6eaa49332ffc20c20800000000000000
+      internalID: 3171325726776666854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f373fa766264a8a0800000000000000
+      internalID: -6294798186868149262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3891b9b87dd8f6e0800000000000000
+      internalID: -1803448140180645827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0d57fa07199a3af0800000000000000
+      internalID: -415851691331068657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_8
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6de415d3f3d0d3c60800000000000000
+      internalID: 7799404694938406614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_9
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00287a859b9daaf50800000000000000
+      internalID: 6893561569723515392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_10
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e072d10d99eea7c40800000000000000
+      internalID: 5510979438430201614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_11
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: febc7a1a0684c1ec0800000000000000
+      internalID: -3594918822682309649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_12
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65bf07810cfddcb429cd4b84c04b97be
+      internalID: 1886583176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_13
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c9531c08c9d0dc419c2ff9e1311d0f8
+      internalID: 873237388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e874e45cbd52b384abfb115e39bb9a38
+      internalID: 339281540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_15
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2663acfc6a80734e9aad4730d88e12f
+      internalID: -110884122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_16
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18436033dd121dd40a15f0e11c1b307d
+      internalID: 1425231281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_17
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0391bbf2b2415df4f981eb905d0e5aa5
+      internalID: -398308779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_18
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21c163d21fd01ed42a9614601a7ac4b9
+      internalID: 437697656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_19
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aad5c5816f3ebb64c8a4fedd57856803
+      internalID: 123700573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_20
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98f64d75126cb2346851d5d4931e15e5
+      internalID: 2066903011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_21
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 894c8a29afb43b14b91af16c6c606ea6
+      internalID: 1929542795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_22
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f2d46ca5a3c4cb49910fe1b53b6bba0
+      internalID: -462029898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_23
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2a8a78f2b8f0f34fada62fea24942de
+      internalID: -1497663911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_24
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2800d0a4b05964142aae03a0fb594fc2
+      internalID: -1345558708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_25
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7bf2ec1ee56dd449b6f08c851525de8
+      internalID: -1402649084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_26
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e48137641d4df649856a21e7d235a46
+      internalID: 221453858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_27
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d554ea442474f2a468b125d12b816df2
+      internalID: -1474843689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_28
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4095658253b65a4dba14576035ae6c4
+      internalID: 1339539813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_29
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12b0ec6f81aa3b742a0d618121416fee
+      internalID: 2071605733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_30
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ba879052b55662469491c5778199a9f
+      internalID: -1540764784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_31
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16dae1eb1e730e84ea5796a5215c7348
+      internalID: 1331633432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_32
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7e2606e1f4cf85438a22fae4793536b
+      internalID: -1917045082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_33
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 154b6b2365e0d334e82d5d6a4ef1a494
+      internalID: 275380265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_34
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 225a9454f9fd4374284a75fc5c81237a
+      internalID: 269102018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_35
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2a271200d297df46886945a2ae0c78b
+      internalID: -94327425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_36
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cf5961fe833d4e4cbc44d426d7f955d
+      internalID: 735549093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_37
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edf6b2c5ea97a1d42b7d70c17d7c7a9f
+      internalID: -1607410459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_38
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4198a46695860f54992b7c7563c03e83
+      internalID: -18939370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_39
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b0d6899c21e00c4f9ee816d4d35ec76
+      internalID: 287060191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_40
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c523768a939085542846e785bb507ed3
+      internalID: 1151829580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_41
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f9ef983740036a47aa55e7ad334a593
+      internalID: 1770909868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_42
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fa8f3c3b98c11a4ba074fead34a116b
+      internalID: 389364617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_43
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b97292d2eaf1c454e959aa3cbd40a11d
+      internalID: 1166251676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_44
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55cab35abe484c34dbfd47575ca0bcce
+      internalID: 1434902342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_45
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30797a816e60fa243b9d81e81603b467
+      internalID: -1296280825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_46
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdf9e831b767eca4986aed9820743907
+      internalID: 186355963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_47
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 742ee1c35d5efed49afedf58e8dba654
+      internalID: 373098845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_48
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04b5a093ce8ac3545b2734d1a282b5c0
+      internalID: 1857616863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_49
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33c2fe0f4817cc544b81c63fe63fb6b1
+      internalID: -1421483127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_50
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf09fd5d76feb0c43b99867084622fb1
+      internalID: -1091118428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_51
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e122462d08d66440ad9848fea2a1594
+      internalID: 948238613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_52
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad31d04bccc0b704cbe0b1f50e2d6d58
+      internalID: 1249459282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_53
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52509ed12edaa154b83770ecd7f1a36f
+      internalID: -47803199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_54
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1fb1364362077e4aa8ba15023541180
+      internalID: 82537831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_55
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c64d54e935ec48e42b76db8bccf145ac
+      internalID: 1427926097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grand_Forests_ICED-OVER-CANOPY-LEAVES_56
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b107ebc433617fa4485bca706e56513d
+      internalID: -1590599938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 57dfa1affa63cca4ea7550d0ae1c038c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_0: -59967494778094682
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_1: 4907581178415083556
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_10: 5510979438430201614
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_11: -3594918822682309649
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_12: 1886583176
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_13: 873237388
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_14: 339281540
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_15: -110884122
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_16: 1425231281
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_17: -398308779
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_18: 437697656
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_19: 123700573
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_2: -3045126804828643868
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_20: 2066903011
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_21: 1929542795
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_22: -462029898
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_23: -1497663911
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_24: -1345558708
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_25: -1402649084
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_26: 221453858
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_27: -1474843689
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_28: 1339539813
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_29: 2071605733
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_3: 3869034192459866725
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_30: -1540764784
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_31: 1331633432
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_32: -1917045082
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_33: 275380265
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_34: 269102018
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_35: -94327425
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_36: 735549093
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_37: -1607410459
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_38: -18939370
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_39: 287060191
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_4: 3171325726776666854
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_40: 1151829580
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_41: 1770909868
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_42: 389364617
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_43: 1166251676
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_44: 1434902342
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_45: -1296280825
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_46: 186355963
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_47: 373098845
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_48: 1857616863
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_49: -1421483127
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_5: -6294798186868149262
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_50: -1091118428
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_51: 948238613
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_52: 1249459282
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_53: -47803199
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_54: 82537831
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_55: 1427926097
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_56: -1590599938
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_6: -1803448140180645827
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_7: -415851691331068657
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_8: 7799404694938406614
+      Grand_Forests_ICED-OVER-CANOPY-LEAVES_9: 6893561569723515392
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
