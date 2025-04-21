@@ -63,11 +63,7 @@ public class Area_Controller : MonoBehaviour
         if(areaIndex < 0 || areaIndex >= areas.Count) return;
 
         currentArea = null;
-        // Set currentLocationText to "" once the coroutine is finished.
-        StartCoroutine(FadeText(currentLocationText, 1, 0, () =>
-        {
-            currentLocationText.text = "";
-        }));
+        StartCoroutine(FadeText(currentLocationText, 1, 0));
     }
 
     private IEnumerator LocationDiscovered()
@@ -82,7 +78,7 @@ public class Area_Controller : MonoBehaviour
         StartCoroutine(FadeText(currentLocationText, 0, 1));
     }
 
-    private IEnumerator FadeText(TextMeshProUGUI text, float currentAlpha, float targetAlpha, System.Action callback = null)
+    private IEnumerator FadeText(TextMeshProUGUI text, float currentAlpha, float targetAlpha)
     {
         Color originalColor = text.color;
         text.alpha = currentAlpha;
@@ -93,6 +89,5 @@ public class Area_Controller : MonoBehaviour
             yield return null;
         }
         text.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
-        callback?.Invoke();
     }
 }
