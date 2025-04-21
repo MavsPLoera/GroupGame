@@ -1,10 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public class Camera_Controller : MonoBehaviour
 {
     [Header("Camera Controller Misc.")]
     public bool inDungeon = false;
-    public Vector3 targetPosition;
 
     public static Camera_Controller instance;
 
@@ -33,15 +33,34 @@ public class Camera_Controller : MonoBehaviour
     {
         if(!inDungeon)
         {
-            Vector3 targetPosition = new Vector3(_playerTransform.position.x, _playerTransform.position.y, -100f);
-            transform.position = Vector3.Lerp(transform.position, targetPosition, 5f * Time.deltaTime);
+           Vector3 targetPosition = new Vector3(_playerTransform.position.x, _playerTransform.position.y, -100f);
+           transform.position = Vector3.Lerp(transform.position, targetPosition, 5f * Time.deltaTime);
         }
     }
 
-    public void UpdatePosition(Vector3 targetPosition)
+    public IEnumerator UpdatePosition(Vector3 targetPosition, System.Action callback)
     {
+        Dungeon_Controller.instance.isTransitioning = true;
+        Player_Controller.instance.canInput = false;
+        Player_Controller.instance.rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        float mult = Vector2.Distance(transform.position, targetPosition) / 3;
+        /*
+        while(Vector3.Distance(transform.position, targetPosition) > 0.5f)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPosition, 2f * Time.deltaTime);
+            yield return null;
+        }
         transform.position = targetPosition;
+        */
+        while(true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, mult * Time.deltaTime);
+            yield return null;
+            if(transform.position == targetPosition) break;
+        }
+        callback?.Invoke();
+        Dungeon_Controller.instance.isTransitioning = false;
+        Player_Controller.instance.canInput = true;
+        Player_Controller.instance.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
-
-
 }

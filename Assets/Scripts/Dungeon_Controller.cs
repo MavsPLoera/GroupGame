@@ -33,9 +33,10 @@ public class Dungeon_Controller: MonoBehaviour
     public int currentRoomIndex;
     public DungeonRoom currentRoom;
     public bool inDungeon = true;
-    
+    public bool isTransitioning = false;
+
     public static Dungeon_Controller instance;
-    private readonly bool _debug = false;
+    private readonly bool _debug = true;
 
     private void Awake()
     {
@@ -51,7 +52,7 @@ public class Dungeon_Controller: MonoBehaviour
 
     private void Update()
     {
-        if(currentRoom != null && !currentRoom.isCleared)
+        if(currentRoom != null && !currentRoom.isCleared && !isTransitioning)
         {
             // Continually check enemies. If all dead, set isCleared and open doors.
             List<GameObject> currentEnemies = currentRoom.enemies.Where(enemy => enemy.activeSelf != false).ToList();
@@ -64,7 +65,7 @@ public class Dungeon_Controller: MonoBehaviour
         }
     }
 
-    public void EnterRoom(int dungeonIndex, int roomIndex, bool lerpCamera)
+    public void EnterRoom(int dungeonIndex, int roomIndex)
     {
         // Get current room and turn on light.
         currentRoom = dungeons[dungeonIndex].rooms[roomIndex];
@@ -79,36 +80,21 @@ public class Dungeon_Controller: MonoBehaviour
         // Change camera position.
         Vector3 newCameraPosition = currentRoom.roomCollider.GetComponent<BoxCollider2D>().bounds.center;
         newCameraPosition.z = -100;
-        if(lerpCamera)
+        StartCoroutine(Camera_Controller.instance.UpdatePosition(newCameraPosition, () =>
         {
-            // TODO
-            Camera_Controller.instance.UpdatePosition(newCameraPosition);
-        }
-        else
-        {
-            // TODO
-            Camera_Controller.instance.UpdatePosition(newCameraPosition);
-        }
-
-        if(!currentRoom.isCleared)
-        {
-            if(_debug) Debug.Log($"{currentRoomIndex + 1} Not Cleared (Enter Room)");
-            // Store enemy start positions.
-            /*
-            for(int i = 0; i < currentRoom.enemies.Count; i++)
+            if(!currentRoom.isCleared)
             {
-                currentRoom.enemyStartPositions[i] = currentRoom.enemies[i].transform.position;
+                if(_debug) Debug.Log($"{currentRoomIndex + 1} Not Cleared (Enter Room)");
+                // Close doors and set isActive for all enemies in current room.
+                currentRoom.doors.ForEach(door => door.SetActive(true));
+                currentRoom.enemies.ForEach(enemy => enemy.SetActive(true));
             }
-            */
-            // Close doors and set isActive for all enemies in current room.
-            currentRoom.doors.ForEach(door => door.SetActive(true));
-            currentRoom.enemies.ForEach(enemy => enemy.SetActive(true));
-        }
-        else
-        {
-            if(_debug) Debug.Log($"{currentRoomIndex + 1} Cleared (Enter Room)");
-            currentRoom.doors.ForEach(door => door.SetActive(false));
-        }
+            else
+            {
+                if(_debug) Debug.Log($"{currentRoomIndex + 1} Cleared (Enter Room)");
+                currentRoom.doors.ForEach(door => door.SetActive(false));
+            }
+        }));
     }
 
     public void ExitRoom(int dungeonIndex, int roomIndex)
@@ -122,12 +108,6 @@ public class Dungeon_Controller: MonoBehaviour
     {
         // Reset current room state on death.
         currentRoom.enemies.ForEach(enemy => enemy.SetActive(false));
-        /*
-        for (int i = 0; i < currentRoom.enemies.Count; i++)
-        {
-            currentRoom.enemies[i].transform.position = currentRoom.enemyStartPositions[i];
-        }
-        */
         currentRoom.doors.ForEach(door => door.SetActive(false));
         currentRoom.isCleared = false;
         currentRoom = null;

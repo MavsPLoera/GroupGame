@@ -98,7 +98,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject playerUI;
     public Animator playerAnimator;
     public GameObject crossFadeIn;
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private Vector2 movementDirection;
 
     //Use this to access the player. No need to drag player gameobject to retrieve the script. There is only one player so this should be fine.

@@ -214,7 +214,7 @@ MonoBehaviour:
   health: 10
   damage: 10
   flickerDuration: 0.1
-  attackCooldownTime: 2
+  attackCooldownTime: 3.5
 --- !u!212 &343195214212274243
 SpriteRenderer:
   m_ObjectHideFlags: 0
