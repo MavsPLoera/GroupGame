@@ -33,10 +33,10 @@ public class ENV01_Movement_Controller : MonoBehaviour
 
             // Check distance. Stop if in range to player.
             float distance = playerDirection.magnitude;
-            if(distance <= 1f)
+            if(distance <= .8f)
             {
                 _rb.linearVelocity = Vector2.zero;
-                // TEMP. To replace with hitbox on animation (?).
+                // TEMP. (?) to replace with hitbox on animation.
                 _enemyController.Attack(null);
             }
             else
