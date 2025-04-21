@@ -6,9 +6,8 @@ using UnityEngine;
 public class Collider_Controller : MonoBehaviour
 {
     // Collider Controller
-    // Listens for player enter/exit events
-    // and calls corr. functions in Dungeon_Controller
-    // and Area_Controller.
+    // Listens for player enter/exit events and calls
+    // corr. functions in Dungeon_Controller and Area_Controller.
 
     public enum Collider_Type
     {

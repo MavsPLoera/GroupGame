@@ -19,7 +19,6 @@ public class Projectile_Controller : MonoBehaviour
 
     private void ChangeDirection(Vector3 direction)
     {
-        // *** TODO ***
         float rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotation);
     }

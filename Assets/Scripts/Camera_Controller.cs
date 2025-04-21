@@ -33,12 +33,12 @@ public class Camera_Controller : MonoBehaviour
     {
         if(!inDungeon)
         {
-           Vector3 targetPosition = new Vector3(_playerTransform.position.x, _playerTransform.position.y, -100f);
+           Vector3 targetPosition = new(_playerTransform.position.x, _playerTransform.position.y, -100f);
            transform.position = Vector3.Lerp(transform.position, targetPosition, 5f * Time.deltaTime);
         }
     }
 
-    public IEnumerator UpdatePosition(Vector3 targetPosition, System.Action callback)
+    public IEnumerator UpdatePosition(Vector3 targetPosition, System.Action callback = null)
     {
         Dungeon_Controller.instance.isTransitioning = true;
         Player_Controller.instance.canInput = false;
@@ -52,11 +52,10 @@ public class Camera_Controller : MonoBehaviour
         }
         transform.position = targetPosition;
         */
-        while(true)
+        while(transform.position != targetPosition)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, mult * Time.deltaTime);
             yield return null;
-            if(transform.position == targetPosition) break;
         }
         callback?.Invoke();
         Dungeon_Controller.instance.isTransitioning = false;

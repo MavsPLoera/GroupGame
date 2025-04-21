@@ -35,7 +35,6 @@ public class R01_Movement_Controller : MonoBehaviour
             }
             else
             {
-                // moveDirection = moveDirection.normalized;
                 MoveToward(moveDirection);
             }
         }

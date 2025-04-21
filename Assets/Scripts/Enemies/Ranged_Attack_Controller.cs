@@ -1,8 +1,5 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
-using TMPro;
-using Unity.VisualScripting;
 
 public class Ranged_Attack_Controller : MonoBehaviour
 {
