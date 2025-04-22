@@ -28,6 +28,8 @@ public class Area_Controller : MonoBehaviour
     public TextMeshProUGUI locationDiscoveredText;
     public float textDisplayDuration;
 
+    private Coroutine fadeText;
+
     public static Area_Controller instance;
 
     private void Awake()
