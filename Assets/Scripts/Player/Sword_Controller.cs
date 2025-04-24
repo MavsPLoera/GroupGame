@@ -11,9 +11,10 @@ public class Sword_Controller : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Bullet"))
         {
-            //Tell enemy to hurt themselves
+            //Can do calculation to see if the sword cut the arrow in half
+            Destroy(collision.gameObject);
         }
     }
 
