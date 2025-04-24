@@ -43,7 +43,7 @@ public class Camera_Controller : MonoBehaviour
         Dungeon_Controller.instance.isTransitioning = true;
         Player_Controller.instance.canInput = false;
         Player_Controller.instance.rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        float mult = Vector2.Distance(transform.position, targetPosition) / 3;
+        float mult = Vector2.Distance(transform.position, targetPosition) / 1.5f;
         /*
         while(Vector3.Distance(transform.position, targetPosition) > 0.5f)
         {
