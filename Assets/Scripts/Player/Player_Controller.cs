@@ -72,6 +72,7 @@ public class Player_Controller : MonoBehaviour
     public ParticleSystem secondaryMoveParticles;
     public ParticleSystem ultimateParticles;
     public ParticleSystem playerHitParticles;
+    public ParticleSystem DustFX;
 
     [Header("Player Sword Hitboxes")]
     public Vector2 swingUpOffset;
@@ -186,6 +187,25 @@ public class Player_Controller : MonoBehaviour
         }
 
         rb.linearVelocity = movementDirection * playerMovementspeed;
+
+        if (canInput)
+        {
+            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            if (input.magnitude > 0.1f)
+            {
+                if (!DustFX.isPlaying)
+                {
+                    DustFX.Play();
+                }
+            }
+            else
+            {
+                if (DustFX.isPlaying)
+                {
+                    DustFX.Stop();
+                }
+            }
+        }
 
         /*
          *          PLAYER ABILITIES CODE
