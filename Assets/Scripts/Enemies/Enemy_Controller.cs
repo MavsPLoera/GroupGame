@@ -30,6 +30,11 @@ public class Enemy_Controller : MonoBehaviour
     public float knockbackAmount;
     public EnemyType enemyType; // ATM used for triggering appropriate animations for each enemy type.
     public bool isInAnimation;
+    public AudioSource _enemyAudioSource;
+    public AudioClip enemyDamaged;
+    public AudioClip enemySwing;
+    public AudioClip enemyShoot;
+    public AudioClip enemeyDeath;
 
     [Header("Enemy Stats.")]
     public float health;
@@ -52,6 +57,7 @@ public class Enemy_Controller : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        _enemyAudioSource = GetComponent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _playerTransform = Player_Controller.instance.transform;
@@ -86,6 +92,7 @@ public class Enemy_Controller : MonoBehaviour
         if(_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
         health -= damage;
 
+        _enemyAudioSource.PlayOneShot(enemyDamaged);
         StartCoroutine(Knockback(direction));
         StartCoroutine(FlickerSprite());
 
@@ -272,6 +279,7 @@ public class Enemy_Controller : MonoBehaviour
         // Freeze X, Y, and Z.
         _rb.constraints = RigidbodyConstraints2D.FreezeAll;
         _animator.Play(animation, 0);
+        _enemyAudioSource.PlayOneShot(enemeyDeath);
         // Allow animation to complete.
         yield return new WaitForSeconds(.6f);
         isInAnimation = false;
