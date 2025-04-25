@@ -602,6 +602,9 @@ public class Player_Controller : MonoBehaviour
         else if (collision.gameObject.CompareTag("OtherPickUp")) //change the name of otherpickup to what the name 
         {
             gold++;
+
+            //Maybe do check in here to see if gold % 5 is true then give player a life
+
             playerAudioSource.PlayOneShot(goldCollect);
             Destroy(collision.gameObject);
         }
