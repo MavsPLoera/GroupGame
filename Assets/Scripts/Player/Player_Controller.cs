@@ -53,7 +53,8 @@ public class Player_Controller : MonoBehaviour
     public List<Quest> completedQuests = new List<Quest>();
 
     [Header("Player Audio")]
-    public AudioSource audioSource;
+    public AudioSource playerAudioSource;
+    public AudioSource playerChangingAudioSource;
     public AudioClip dashSound;
     public AudioClip playerLandSound;
     public AudioClip healingSound;
