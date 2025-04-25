@@ -30,6 +30,7 @@ public class Enemy_Controller : MonoBehaviour
     public float knockbackAmount;
     public EnemyType enemyType; // ATM used for triggering appropriate animations for each enemy type.
     public bool isInAnimation;
+    private bool isDead = false;
     public AudioSource _enemyAudioSource;
     public AudioClip enemyDamaged;
     public AudioClip enemySwing;
@@ -92,9 +93,21 @@ public class Enemy_Controller : MonoBehaviour
         if(_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
         health -= damage;
 
-        _enemyAudioSource.PlayOneShot(enemyDamaged);
-        StartCoroutine(Knockback(direction));
-        StartCoroutine(FlickerSprite());
+        if (!isDead)
+        {
+            StartCoroutine(Knockback(direction));
+            StartCoroutine(FlickerSprite());
+
+            if (health <= 0f)
+            {
+                if (_debug) Debug.Log($"{gameObject.name} Dead");
+                OnDeath();
+            }
+            else
+            {
+                _enemyAudioSource.PlayOneShot(enemyDamaged);
+            }
+        }
 
         /*
         int textChance = Random.Range(0, 100);
@@ -103,12 +116,6 @@ public class Enemy_Controller : MonoBehaviour
             StartCoroutine(DisplayText(TextType.Damage));
         }
         */
-
-        if(health <= 0)
-        {
-            if(_debug) Debug.Log($"{gameObject.name} Dead");
-            OnDeath();
-        }
     }
 
     public void Attack(Collision2D collision)
@@ -274,6 +281,7 @@ public class Enemy_Controller : MonoBehaviour
 
     private IEnumerator Death()
     {
+        isDead = true;
         string animation = System.String.Concat(enemyType, "_Death");
         isInAnimation = true;
         // Freeze X, Y, and Z.
