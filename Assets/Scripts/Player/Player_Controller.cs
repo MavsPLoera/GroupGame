@@ -178,15 +178,19 @@ public class Player_Controller : MonoBehaviour
         float x_raw = Input.GetAxisRaw("Horizontal");
         float y_raw = Input.GetAxisRaw("Vertical");
 
+
         updateFacingDirection(x_raw, y_raw);
 
-        if (movementDirection != Vector2.zero)
+        if (canSwing)
         {
-            playerAnimator.Play("Player_Walk", 0);
-        }
-        else
-        {
-            playerAnimator.Play("Player_Idle", 0);
+            if (movementDirection != Vector2.zero)
+            {
+                playerAnimator.Play("Player_Walk", 0);
+            }
+            else
+            {
+                playerAnimator.Play("Player_Idle", 0);
+            }
         }
 
         rb.linearVelocity = movementDirection * playerMovementspeed;
@@ -262,18 +266,22 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator swing()
     {
+        float temp = playerMovementspeed;
+        playerMovementspeed = temp * .3f;
+
         //Set animator to swing and stop player from being able to input and swing again.
         playerAnimator.Play("Player_Swing", 0);
         rb.linearVelocity = Vector2.zero;
         canSwing = false;
-        canInput = false;
+        //canInput = false;
 
         //Let the full animation play out. I am not sure why getting the length of the animation does not work but .6f does fine.
         yield return new WaitForSeconds(.6f);
 
         //After the animation finished set the animation state to idle and allow player to be able to swing again and input.
         playerAnimator.Play("Player_Idle", 0);
-        canInput = true;
+        playerMovementspeed = temp;
+        //canInput = true;
         canSwing = true;
     }
 
