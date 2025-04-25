@@ -56,6 +56,7 @@ public class Player_Controller : MonoBehaviour
     public AudioSource playerAudioSource;
     public AudioSource playerChangingAudioSource;
     public AudioClip goldCollect;
+    public AudioClip playerTakeDamage;
     public AudioClip dashSound;
     public AudioClip playerLandSound;
     public AudioClip healingSound;
@@ -407,10 +408,11 @@ public class Player_Controller : MonoBehaviour
         invincible = true;
         canInput = false;
 
-        yield return StartCoroutine(flickerSprite());
-
+        yield return new WaitForSeconds(.333f);
         playerAnimator.Play("Player_Idle", 0);
         canInput = true;
+
+        yield return StartCoroutine(flickerSprite());
         invincible = false;
 
         Physics2D.IgnoreLayerCollision(7, 8, false);
@@ -561,23 +563,25 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        playerHealth -= damage;
         if ((playerHealth - damage) > 0f)
         {
             invincible = true;
             rb.linearVelocity = Vector2.zero;
+            playerAudioSource.PlayOneShot(playerTakeDamage);
             StartCoroutine(temporaryInvulnerability());
         }
         else if (((playerHealth - damage) <= 0f) && ((playerLives - 1) <= 0))
         {
             //Game over sequence
             //Update slider
+            playerAudioSource.PlayOneShot(playerTakeDamage);
             StartCoroutine(gameOver());
         }
         else
         {
             StartCoroutine(loseLife());
         }
+        playerHealth -= damage;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
