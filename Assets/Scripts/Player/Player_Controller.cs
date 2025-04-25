@@ -55,6 +55,7 @@ public class Player_Controller : MonoBehaviour
     [Header("Player Audio")]
     public AudioSource playerAudioSource;
     public AudioSource playerChangingAudioSource;
+    public AudioClip goldCollect;
     public AudioClip dashSound;
     public AudioClip playerLandSound;
     public AudioClip healingSound;
@@ -592,10 +593,13 @@ public class Player_Controller : MonoBehaviour
             {
                 healingPotions++;
             }
+            Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("OtherPickUp")) //change the name of otherpickup to what the name 
         {
             gold++;
+            playerAudioSource.PlayOneShot(goldCollect);
+            Destroy(collision.gameObject);
         }
         else if(collision.gameObject.CompareTag("UnlockSecondary"))
         {

@@ -256,6 +256,7 @@ public class Enemy_Controller : MonoBehaviour
             _animator.Play(animation, 0);
         }
         // Allow animation to complete.
+        _enemyAudioSource.PlayOneShot(enemySwing);
         yield return new WaitForSeconds(.6f);
         // Freeze Z.
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
