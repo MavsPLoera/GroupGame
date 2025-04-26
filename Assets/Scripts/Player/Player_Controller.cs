@@ -669,6 +669,7 @@ public class Player_Controller : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class Quest
 {
     public int questID;
