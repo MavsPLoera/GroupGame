@@ -42,14 +42,16 @@ public class Warp_Controller : MonoBehaviour
          */
 
         Player_Controller.instance.canInput = false;
+<<<<<<< HEAD
         Player_Controller.instance.playerAnimator.Play("Player_Walk", 0);
+=======
+        Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
+>>>>>>> parent of e1f341f (Slight adjustments to warp)
         crossFadeIn.SetActive(true);
         audioSource.PlayOneShot(warpSound);
 
         yield return new WaitForSeconds(transitionTime);
-
         Area_Controller.instance.currentLocationText.text = "";
-        Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
 
         //Cross fade in complete, no cross fade out to new destination.
         crossFadeIn.SetActive(false);
