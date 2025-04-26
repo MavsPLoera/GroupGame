@@ -14,6 +14,7 @@ public class Warp_Controller : MonoBehaviour
     public AudioClip warpSound;
     public AudioSource audioSource;
     public string direction = "down";
+    public string destinationMusic;
 
     void Start()
     {
@@ -50,7 +51,7 @@ public class Warp_Controller : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
 
         Area_Controller.instance.currentLocationText.text = "";
-
+        Music_Controller.instance.warpChangeMusic(destinationMusic);
         Player_Controller.instance.changeFacingDirectionWarp(direction);
         Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
 
