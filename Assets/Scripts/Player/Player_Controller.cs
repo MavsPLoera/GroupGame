@@ -452,7 +452,7 @@ public class Player_Controller : MonoBehaviour
             playerAnimator.SetFloat("moveY", -1);
             swordController.updateHitBox(swingDownOffset, swingDownSize);
         }
-        else if (direction.ToLower().Equals("left"))
+        else if (direction.ToLower().Equals("right"))
         {
             facingTowards.transform.position = new Vector3(1f, 0f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(.6f, 0f, 0f) + transform.position;
@@ -460,7 +460,7 @@ public class Player_Controller : MonoBehaviour
             playerAnimator.SetFloat("moveY", 0);
             swordController.updateHitBox(swingRightOffset, swingRightSize);
         }
-        else if (direction.ToLower().Equals("right"))
+        else if (direction.ToLower().Equals("left"))
         {
             facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;
