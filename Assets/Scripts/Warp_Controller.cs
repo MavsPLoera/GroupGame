@@ -41,7 +41,6 @@ public class Warp_Controller : MonoBehaviour
          */
 
         Player_Controller.instance.canInput = false;
-        Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
         crossFadeIn.SetActive(true);
 
         yield return new WaitForSeconds(transitionTime);

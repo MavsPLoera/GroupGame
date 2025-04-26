@@ -29,7 +29,7 @@ public class M01_Movement_Controller : MonoBehaviour
 
             // Check distance. Stop if in range to player.
             float distance = moveDirection.magnitude;
-            if(distance <= .7f)
+            if(distance <= .8f)
             {
                 _rb.linearVelocity = Vector2.zero;
                 // TEMP. (?) to replace with hitbox on animation.
