@@ -95,7 +95,6 @@ public class Enemy_Controller : MonoBehaviour
 
         if (!isDead)
         {
-            _enemyAudioSource.PlayOneShot(enemyDamaged);
             StartCoroutine(Knockback(direction));
             StartCoroutine(FlickerSprite());
 
@@ -103,6 +102,10 @@ public class Enemy_Controller : MonoBehaviour
             {
                 if (_debug) Debug.Log($"{gameObject.name} Dead");
                 OnDeath();
+            }
+            else
+            {
+                _enemyAudioSource.PlayOneShot(enemyDamaged);
             }
         }
 

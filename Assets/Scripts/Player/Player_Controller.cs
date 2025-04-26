@@ -178,14 +178,24 @@ public class Player_Controller : MonoBehaviour
         float x_raw = Input.GetAxisRaw("Horizontal");
         float y_raw = Input.GetAxisRaw("Vertical");
 
-        if(canSwing)
+        updateFacingDirection(x_raw, y_raw);
+
+        if (movementDirection != Vector2.zero)
         {
-            updateFacingDirection(x_raw, y_raw);
+            playerAnimator.Play("Player_Walk", 0);
+        }
+        else
+        {
+            playerAnimator.Play("Player_Idle", 0);
+        }
 
-            if (movementDirection != Vector2.zero)
+        rb.linearVelocity = movementDirection * playerMovementspeed;
+
+        if (canInput)
+        {
+            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            if (input.magnitude > 0.1f)
             {
-                playerAnimator.Play("Player_Walk", 0);
-
                 if (!DustFX.isPlaying)
                 {
                     DustFX.Play();
@@ -197,22 +207,8 @@ public class Player_Controller : MonoBehaviour
                 {
                     DustFX.Stop();
                 }
-
-                playerAnimator.Play("Player_Idle", 0);
             }
-
-            rb.linearVelocity = movementDirection * playerMovementspeed;
         }
-        else
-        {
-            rb.linearVelocity = new Vector2(x_raw,y_raw) * playerMovementspeed;
-        }
-
-        if(healingSelf)
-        {
-            return;
-        }
-
 
         /*
          *          PLAYER ABILITIES CODE
@@ -230,7 +226,7 @@ public class Player_Controller : MonoBehaviour
          */
 
         //Ultimate
-        if ((Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.C)) && unlockedUltMove && canUlt)
+        if (Input.GetKeyDown(KeyCode.R) && unlockedUltMove && canUlt)
         {
             StartCoroutine(ultimateMove());
         }
@@ -245,20 +241,20 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Sword Swing
-        if ((Input.GetButton("Fire1") || Input.GetKeyDown(KeyCode.Z)) && canSwing)
+        if (Input.GetButton("Fire1") && canSwing)
         {
             StartCoroutine(swing());
         }
 
         //Secondary
-        if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && !(arrows <= 0))
+        if (Input.GetButton("Fire2") && unlockedSecondaryMove && canSecondary && !(arrows <= 0))
         {
             StartCoroutine(secondaryMove());
         }
 
         //Healing Self
         //Need to change key that player uses to heal.
-        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.V)) && !healingSelf && (healingPotions != 0))
+        if (Input.GetKeyDown(KeyCode.H) && !healingSelf && (healingPotions != 0))
         {
             StartCoroutine(healPlayer());
         }
@@ -266,26 +262,26 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator swing()
     {
-        float temp = playerMovementspeed;
-        playerMovementspeed = temp * .3f;
-
         //Set animator to swing and stop player from being able to input and swing again.
         playerAnimator.Play("Player_Swing", 0);
         rb.linearVelocity = Vector2.zero;
         canSwing = false;
+        canInput = false;
 
         //Let the full animation play out. I am not sure why getting the length of the animation does not work but .6f does fine.
         yield return new WaitForSeconds(.6f);
 
         //After the animation finished set the animation state to idle and allow player to be able to swing again and input.
         playerAnimator.Play("Player_Idle", 0);
-        playerMovementspeed = temp;
+        canInput = true;
         canSwing = true;
     }
 
     public IEnumerator healPlayer()
     {
         //When player is healing we want it to be similar to dark souls. So the players movementspeed is slowed down, and is unable to input until they heal.
+        canSwing = false;
+        canDash = false;
         healingSelf = true;
 
         float temp = playerMovementspeed;
@@ -309,6 +305,8 @@ public class Player_Controller : MonoBehaviour
 
         healingSelf = false;
         playerMovementspeed = temp;
+        canSwing = true;
+        canDash = true;
     }
 
     public IEnumerator secondaryMove()
