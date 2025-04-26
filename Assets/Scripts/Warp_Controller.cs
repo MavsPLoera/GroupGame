@@ -13,6 +13,7 @@ public class Warp_Controller : MonoBehaviour
     public float transitionTime = 1f;
     public AudioClip warpSound;
     public AudioSource audioSource;
+    public string direction = "down";
 
     void Start()
     {
@@ -49,6 +50,8 @@ public class Warp_Controller : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
 
         Area_Controller.instance.currentLocationText.text = "";
+
+        Player_Controller.instance.changeFacingDirectionWarp(direction);
         Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
 
         //Cross fade in complete, no cross fade out to new destination.

@@ -434,16 +434,9 @@ public class Player_Controller : MonoBehaviour
     }
 
     //Used to change the direction of a player during warp
-    public void changeFacingDirectionWarp(int direction)
+    public void changeFacingDirectionWarp(string direction)
     {
-        /*
-         * 1 - Up          
-         * 2 - Down
-         * 3 - Right
-         * 4 - Left
-         */
-
-        if (direction == 1)
+        if (direction.ToLower().Equals("up"))
         {
             facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(0f, .6f, 0f) + transform.position;
@@ -451,7 +444,7 @@ public class Player_Controller : MonoBehaviour
             playerAnimator.SetFloat("moveY", 1);
             swordController.updateHitBox(swingUpOffset, swingUpSize);
         }
-        else if (direction == 2)
+        else if (direction.ToLower().Equals("down"))
         {
             facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(0f, -.7f, 0f) + transform.position;
@@ -459,7 +452,7 @@ public class Player_Controller : MonoBehaviour
             playerAnimator.SetFloat("moveY", -1);
             swordController.updateHitBox(swingDownOffset, swingDownSize);
         }
-        else if (direction == 3)
+        else if (direction.ToLower().Equals("left"))
         {
             facingTowards.transform.position = new Vector3(1f, 0f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(.6f, 0f, 0f) + transform.position;
@@ -467,7 +460,7 @@ public class Player_Controller : MonoBehaviour
             playerAnimator.SetFloat("moveY", 0);
             swordController.updateHitBox(swingRightOffset, swingRightSize);
         }
-        else if (direction == 4)
+        else if (direction.ToLower().Equals("right"))
         {
             facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;
