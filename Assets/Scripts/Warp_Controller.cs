@@ -45,6 +45,7 @@ public class Warp_Controller : MonoBehaviour
 
         yield return new WaitForSeconds(transitionTime);
         Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
+
         Area_Controller.instance.currentLocationText.text = "";
 
         //Cross fade in complete, no cross fade out to new destination.
