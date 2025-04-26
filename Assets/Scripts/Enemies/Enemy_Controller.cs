@@ -30,6 +30,12 @@ public class Enemy_Controller : MonoBehaviour
     public float knockbackAmount;
     public EnemyType enemyType; // ATM used for triggering appropriate animations for each enemy type.
     public bool isInAnimation;
+    private bool isDead = false;
+    public AudioSource _enemyAudioSource;
+    public AudioClip enemyDamaged;
+    public AudioClip enemySwing;
+    public AudioClip enemyShoot;
+    public AudioClip enemeyDeath;
 
     [Header("Enemy Stats.")]
     public float health;
@@ -52,6 +58,7 @@ public class Enemy_Controller : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        _enemyAudioSource = GetComponent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _playerTransform = Player_Controller.instance.transform;
@@ -86,8 +93,21 @@ public class Enemy_Controller : MonoBehaviour
         if(_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
         health -= damage;
 
-        StartCoroutine(Knockback(direction));
-        StartCoroutine(FlickerSprite());
+        if (!isDead)
+        {
+            StartCoroutine(Knockback(direction));
+            StartCoroutine(FlickerSprite());
+
+            if (health <= 0f)
+            {
+                if (_debug) Debug.Log($"{gameObject.name} Dead");
+                OnDeath();
+            }
+            else
+            {
+                _enemyAudioSource.PlayOneShot(enemyDamaged);
+            }
+        }
 
         /*
         int textChance = Random.Range(0, 100);
@@ -96,12 +116,6 @@ public class Enemy_Controller : MonoBehaviour
             StartCoroutine(DisplayText(TextType.Damage));
         }
         */
-
-        if(health <= 0)
-        {
-            if(_debug) Debug.Log($"{gameObject.name} Dead");
-            OnDeath();
-        }
     }
 
     public void Attack(Collision2D collision)
@@ -242,6 +256,7 @@ public class Enemy_Controller : MonoBehaviour
             _animator.Play(animation, 0);
         }
         // Allow animation to complete.
+        _enemyAudioSource.PlayOneShot(enemySwing);
         yield return new WaitForSeconds(.6f);
         // Freeze Z.
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -267,11 +282,13 @@ public class Enemy_Controller : MonoBehaviour
 
     private IEnumerator Death()
     {
+        isDead = true;
         string animation = System.String.Concat(enemyType, "_Death");
         isInAnimation = true;
         // Freeze X, Y, and Z.
         _rb.constraints = RigidbodyConstraints2D.FreezeAll;
         _animator.Play(animation, 0);
+        _enemyAudioSource.PlayOneShot(enemeyDeath);
         // Allow animation to complete.
         yield return new WaitForSeconds(.6f);
         isInAnimation = false;
