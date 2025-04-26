@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -430,6 +431,50 @@ public class Player_Controller : MonoBehaviour
             yield return new WaitForSeconds(flickerDuration);
         }
         spriteRenderer.color = Color.white;
+    }
+
+    //Used to change the direction of a player during warp
+    public void changeFacingDirectionWarp(int direction)
+    {
+        /*
+         * 1 - Up          
+         * 2 - Down
+         * 3 - Right
+         * 4 - Left
+         */
+
+        if (direction == 1)
+        {
+            facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(0f, .6f, 0f) + transform.position;
+            playerAnimator.SetFloat("moveX", 0);
+            playerAnimator.SetFloat("moveY", 1);
+            swordController.updateHitBox(swingUpOffset, swingUpSize);
+        }
+        else if (direction == 2)
+        {
+            facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(0f, -.7f, 0f) + transform.position;
+            playerAnimator.SetFloat("moveX", 0);
+            playerAnimator.SetFloat("moveY", -1);
+            swordController.updateHitBox(swingDownOffset, swingDownSize);
+        }
+        else if (direction == 3)
+        {
+            facingTowards.transform.position = new Vector3(1f, 0f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(.6f, 0f, 0f) + transform.position;
+            playerAnimator.SetFloat("moveX", 1);
+            playerAnimator.SetFloat("moveY", 0);
+            swordController.updateHitBox(swingRightOffset, swingRightSize);
+        }
+        else if (direction == 4)
+        {
+            facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
+            arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;
+            playerAnimator.SetFloat("moveX", -1);
+            playerAnimator.SetFloat("moveY", 0);
+            swordController.updateHitBox(swingLeftOffset, swingLeftSize);
+        }
     }
 
     private void updateFacingDirection(float x_raw, float y_raw)
