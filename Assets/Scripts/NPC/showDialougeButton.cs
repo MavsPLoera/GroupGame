@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI; 
 
+
 public class ShowDialogueButton : MonoBehaviour
 {
     public GameObject npc;
@@ -40,6 +41,8 @@ public class ShowDialogueButton : MonoBehaviour
         if (distanceFromNpc <= requiredDistance)
         {
             talkToNpcButton.gameObject.SetActive(true);
+            Debug.Log("Button should appear");
+
         }
         else
         {
