@@ -43,7 +43,7 @@ public class Warp_Controller : MonoBehaviour
          */
 
         Player_Controller.instance.canInput = false;
-        Player_Controller.instance.playerAnimator.Play("Player_Running", 0);
+        Player_Controller.instance.playerAnimator.Play("Player_Walk", 0);
         crossFadeIn.SetActive(true);
         audioSource.PlayOneShot(warpSound);
 
