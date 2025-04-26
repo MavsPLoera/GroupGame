@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Warp_Controller : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class Warp_Controller : MonoBehaviour
     public GameObject crossFadeIn;
     public GameObject crossFadeOut;
     public float transitionTime = 1f;
-    public AudioClip enterOverworldSound;
-    public AudioClip enterDungeonSound;
+    public AudioClip warpSound;
+    public AudioSource audioSource;
 
     void Start()
     {
@@ -41,11 +42,14 @@ public class Warp_Controller : MonoBehaviour
          */
 
         Player_Controller.instance.canInput = false;
-        Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
+        Player_Controller.instance.playerAnimator.Play("Player_Running", 0);
         crossFadeIn.SetActive(true);
+        audioSource.PlayOneShot(warpSound);
 
         yield return new WaitForSeconds(transitionTime);
+
         Area_Controller.instance.currentLocationText.text = "";
+        Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
 
         //Cross fade in complete, no cross fade out to new destination.
         crossFadeIn.SetActive(false);
