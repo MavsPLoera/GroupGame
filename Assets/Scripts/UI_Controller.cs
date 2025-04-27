@@ -24,16 +24,6 @@ public class UI_Controller : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     public IEnumerator FadeText(string name, float currentAlpha, float targetAlpha, float transitionTime)
     {
         currentLocationText.text = name;
