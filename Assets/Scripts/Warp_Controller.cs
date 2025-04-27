@@ -21,7 +21,7 @@ public class Warp_Controller : MonoBehaviour
 
     public enum destinationMusic
     {
-        Dungeon, Tavern, WinterForest, RuinedTown, Cemetary
+        DungeonSewers, DungeonCave, DungeonCrypt, Tavern, WinterForest, RuinedTown, Cemetary
     }
 
     public destinationMusic music;

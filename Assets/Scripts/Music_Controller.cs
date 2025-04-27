@@ -8,8 +8,12 @@ public class Music_Controller : MonoBehaviour
     public AudioClip ruinedTownMusic;
     public AudioClip tavernInteriorFloorMusic;
     public AudioClip winterForestMusic;
-    public AudioClip dungeonMusic;
+    public AudioClip dungeonSewersMusic;
+    public AudioClip dungeonCaveMusic;
+    public AudioClip dungeonCryptMusic;
     public AudioClip cemetaryMusic;
+    public AudioClip gameOverMusic;
+    public AudioClip gameWinMusic;
     public float transitionTime = .5f;
     private float volume;
     public static Music_Controller instance;
@@ -31,8 +35,14 @@ public class Music_Controller : MonoBehaviour
 
         switch(areaMusic)
         {
-            case Warp_Controller.destinationMusic.Dungeon:
-                temp = dungeonMusic;
+            case Warp_Controller.destinationMusic.DungeonSewers:
+                temp = dungeonSewersMusic;
+                break;
+            case Warp_Controller.destinationMusic.DungeonCave:
+                temp = dungeonCaveMusic;
+                break;
+            case Warp_Controller.destinationMusic.DungeonCrypt:
+                temp = dungeonCryptMusic;
                 break;
             case Warp_Controller.destinationMusic.RuinedTown:
                 temp = ruinedTownMusic;
