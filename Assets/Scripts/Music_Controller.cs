@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Music_Controller : MonoBehaviour
 {
@@ -7,8 +8,9 @@ public class Music_Controller : MonoBehaviour
     public AudioClip ruinedTownMusic;
     public AudioClip tavernInteriorFloorMusic;
     public AudioClip winterForestMusic;
-    public AudioClip dungeon1Music;
+    public AudioClip dungeonMusic;
     public float transitionTime = .5f;
+    private float volume;
     public static Music_Controller instance;
 
     void Start()
@@ -17,29 +19,29 @@ public class Music_Controller : MonoBehaviour
             instance = this;
 
         musicAudioSource.clip = ruinedTownMusic;
+        volume = musicAudioSource.volume;
         musicAudioSource.Play();
     }
 
     //Used for swapping songs when warping
-    public void warpChangeMusic(string areaMusic)
+    public void warpChangeMusic(Warp_Controller.destinationMusic areaMusic)
     {
         AudioClip temp = null;
 
-        if (areaMusic.ToLower().Equals("dungeon1"))
+        switch(areaMusic)
         {
-            temp = dungeon1Music;
-        }
-        else if(areaMusic.ToLower().Equals("ruinedtown"))
-        {
-            temp = ruinedTownMusic;
-        }
-        else if(areaMusic.ToLower().Equals("winterforest"))
-        {
-            temp = winterForestMusic;
-        }
-        else if(areaMusic.ToLower().Equals("tavern"))
-        {
-            temp = tavernInteriorFloorMusic;
+            case Warp_Controller.destinationMusic.Dungeon:
+                temp = dungeonMusic;
+                break;
+            case Warp_Controller.destinationMusic.RuinedTown:
+                temp = ruinedTownMusic;
+                break;
+            case Warp_Controller.destinationMusic.WinterForest:
+                temp = winterForestMusic;
+                break;
+            case Warp_Controller.destinationMusic.Tavern:
+                temp = tavernInteriorFloorMusic;
+                break;
         }
 
         StartCoroutine(interludeMusic(temp));
@@ -47,12 +49,11 @@ public class Music_Controller : MonoBehaviour
 
     public IEnumerator interludeMusic(AudioClip song)
     {
-        float temp = musicAudioSource.volume;
         float time = 0f;
 
         while (musicAudioSource.volume > 0f)
         {
-            musicAudioSource.volume = Mathf.Lerp(temp, 0f, time);
+            musicAudioSource.volume = Mathf.Lerp(volume, 0f, time);
             time += Time.deltaTime / transitionTime;
             yield return null;
         }
@@ -61,9 +62,9 @@ public class Music_Controller : MonoBehaviour
         musicAudioSource.clip = song;
         musicAudioSource.Play();
 
-        while (musicAudioSource.volume < temp)
+        while (musicAudioSource.volume < volume)
         {
-            musicAudioSource.volume = Mathf.Lerp(0, temp, time);
+            musicAudioSource.volume = Mathf.Lerp(0, volume, time);
             time += Time.deltaTime / transitionTime;
             yield return null;
         }

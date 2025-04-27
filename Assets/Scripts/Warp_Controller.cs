@@ -13,11 +13,23 @@ public class Warp_Controller : MonoBehaviour
     public float transitionTime = 1f;
     public AudioClip warpSound;
     public AudioSource audioSource;
-    public string direction = "down";
-    public string destinationMusic;
+    public enum destinationFacingDirection
+    {
+        Up, Down, Left, Right
+    }
+
+    //Add places here when tile maps are finished
+    public enum destinationMusic
+    {
+        Dungeon, Tavern, WinterForest, RuinedTown
+    }
+
+    public destinationMusic music;
+    public destinationFacingDirection direction;
 
     void Start()
     {
+
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -51,7 +63,7 @@ public class Warp_Controller : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
 
         Area_Controller.instance.currentLocationText.text = "";
-        Music_Controller.instance.warpChangeMusic(destinationMusic);
+        Music_Controller.instance.warpChangeMusic(music);
         Player_Controller.instance.changeFacingDirectionWarp(direction);
         Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
 

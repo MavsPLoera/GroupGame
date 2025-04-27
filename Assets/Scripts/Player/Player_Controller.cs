@@ -434,39 +434,38 @@ public class Player_Controller : MonoBehaviour
     }
 
     //Used to change the direction of a player during warp
-    public void changeFacingDirectionWarp(string direction)
+    public void changeFacingDirectionWarp(Warp_Controller.destinationFacingDirection direction)
     {
-        if (direction.ToLower().Equals("up"))
+        switch(direction)
         {
-            facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
-            arrowSpawn.transform.position = new Vector3(0f, .6f, 0f) + transform.position;
-            playerAnimator.SetFloat("moveX", 0);
-            playerAnimator.SetFloat("moveY", 1);
-            swordController.updateHitBox(swingUpOffset, swingUpSize);
-        }
-        else if (direction.ToLower().Equals("down"))
-        {
-            facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
-            arrowSpawn.transform.position = new Vector3(0f, -.7f, 0f) + transform.position;
-            playerAnimator.SetFloat("moveX", 0);
-            playerAnimator.SetFloat("moveY", -1);
-            swordController.updateHitBox(swingDownOffset, swingDownSize);
-        }
-        else if (direction.ToLower().Equals("right"))
-        {
-            facingTowards.transform.position = new Vector3(1f, 0f, 0f) + transform.position;
-            arrowSpawn.transform.position = new Vector3(.6f, 0f, 0f) + transform.position;
-            playerAnimator.SetFloat("moveX", 1);
-            playerAnimator.SetFloat("moveY", 0);
-            swordController.updateHitBox(swingRightOffset, swingRightSize);
-        }
-        else if (direction.ToLower().Equals("left"))
-        {
-            facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
-            arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;
-            playerAnimator.SetFloat("moveX", -1);
-            playerAnimator.SetFloat("moveY", 0);
-            swordController.updateHitBox(swingLeftOffset, swingLeftSize);
+            case Warp_Controller.destinationFacingDirection.Up:
+                facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
+                arrowSpawn.transform.position = new Vector3(0f, .6f, 0f) + transform.position;
+                playerAnimator.SetFloat("moveX", 0);
+                playerAnimator.SetFloat("moveY", 1);
+                swordController.updateHitBox(swingUpOffset, swingUpSize);
+                break;
+            case Warp_Controller.destinationFacingDirection.Down:
+                facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
+                arrowSpawn.transform.position = new Vector3(0f, -.7f, 0f) + transform.position;
+                playerAnimator.SetFloat("moveX", 0);
+                playerAnimator.SetFloat("moveY", -1);
+                swordController.updateHitBox(swingDownOffset, swingDownSize);
+                break;
+            case Warp_Controller.destinationFacingDirection.Right:
+                facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
+                arrowSpawn.transform.position = new Vector3(0f, -.7f, 0f) + transform.position;
+                playerAnimator.SetFloat("moveX", 0);
+                playerAnimator.SetFloat("moveY", -1);
+                swordController.updateHitBox(swingDownOffset, swingDownSize);
+                break;
+            case Warp_Controller.destinationFacingDirection.Left:
+                facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
+                arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;
+                playerAnimator.SetFloat("moveX", -1);
+                playerAnimator.SetFloat("moveY", 0);
+                swordController.updateHitBox(swingLeftOffset, swingLeftSize);
+                break;
         }
     }
 
