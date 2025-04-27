@@ -68,6 +68,7 @@ public class Dungeon_Controller: MonoBehaviour
             currentDungeon = null;
             currentRoom = null;
         }
+        // TODO: check if dungeon is cleared.
     }
 
     public void EnterRoom(int dungeonIndex, int roomIndex)
