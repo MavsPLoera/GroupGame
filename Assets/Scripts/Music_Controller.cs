@@ -9,6 +9,7 @@ public class Music_Controller : MonoBehaviour
     public AudioClip tavernInteriorFloorMusic;
     public AudioClip winterForestMusic;
     public AudioClip dungeonMusic;
+    public AudioClip cemetaryMusic;
     public float transitionTime = .5f;
     private float volume;
     public static Music_Controller instance;
@@ -41,6 +42,9 @@ public class Music_Controller : MonoBehaviour
                 break;
             case Warp_Controller.destinationMusic.Tavern:
                 temp = tavernInteriorFloorMusic;
+                break;
+            case Warp_Controller.destinationMusic.Cemetary:
+                temp = cemetaryMusic;
                 break;
         }
 

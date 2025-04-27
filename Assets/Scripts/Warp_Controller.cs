@@ -13,15 +13,15 @@ public class Warp_Controller : MonoBehaviour
     public float transitionTime = 1f;
     public AudioClip warpSound;
     public AudioSource audioSource;
+
     public enum destinationFacingDirection
     {
         Up, Down, Left, Right
     }
 
-    //Add places here when tile maps are finished
     public enum destinationMusic
     {
-        Dungeon, Tavern, WinterForest, RuinedTown
+        Dungeon, Tavern, WinterForest, RuinedTown, Cemetary
     }
 
     public destinationMusic music;
