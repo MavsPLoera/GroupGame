@@ -46,7 +46,8 @@ public class Area_Controller : MonoBehaviour
         currentArea = areas[areaIndex];
         if(!currentArea.isDiscovered)
         {
-            // StartCoroutine(UI_Controller.instance.LocationDiscovered());
+            currentArea.isDiscovered = true;
+            StartCoroutine(UI_Controller.instance.LocationDiscovered(currentArea.name));
         }
         StartCoroutine(UI_Controller.instance.FadeText(currentArea.name, 0, 1, 0.75f));
     }

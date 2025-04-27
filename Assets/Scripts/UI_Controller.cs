@@ -9,6 +9,8 @@ public class UI_Controller : MonoBehaviour
     [Header("UI Controller Misc.")]
     public TextMeshProUGUI currentLocationText;
     public TextMeshProUGUI locationDiscoveredText;
+    public TextMeshProUGUI dungeonClearedText;
+    public float textDisplayDuration;
 
     public static UI_Controller instance;
 
@@ -22,6 +24,24 @@ public class UI_Controller : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Update()
+    {
+        if(Dungeon_Controller.instance.inDungeon && Dungeon_Controller.instance.currentDungeon != null)
+        {
+            bool isCleared = Dungeon_Controller.instance.currentDungeon.isCleared;
+            dungeonClearedText.text = isCleared ? "(Cleared)" : "(Not Cleared)";
+        }
+    }
+
+    public IEnumerator LocationDiscovered(string name)
+    {
+        locationDiscoveredText.text = $"Discovered {name}";
+        yield return StartCoroutine(FadeText(name, 0, 1, 0.75f));
+        yield return new WaitForSeconds(textDisplayDuration);
+        yield return StartCoroutine(FadeText(name, 1, 0, 0.75f));
+        locationDiscoveredText.text = "";
     }
 
     public IEnumerator FadeText(string name, float currentAlpha, float targetAlpha, float transitionTime)
@@ -40,15 +60,3 @@ public class UI_Controller : MonoBehaviour
         currentLocationText.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
     }
 }
-
-/*
-private IEnumerator LocationDiscovered()
-{
-    currentArea.isDiscovered = true;
-    locationDiscoveredText.text = $"Discovered {currentArea.name}";
-    yield return StartCoroutine(FadeText(locationDiscoveredText, 0, 1, 0.75f));
-    yield return new WaitForSeconds(textDisplayDuration);
-    yield return StartCoroutine(FadeText(locationDiscoveredText, 1, 0, 0.75f));
-    locationDiscoveredText.text = "";
-}
-*/

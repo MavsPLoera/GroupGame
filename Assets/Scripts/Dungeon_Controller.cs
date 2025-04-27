@@ -31,6 +31,7 @@ public class Dungeon_Controller: MonoBehaviour
     [Header("Dungeon Controller Misc.")]
     public List<Dungeon> dungeons;
     public DungeonRoom currentRoom;
+    public Dungeon currentDungeon;
     public bool inDungeon = true;
     public bool isTransitioning = false;
 
@@ -62,20 +63,25 @@ public class Dungeon_Controller: MonoBehaviour
                 currentRoom.doors.ForEach(door => door.SetActive(false));
             }
         }
+        if(!inDungeon)
+        {
+            currentDungeon = null;
+            currentRoom = null;
+        }
     }
 
     public void EnterRoom(int dungeonIndex, int roomIndex)
     {
-        if (dungeonIndex < 0 || dungeonIndex >= dungeons.Count) return;
-        Dungeon currentDungeon = dungeons[dungeonIndex];
-        if (roomIndex < 0 || roomIndex >= currentDungeon.rooms.Count) return;
+        if(dungeonIndex < 0 || dungeonIndex >= dungeons.Count) return;
+        currentDungeon = dungeons[dungeonIndex];
+        if(roomIndex < 0 || roomIndex >= currentDungeon.rooms.Count) return;
 
         // Get current room, set vars., and turn on lights.
         currentRoom = currentDungeon.rooms[roomIndex];
         currentRoom.lights.ForEach(light => light.SetActive(true));
 
         // Enable enemies and freeze their positions.
-        if (!currentRoom.isCleared)
+        if(!currentRoom.isCleared)
         {
             // (?) is there a better solution for this?
             currentRoom.enemies.ForEach(enemy =>
@@ -128,5 +134,6 @@ public class Dungeon_Controller: MonoBehaviour
         currentRoom.doors.ForEach(door => door.SetActive(false));
         currentRoom.isCleared = false;
         currentRoom = null;
+        currentDungeon = null;
     }
 }
