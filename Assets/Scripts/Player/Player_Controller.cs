@@ -272,6 +272,7 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Swing", 0);
         rb.linearVelocity = Vector2.zero;
         canSwing = false;
+        playerAudioSource.PlayOneShot(swordSwingSound);
 
         //Let the full animation play out. I am not sure why getting the length of the animation does not work but .6f does fine.
         yield return new WaitForSeconds(.6f);
@@ -318,6 +319,8 @@ public class Player_Controller : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         playerAnimator.Play("Player_Secondary", 0);
         canInput = false;
+        playerAudioSource.PlayOneShot(bowShootSound);
+
 
         yield return new WaitForSeconds(.333f);
         playChangingPitchSound(bowShootSound);
@@ -387,6 +390,7 @@ public class Player_Controller : MonoBehaviour
          * 
          * NEED TO ALSO CHANGE THE HITBOXES TO NOT COLLIDE WITH BULLETS like enter the gungeon
          */
+        playerAudioSource.PlayOneShot(dashSound);
 
         canInput = false;
         canDash = false;

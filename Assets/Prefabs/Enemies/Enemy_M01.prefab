@@ -269,7 +269,7 @@ MonoBehaviour:
   enemyType: 1
   isInAnimation: 0
   _enemyAudioSource: {fileID: 0}
-  enemyDamaged: {fileID: 8300000, guid: 94d8b2a7dbce0064bb887ffc33816a76, type: 3}
+  enemyDamaged: {fileID: 8300000, guid: 460bc646f5e698640bc70d0c2a5bcc23, type: 3}
   enemySwing: {fileID: 8300000, guid: 66e23a827d7c94f47bb60b86ebbb3461, type: 3}
   enemyShoot: {fileID: 0}
   enemeyDeath: {fileID: 8300000, guid: f01f96dd9222c464e995d12f63062093, type: 3}
