@@ -57,7 +57,7 @@ public class Area_Controller : MonoBehaviour
         if(currentArea != null)
         {
             string name = currentArea.name;
-            StartCoroutine(UI_Controller.instance.FadeText(name, 1, 0, 0.75f));
+            if(instance) StartCoroutine(UI_Controller.instance.FadeText(name, 1, 0, 0.75f));
             currentArea = null;
         }    
     }

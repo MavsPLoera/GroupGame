@@ -8,8 +8,9 @@ public class ShowDialogueButton : MonoBehaviour
     public GameObject player;
     public float requiredDistance = 3f; 
     private float distanceFromNpc;
-    public Button talkToNpcButton; 
-    
+    public Button talkToNpcButton;
+    private readonly bool _debug = false;
+
     void Awake()
     {
         if (talkToNpcButton == null)
@@ -41,7 +42,7 @@ public class ShowDialogueButton : MonoBehaviour
         if (distanceFromNpc <= requiredDistance)
         {
             talkToNpcButton.gameObject.SetActive(true);
-            Debug.Log("Button should appear");
+            if(_debug) Debug.Log("Button should appear");
 
         }
         else

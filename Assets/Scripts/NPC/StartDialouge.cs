@@ -14,6 +14,7 @@ public class StartDialogue : MonoBehaviour
     [SerializeField] private Button skipButton;
     [SerializeField] private Button acceptButton;
     [SerializeField] private Button rejectButton;
+    [SerializeField] private bool isQuest; // For non-quest dialogue.
     private bool questDecision = false;
 
     [Header("Dialogue Content")]
@@ -49,17 +50,19 @@ public class StartDialogue : MonoBehaviour
             nextButton.gameObject.SetActive(false);
             skipButton.gameObject.SetActive(false);
 
-            if(questDecision == false)
+            if (isQuest)
             {
-                acceptButton.gameObject.SetActive(true);
-                rejectButton.gameObject.SetActive(true);
-                
+                if (questDecision == false)
+                {
+                    acceptButton.gameObject.SetActive(true);
+                    rejectButton.gameObject.SetActive(true);
+
+                }
+                else
+                {
+                    questAcceptDisplay.gameObject.SetActive(true);
+                }
             }
-            else
-            {
-                questAcceptDisplay.gameObject.SetActive(true);
-            }
-            
         }
         else
         {
