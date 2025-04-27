@@ -15,6 +15,7 @@ public class Music_Controller : MonoBehaviour
     public AudioClip gameOverMusic;
     public AudioClip gameWinMusic;
     public float transitionTime = .5f;
+    public float audioTime;
     private float volume;
     public static Music_Controller instance;
 
@@ -65,6 +66,7 @@ public class Music_Controller : MonoBehaviour
     {
         float time = 0f;
 
+        //Lerp music to not be heard any more
         while (musicAudioSource.volume > 0f)
         {
             musicAudioSource.volume = Mathf.Lerp(volume, 0f, time);
@@ -72,10 +74,21 @@ public class Music_Controller : MonoBehaviour
             yield return null;
         }
 
+
         time = 0f;
+
+        /*
+         * Get time of the current song
+         * Swap it
+         * play it from where the old song left off
+         */
+
+        audioTime = musicAudioSource.time;
         musicAudioSource.clip = song;
+        musicAudioSource.time = audioTime;
         musicAudioSource.Play();
 
+        //Lerp music volume back up
         while (musicAudioSource.volume < volume)
         {
             musicAudioSource.volume = Mathf.Lerp(0, volume, time);
