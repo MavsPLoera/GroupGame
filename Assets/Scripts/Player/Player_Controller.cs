@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,23 +60,20 @@ public class Player_Controller : MonoBehaviour
     public AudioClip goldCollect;
     public AudioClip playerTakeDamage;
     public AudioClip dashSound;
-    public AudioClip playerLandSound;
     public AudioClip healingSound;
     public AudioClip swordSwingSound;
-    public AudioClip swordHitSound;
-    public AudioClip secondaryMoveSound;
-    public AudioClip secondaryMoveHitSound;
+    public AudioClip bowShootSound;
+    public AudioClip arrowsRefilledSound;
     public AudioClip ultimateMoveSound;
-    public AudioClip ultimateMoveHitSound;
+    public AudioClip ultimateRefreshedSound;
     public AudioClip unlockedNewAbilitySound;
 
     [Header("Player Particle Systems")]
     public ParticleSystem healingParticles;
     public ParticleSystem dashDustParticles;
     public ParticleSystem dashCooldonRefreshedParticles;
-    public ParticleSystem secondaryMoveParticles;
     public ParticleSystem ultimateParticles;
-    public ParticleSystem playerHitParticles;
+    public ParticleSystem ultimateRefreshedParticles;
     public ParticleSystem DustFX;
 
     [Header("Player Sword Hitboxes")]
@@ -305,6 +303,7 @@ public class Player_Controller : MonoBehaviour
         }
         healingPotions--;
 
+        playChangingPitchSound(healingSound);
         //Return player movespeed back to normal and allow player to use abilities again. Future notice I will need to disable other abilities as well
         yield return new WaitForSeconds(healingSlowdown);
 
@@ -321,7 +320,7 @@ public class Player_Controller : MonoBehaviour
         canInput = false;
 
         yield return new WaitForSeconds(.333f);
-
+        playChangingPitchSound(bowShootSound);
         Instantiate(arrow, arrowSpawn.transform.position, gameObject.transform.rotation);
         arrows--;
         
@@ -341,6 +340,7 @@ public class Player_Controller : MonoBehaviour
     {
         //Short duration before the player is able to shoot again. The magically reloading bow takes time to reload.
         yield return new WaitForSeconds(reloadCoolDown);
+        playerAudioSource.PlayOneShot(arrowsRefilledSound);
         arrows = maxArrows;
     }
 
@@ -361,15 +361,20 @@ public class Player_Controller : MonoBehaviour
 
         //Player is able to input after intimidation animation
         canInput = true;
+        ultimateParticles.Play();
+        playChangingPitchSound(ultimateMoveSound);
         playerAnimator.Play("Player_Idle", 0);
 
         yield return new WaitForSeconds(ultimateDuration);
 
         ultLight.gameObject.SetActive(false);
+
         //Removed increase damage when ult is on cooldown
         swordDamage -= swordDamageUltIncrease;
 
         yield return new WaitForSeconds(ultimateCooldown);
+        playerAudioSource.PlayOneShot(ultimateRefreshedSound);
+        ultimateRefreshedParticles.Play();
         canUlt = true;
     }
 
@@ -593,6 +598,13 @@ public class Player_Controller : MonoBehaviour
         crossFadeIn.SetActive(false);
         canInput = true;
         invincible = false;
+    }
+
+    private void playChangingPitchSound(AudioClip sound)
+    {
+        float temp = Random.Range(.9f, 1.1f);
+        playerChangingAudioSource.pitch = temp;
+        playerChangingAudioSource.PlayOneShot(sound);
     }
 
     public void TakeDamage(float damage)
