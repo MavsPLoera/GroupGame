@@ -24,11 +24,6 @@ public class Area_Controller : MonoBehaviour
     [Header("Area Controller Misc.")]
     public List<Area> areas;
     public Area currentArea;
-    public TextMeshProUGUI currentLocationText;
-    public TextMeshProUGUI locationDiscoveredText;
-    public float textDisplayDuration;
-
-    private Coroutine fadeText;
 
     public static Area_Controller instance;
 
@@ -51,42 +46,20 @@ public class Area_Controller : MonoBehaviour
         currentArea = areas[areaIndex];
         if(!currentArea.isDiscovered)
         {
-            StartCoroutine(LocationDiscovered());
+            // StartCoroutine(UI_Controller.instance.LocationDiscovered());
         }
-        currentLocationText.text = currentArea.name;
-        StartCoroutine(FadeText(currentLocationText, 0, 1, 0.75f));
+        StartCoroutine(UI_Controller.instance.FadeText(currentArea.name, 0, 1, 0.75f));
     }
 
     public void ExitArea(int areaIndex)
     {
         if(areaIndex < 0 || areaIndex >= areas.Count) return;
-
-        currentArea = null;
-        if(instance) StartCoroutine(FadeText(currentLocationText, 1, 0, 0.75f));
-    }
-
-    private IEnumerator LocationDiscovered()
-    {
-        currentArea.isDiscovered = true;
-        locationDiscoveredText.text = $"Discovered {currentArea.name}";
-        yield return StartCoroutine(FadeText(locationDiscoveredText, 0, 1, 0.75f));
-        yield return new WaitForSeconds(textDisplayDuration);
-        yield return StartCoroutine(FadeText(locationDiscoveredText, 1, 0, 0.75f));
-        locationDiscoveredText.text = "";
-    }
-
-    private IEnumerator FadeText(TextMeshProUGUI text, float currentAlpha, float targetAlpha, float transitionTime)
-    {
-        Color originalColor = text.color;
-        text.alpha = currentAlpha;
-        float time = 0;
-        while(time < transitionTime)
+        if(currentArea != null)
         {
-            time += Time.deltaTime;
-            currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, time / transitionTime);
-            text.color = new Color(originalColor.r, originalColor.g, originalColor.b, currentAlpha);
-            yield return null;
-        }
-        text.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
+            string name = currentArea.name;
+            StartCoroutine(UI_Controller.instance.FadeText(name, 1, 0, 0.75f));
+            currentArea = null;
+        }    
     }
+
 }

@@ -202,7 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f10b05545227a5449f8c6e5921bdbe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drops: []
+  drops:
+  - {fileID: 4337908992862207632, guid: 81c480e8ea33293479656fb98657279e, type: 3}
+  - {fileID: 4479897578755754224, guid: 25ca9a0189719b041a23166949c7939f, type: 3}
   text: {fileID: 2331278422551046817}
   genericTextList:
   - '*rattle*'

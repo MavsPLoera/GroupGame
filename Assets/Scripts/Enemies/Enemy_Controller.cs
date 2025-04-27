@@ -131,20 +131,17 @@ public class Enemy_Controller : MonoBehaviour
     private void OnDeath()
     {
         // Drop item.
-        /*
-        int dropChance = Random.Range(0, 100);
+        int dropChance = Random.Range(1, 101);
         if(dropChance <= 10)
         {
             // Drop health poition.
             Instantiate(drops[1], transform.position, transform.rotation);
         }
-        else
+        else if(dropChance <= 35)
         {
             // Drop gold.
             Instantiate(drops[0], transform.position, transform.rotation);
         }
-        */
-        // Destroy(gameObject);
         StartCoroutine(Death());
     }
 
