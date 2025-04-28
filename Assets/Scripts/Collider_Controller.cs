@@ -44,7 +44,6 @@ public class Collider_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            if(!Player_Controller.instance.canInput) return;
             if (colliderType == Collider_Type.Room)
             {
                 if(_debug) Debug.Log($"Player Exited Room {roomIndex + 1}");
@@ -52,6 +51,7 @@ public class Collider_Controller : MonoBehaviour
             }
             else if (colliderType == Collider_Type.Area)
             {
+                if(!Player_Controller.instance.canInput) return;
                 if(_debug) Debug.Log($"Player Exited Area {areaIndex + 1}");
                 Area_Controller.instance.ExitArea(areaIndex);
             }
