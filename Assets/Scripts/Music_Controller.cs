@@ -129,7 +129,7 @@ public class Music_Controller : MonoBehaviour
 
     public void resumeMusic()
     {
-        musicAudioSource.Play();
+        musicAudioSource.UnPause();
     }
 
 }
