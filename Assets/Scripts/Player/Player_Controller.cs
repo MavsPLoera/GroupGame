@@ -581,6 +581,7 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Hit", 0);
         crossFadeIn.SetActive(true);
 
+        Music_Controller.instance.warpChangeMusic(Warp_Controller.destinationMusic.Tavern);
         yield return new WaitForSeconds(1f);
 
         //Update the players spawn to the town, move camera after the player has been moved to the same position.
