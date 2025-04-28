@@ -364,7 +364,9 @@ public class Player_Controller : MonoBehaviour
 
         //Player is able to input after intimidation animation
         canInput = true;
-        ultimateParticles.Play();
+
+        if(ultimateParticles != null)
+            ultimateParticles.Play();
         playChangingPitchSound(ultimateMoveSound);
         playerAnimator.Play("Player_Idle", 0);
 
@@ -377,7 +379,8 @@ public class Player_Controller : MonoBehaviour
 
         yield return new WaitForSeconds(ultimateCooldown);
         playerAudioSource.PlayOneShot(ultimateRefreshedSound);
-        ultimateRefreshedParticles.Play();
+        if (ultimateRefreshedParticles != null)
+            ultimateRefreshedParticles.Play();
         canUlt = true;
     }
 

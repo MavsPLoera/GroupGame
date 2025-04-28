@@ -21,8 +21,14 @@ public class Music_Controller : MonoBehaviour
 
     void Start()
     {
-        if (instance == null)
+        if (!instance)
+        {
             instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         musicAudioSource.clip = ruinedTownMusic;
         volume = musicAudioSource.volume;
@@ -59,7 +65,8 @@ public class Music_Controller : MonoBehaviour
                 break;
         }
 
-        StartCoroutine(interludeMusic(temp));
+        if(musicAudioSource.clip != temp)
+            StartCoroutine(interludeMusic(temp));
     }
 
     public IEnumerator interludeMusic(AudioClip song)
@@ -73,8 +80,6 @@ public class Music_Controller : MonoBehaviour
             time += Time.deltaTime / transitionTime;
             yield return null;
         }
-
-
         time = 0f;
 
         /*
@@ -82,10 +87,10 @@ public class Music_Controller : MonoBehaviour
          * Swap it
          * play it from where the old song left off
          */
-
         audioTime = musicAudioSource.time;
+        musicAudioSource.Pause();
         musicAudioSource.clip = song;
-        musicAudioSource.time = audioTime;
+        musicAudioSource.time = Mathf.Min(audioTime, song.length - .01f);
         musicAudioSource.Play();
 
         //Lerp music volume back up
