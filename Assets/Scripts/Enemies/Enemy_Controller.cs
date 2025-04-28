@@ -12,7 +12,9 @@ public class Enemy_Controller : MonoBehaviour
     {
         Skeleton,
         Skeleton_Warrior,
-        Skeleton_Ranged
+        Skeleton_Ranged,
+        Bear,
+        Wolf
     }
 
     private enum TextType
@@ -182,7 +184,7 @@ public class Enemy_Controller : MonoBehaviour
         int textChance = Random.Range(0, 100);
         if(textChance <= 10)
         {
-            StartCoroutine(DisplayText(TextType.Generic));
+            // StartCoroutine(DisplayText(TextType.Generic));
         }
     }
 

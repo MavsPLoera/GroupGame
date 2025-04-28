@@ -84,7 +84,6 @@ public class Dungeon_Controller: MonoBehaviour
         // Enable enemies and freeze their positions.
         if(!currentRoom.isCleared)
         {
-            // (?) is there a better solution for this?
             currentRoom.enemies.ForEach(enemy =>
             {
                 enemy.SetActive(true);
@@ -98,6 +97,7 @@ public class Dungeon_Controller: MonoBehaviour
         // Let camera reposition before continuing.
         StartCoroutine(Camera_Controller.instance.UpdatePosition(newCameraPosition, () =>
         {
+            Debug.Log($"Finished Respositioning");
             // Once the camera has repositioned, check for isCleared.
             if(!currentRoom.isCleared)
             {

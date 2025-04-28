@@ -41,12 +41,13 @@ public class UI_Controller : MonoBehaviour
 
     public void EnterArea(string name)
     {
-        StartCoroutine(FadeText(name, 0, 1, 0.75f));
+        currentLocationText.text = name;
+        StartCoroutine(FadeText(currentLocationText, 0, 1, 0.75f));
     }
 
     public void ExitArea(string name)
     {
-        StartCoroutine(FadeText(name, 1, 0, 0.75f));
+        StartCoroutine(FadeText(currentLocationText, 1, 0, 0.75f));
     }
 
     public void DiscoverLocation(string name)
@@ -59,25 +60,24 @@ public class UI_Controller : MonoBehaviour
     {
         // TODO: add AudioClip.
         locationDiscoveredText.text = $"Discovered {name}";
-        yield return StartCoroutine(FadeText(name, 0, 1, 0.75f));
+        yield return StartCoroutine(FadeText(locationDiscoveredText, 0, 1, 0.75f));
         yield return new WaitForSeconds(textDisplayDuration);
-        yield return StartCoroutine(FadeText(name, 1, 0, 0.75f));
+        yield return StartCoroutine(FadeText(locationDiscoveredText, 1, 0, 0.75f));
         locationDiscoveredText.text = "";
     }
 
-    public IEnumerator FadeText(string name, float currentAlpha, float targetAlpha, float transitionTime)
+    public IEnumerator FadeText(TextMeshProUGUI textToFade, float currentAlpha, float targetAlpha, float transitionTime)
     {
-        currentLocationText.text = name;
-        Color originalColor = currentLocationText.color;
-        currentLocationText.alpha = currentAlpha;
+        Color originalColor = textToFade.color;
+        textToFade.alpha = currentAlpha;
         float time = 0;
         while(time < transitionTime)
         {
             time += Time.deltaTime;
             currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, time / transitionTime);
-            currentLocationText.color = new Color(originalColor.r, originalColor.g, originalColor.b, currentAlpha);
+            textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, currentAlpha);
             yield return null;
         }
-        currentLocationText.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
+        textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
     }
 }
