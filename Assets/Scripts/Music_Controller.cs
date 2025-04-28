@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -14,8 +15,9 @@ public class Music_Controller : MonoBehaviour
     public AudioClip cemetaryMusic;
     public AudioClip gameOverMusic;
     public AudioClip gameWinMusic;
+    public Dictionary<AudioClip, float> clipTimes = new();
     public float transitionTime = .5f;
-    public float audioTime;
+    // public float audioTime;
     private float volume;
     public static Music_Controller instance;
 
@@ -29,6 +31,16 @@ public class Music_Controller : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        clipTimes[ruinedTownMusic] = 0f;
+        clipTimes[tavernInteriorFloorMusic] = 0f;
+        clipTimes[winterForestMusic] = 0f;
+        clipTimes[dungeonSewersMusic] = 0f;
+        clipTimes[dungeonCaveMusic] = 0f;
+        clipTimes[dungeonCryptMusic] = 0f;
+        clipTimes[cemetaryMusic] = 0f;
+        clipTimes[gameOverMusic] = 0f;
+        clipTimes[gameWinMusic] = 0f;
 
         musicAudioSource.clip = ruinedTownMusic;
         volume = musicAudioSource.volume;
@@ -84,12 +96,15 @@ public class Music_Controller : MonoBehaviour
 
         /*
          * Get time of the current song
+         * Store in clipTimes
          * Swap it
          * play it from where the old song left off
          */
-        audioTime = musicAudioSource.time;
+        // audioTime = musicAudioSource.time;
+        clipTimes[musicAudioSource.clip] = musicAudioSource.time;
         musicAudioSource.Pause();
         musicAudioSource.clip = song;
+        float audioTime = clipTimes[musicAudioSource.clip];
         musicAudioSource.time = Mathf.Min(audioTime, song.length - .01f);
         musicAudioSource.Play();
 
