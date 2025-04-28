@@ -55,6 +55,8 @@ public class Warp_Controller : MonoBehaviour
          * if the player is going to a dungeon we need to seet the bools to true for proper camera control change.
          */
 
+        // Prevent area colliders from trigger their OnExit() events
+        // during warp. Solves issue with currentLocation not displaying.
         Player_Controller.instance.canInput = false;
         Player_Controller.instance.playerAnimator.Play("Player_Walk", 0);
         crossFadeIn.SetActive(true);
@@ -62,7 +64,6 @@ public class Warp_Controller : MonoBehaviour
 
         yield return new WaitForSeconds(transitionTime);
 
-        UI_Controller.instance.currentLocationText.text = "";
         Music_Controller.instance.warpChangeMusic(music);
         Player_Controller.instance.changeFacingDirectionWarp(direction);
         Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);

@@ -9,8 +9,6 @@ public class Area_Controller : MonoBehaviour
     // Area Controller
     // Manages overworld areas.
 
-    // (?) might merge this with Dungeon_Controller.
-
     [System.Serializable]
     public class Area
     {
@@ -47,20 +45,20 @@ public class Area_Controller : MonoBehaviour
         if(!currentArea.isDiscovered)
         {
             currentArea.isDiscovered = true;
-            StartCoroutine(UI_Controller.instance.LocationDiscovered(currentArea.name));
+            UI_Controller.instance.DiscoverLocation(currentArea.name);
         }
-        StartCoroutine(UI_Controller.instance.FadeText(currentArea.name, 0, 1, 0.75f));
+        UI_Controller.instance.EnterArea(currentArea.name);
     }
 
     public void ExitArea(int areaIndex)
     {
-        if(areaIndex < 0 || areaIndex >= areas.Count) return;
-        if(currentArea != null)
+        if(areaIndex < 0 || areaIndex >= areas.Count || currentArea == null) return;
+        string name = currentArea.name;
+        if(instance)
         {
-            string name = currentArea.name;
-            if(instance) StartCoroutine(UI_Controller.instance.FadeText(name, 1, 0, 0.75f));
-            currentArea = null;
-        }    
+            UI_Controller.instance.ExitArea(name);
+        }
+        currentArea = null;
     }
 
 }

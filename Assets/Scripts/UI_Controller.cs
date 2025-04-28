@@ -33,9 +33,29 @@ public class UI_Controller : MonoBehaviour
             bool isCleared = Dungeon_Controller.instance.currentDungeon.isCleared;
             dungeonClearedText.text = isCleared ? "(Cleared)" : "(Not Cleared)";
         }
+        else
+        {
+            dungeonClearedText.text = "";
+        }
     }
 
-    public IEnumerator LocationDiscovered(string name)
+    public void EnterArea(string name)
+    {
+        StartCoroutine(FadeText(name, 0, 1, 0.75f));
+    }
+
+    public void ExitArea(string name)
+    {
+        StartCoroutine(FadeText(name, 1, 0, 0.75f));
+    }
+
+    public void DiscoverLocation(string name)
+    {
+        // StartCoroutine(DisplayDiscoveredLocation(name));
+    }
+
+
+    public IEnumerator DisplayDiscoveredLocation(string name)
     {
         locationDiscoveredText.text = $"Discovered {name}";
         yield return StartCoroutine(FadeText(name, 0, 1, 0.75f));

@@ -44,7 +44,8 @@ public class Collider_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            if(colliderType == Collider_Type.Room)
+            if(!Player_Controller.instance.canInput) return;
+            if (colliderType == Collider_Type.Room)
             {
                 if(_debug) Debug.Log($"Player Exited Room {roomIndex + 1}");
                 Dungeon_Controller.instance.ExitRoom(dungeonIndex, roomIndex);
