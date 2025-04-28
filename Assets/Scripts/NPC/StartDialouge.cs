@@ -15,6 +15,7 @@ public class StartDialogue : MonoBehaviour
     [SerializeField] private Button acceptButton;
     [SerializeField] private Button rejectButton;
     [SerializeField] private bool isQuest; // For non-quest dialogue.
+    [SerializeField] private Canvas canvas;
     private bool questDecision = false;
 
     [Header("Dialogue Content")]
@@ -24,7 +25,7 @@ public class StartDialogue : MonoBehaviour
 
     private void Start()
     {
-
+        canvas.worldCamera = Camera.main;
     }
 
     public void BeginDialogue()

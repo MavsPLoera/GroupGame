@@ -51,12 +51,13 @@ public class UI_Controller : MonoBehaviour
 
     public void DiscoverLocation(string name)
     {
-        // StartCoroutine(DisplayDiscoveredLocation(name));
+        StartCoroutine(DisplayDiscoveredLocation(name));
     }
 
 
     public IEnumerator DisplayDiscoveredLocation(string name)
     {
+        // TODO: add AudioClip.
         locationDiscoveredText.text = $"Discovered {name}";
         yield return StartCoroutine(FadeText(name, 0, 1, 0.75f));
         yield return new WaitForSeconds(textDisplayDuration);

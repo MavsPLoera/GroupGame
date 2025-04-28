@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6730704249267929994}
   - component: {fileID: 7091264223804533604}
   m_Layer: 5
-  m_Name: accept
+  m_Name: Accept Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -349,7 +349,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1185521067
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: -411592042632126098, guid: b58071d022110b34d897a41356d9846a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -449,7 +449,7 @@ GameObject:
   - component: {fileID: 2236917548974819283}
   - component: {fileID: 792710925893779020}
   m_Layer: 5
-  m_Name: reject
+  m_Name: Reject Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 2081094309817782058}
   - component: {fileID: 2737041953132380548}
   m_Layer: 5
-  m_Name: close
+  m_Name: Close Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1129,7 +1129,7 @@ GameObject:
   - component: {fileID: 8713992947824004745}
   - component: {fileID: 5041351311230908168}
   m_Layer: 5
-  m_Name: Canvas (1)
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1168,7 +1168,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -1232,7 +1232,7 @@ GameObject:
   - component: {fileID: 7762847972362268437}
   - component: {fileID: 3555687841621079247}
   m_Layer: 5
-  m_Name: skip
+  m_Name: Skip Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1403,6 +1403,8 @@ MonoBehaviour:
   skipButton: {fileID: 3555687841621079247}
   acceptButton: {fileID: 7091264223804533604}
   rejectButton: {fileID: 792710925893779020}
+  isQuest: 0
+  canvas: {fileID: 8578394985868525037}
   dialogueSlides:
   - "Hatred And Prejudice Will Never Be Eradicated. And Witch Hunts Will Never Be
     About Witches. To Have A Scapegoat \u2013 That\u2019s The Key."
@@ -1552,7 +1554,7 @@ GameObject:
   - component: {fileID: 3200944598431029759}
   - component: {fileID: 8669929162535965868}
   m_Layer: 5
-  m_Name: next
+  m_Name: Next Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
