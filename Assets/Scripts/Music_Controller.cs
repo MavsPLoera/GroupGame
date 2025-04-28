@@ -17,7 +17,6 @@ public class Music_Controller : MonoBehaviour
     public AudioClip gameWinMusic;
     public Dictionary<AudioClip, float> clipTimes = new();
     public float transitionTime = .5f;
-    // public float audioTime;
     private float volume;
     public static Music_Controller instance;
 
