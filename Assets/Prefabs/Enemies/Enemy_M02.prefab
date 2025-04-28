@@ -207,8 +207,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a458af5976d65314296ce83af1e18aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedMin: 5
-  speedMax: 6
+  speedMin: 2
+  speedMax: 3
 --- !u!114 &6064523651889199734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,8 +240,8 @@ MonoBehaviour:
   enemySwing: {fileID: 0}
   enemyShoot: {fileID: 0}
   enemeyDeath: {fileID: 0}
-  health: 40
-  damage: 20
+  health: 80
+  damage: 25
   flickerDuration: 0.1
   attackCooldownTime: 5
 --- !u!61 &6331313311182214197

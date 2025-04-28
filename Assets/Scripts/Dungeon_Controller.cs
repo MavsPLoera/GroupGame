@@ -9,8 +9,6 @@ public class Dungeon_Controller: MonoBehaviour
     // Manages enemies, lighting, camera movement, etc.
     // for each dungeon.
 
-    // (?) might merge this with Area_Controller.
-
     [System.Serializable]
     public class Dungeon
     {
@@ -24,7 +22,8 @@ public class Dungeon_Controller: MonoBehaviour
         public List<GameObject> lights;
         public GameObject roomCollider;
         public List<GameObject> enemies;
-        public List<GameObject> doors;
+        public List<GameObject> warps;
+        public GameObject playerUnlock;
         public bool isCleared = false;
     }
 
@@ -55,12 +54,19 @@ public class Dungeon_Controller: MonoBehaviour
         if(currentRoom != null && !currentRoom.isCleared && !isTransitioning)
         {
             // Continually check enemies. If all dead, set isCleared and open doors.
-            List<GameObject> currentEnemies = currentRoom.enemies.Where(enemy => enemy.activeSelf != false).ToList();
-            if(currentEnemies.Count == 0)
+            List<GameObject> currentEnemies = currentRoom.enemies?
+                .Where(enemy => enemy.activeSelf)
+                .ToList();
+
+            if(currentEnemies != null && currentEnemies.Count == 0)
             {
                 if(_debug) Debug.Log($"Room Cleared (Update)");
                 currentRoom.isCleared = true;
-                currentRoom.doors.ForEach(door => door.SetActive(false));
+                if(currentRoom.playerUnlock != null)
+                {
+                    currentRoom.playerUnlock.SetActive(true);
+                }
+                currentRoom.warps?.ForEach(warp => warp.SetActive(true));
             }
         }
         if(!inDungeon)
@@ -68,7 +74,11 @@ public class Dungeon_Controller: MonoBehaviour
             currentDungeon = null;
             currentRoom = null;
         }
-        // TODO: check if dungeon is cleared.
+        else if(currentDungeon != null)
+        {
+            // If in a dungeon, continually check if that dungeon is cleared.
+            currentDungeon.isCleared = currentDungeon.rooms?.All(room => room.isCleared) ?? false;
+        }
     }
 
     public void EnterRoom(int dungeonIndex, int roomIndex)
@@ -97,14 +107,12 @@ public class Dungeon_Controller: MonoBehaviour
         // Let camera reposition before continuing.
         StartCoroutine(Camera_Controller.instance.UpdatePosition(newCameraPosition, () =>
         {
-            Debug.Log($"Finished Respositioning");
             // Once the camera has repositioned, check for isCleared.
             if(!currentRoom.isCleared)
             {
                 if(_debug) Debug.Log($"Room Not Cleared (EnterRoom)");
                 // Close doors and unfreeze all enemies in current room.
-                currentRoom.doors.ForEach(door => door.SetActive(true));
-                // currentRoom.enemies.ForEach(enemy => enemy.SetActive(true));
+                currentRoom.warps.ForEach(warp => warp.SetActive(false));
                 currentRoom.enemies.ForEach(enemy => {
                     enemy.GetComponent<Enemy_Controller>().isInAnimation = false;
                 });
@@ -112,7 +120,7 @@ public class Dungeon_Controller: MonoBehaviour
             else
             {
                 if(_debug) Debug.Log($"Room Cleared (EnterRoom)");
-                currentRoom.doors.ForEach(door => door.SetActive(false));
+                currentRoom.warps.ForEach(warp => warp.SetActive(true));
             }
         }));
     }
@@ -132,7 +140,7 @@ public class Dungeon_Controller: MonoBehaviour
     {
         // Reset current room state on death.
         currentRoom.enemies.ForEach(enemy => enemy.SetActive(false));
-        currentRoom.doors.ForEach(door => door.SetActive(false));
+        currentRoom.warps.ForEach(warp => warp.SetActive(false));
         currentRoom.isCleared = false;
         currentRoom = null;
         currentDungeon = null;
