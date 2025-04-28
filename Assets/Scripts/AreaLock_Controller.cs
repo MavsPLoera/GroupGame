@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 public class AreaLock_Controller : MonoBehaviour
@@ -39,11 +40,13 @@ public class AreaLock_Controller : MonoBehaviour
 
 
     //Basic area unlocks can also add noises UI text, the whole 9 yards.
+    [ContextMenu("unlockSecondaryArea")]
     public void unlockSecondaryNeededAreas()
     {
         secondaryNeededArea.SetActive(false);
     }
 
+    [ContextMenu("unlockUltimateArea")]
     public void unlockUltimateNeededAreas()
     {
         ultimateNeededArea.SetActive(false);
