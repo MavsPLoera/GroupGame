@@ -74,6 +74,7 @@ public class Warp_Controller : MonoBehaviour
         // Prevent area colliders from trigger their OnExit() events
         // during warp. Solves issue with currentLocation not displaying.
         Player_Controller.instance.canInput = false;
+        Player_Controller.instance.isTransitioning = true;
         Player_Controller.instance.playerAnimator.Play("Player_Walk", 0);
         crossFadeIn.SetActive(true);
         audioSource.PlayOneShot(warpSound);
@@ -104,6 +105,7 @@ public class Warp_Controller : MonoBehaviour
         yield return new WaitForSeconds(genericTransitionTime);
 
         crossFadeOut.SetActive(false);
+        Player_Controller.instance.isTransitioning = false;
         Player_Controller.instance.canInput = true;
     }
 

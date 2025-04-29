@@ -70,6 +70,7 @@ public class UI_Controller : MonoBehaviour
 
     public void DiscoverLocation(string name)
     {
+        name = $"Discovered {name}";
         StartCoroutine(DisplayPopupText(name, locationDiscoveredText));
     }
 

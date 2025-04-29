@@ -36,6 +36,7 @@ public class Player_Controller : MonoBehaviour
     public bool unlockedSecondaryMove = false;
     public bool unlockedUltMove = false;
     public bool isPaused = false;
+    public bool isTransitioning = false;
 
     //DONT TOUCH THIS
     public bool invincible = false;
@@ -163,20 +164,19 @@ public class Player_Controller : MonoBehaviour
             timer = 0.0f;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
+        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused && !isTransitioning)
         {
             UI_Controller.instance.pauseMenuUI.SetActive(true);
             UI_Controller.instance.playerUI.SetActive(false);
             lastPlayedSong = Music_Controller.instance.pauseMusic();
             rb.linearVelocity = Vector2.zero;
 
-            //NEED TO ALSO STOP ENEMIES
             Time.timeScale = 0;
 
             canInput = false;
             isPaused = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && isPaused)
+        else if (Input.GetKeyDown(KeyCode.Escape) && isPaused && !isTransitioning)
         {
             UI_Controller.instance.pauseMenuUI.SetActive(false);
             UI_Controller.instance.playerUI.SetActive(true);
