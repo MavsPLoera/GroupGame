@@ -24,6 +24,7 @@ public class UI_Controller : MonoBehaviour
     public TextMeshProUGUI currentLocationText;
     public TextMeshProUGUI locationDiscoveredText;
     public TextMeshProUGUI dungeonClearedText;
+    public TextMeshProUGUI hintText;
     public float textDisplayDuration;
 
     public static UI_Controller instance;
@@ -66,7 +67,12 @@ public class UI_Controller : MonoBehaviour
 
     public void DiscoverLocation(string name)
     {
-        StartCoroutine(DisplayDiscoveredLocation(name));
+        StartCoroutine(DisplayPopupText(name, locationDiscoveredText));
+    }
+
+    public void PopupText(string text)
+    {
+        StartCoroutine(DisplayPopupText(text, hintText));
     }
 
     public void GameOver()
@@ -88,18 +94,17 @@ public class UI_Controller : MonoBehaviour
         gamewinUI.SetActive(true);
     }
 
-
-    public IEnumerator DisplayDiscoveredLocation(string name)
+    private IEnumerator DisplayPopupText(string text, TextMeshProUGUI displayText)
     {
-        // TODO: add AudioClip.
-        locationDiscoveredText.text = $"Discovered {name}";
-        yield return StartCoroutine(FadeText(locationDiscoveredText, 0, 1, 1f));
+        // TODO: pass and play AudioClip.
+        displayText.text = text;
+        yield return StartCoroutine(FadeText(displayText, 0, 1, 1f));
         yield return new WaitForSeconds(textDisplayDuration);
-        yield return StartCoroutine(FadeText(locationDiscoveredText, 1, 0, 1f));
-        locationDiscoveredText.text = "";
+        yield return StartCoroutine(FadeText(displayText, 1, 0, 1f));
+        displayText.text = "";
     }
 
-    public IEnumerator FadeText(TextMeshProUGUI textToFade, float currentAlpha, float targetAlpha, float transitionTime)
+    private IEnumerator FadeText(TextMeshProUGUI textToFade, float currentAlpha, float targetAlpha, float transitionTime)
     {
         Color originalColor = textToFade.color;
         textToFade.alpha = currentAlpha;

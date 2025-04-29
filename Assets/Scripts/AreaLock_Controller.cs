@@ -24,12 +24,12 @@ public class AreaLock_Controller : MonoBehaviour
     {
         if (tag.Equals("secondaryNeededLock"))
         {
-            //Call UI manager
+            UI_Controller.instance.PopupText("You have not unlocked this area");
             Debug.Log("Need secondary ability to enter this area");
         }
         else if (tag.Equals("ultimateNeededLock"))
         {
-            //Call UI manager
+            UI_Controller.instance.PopupText("You have not unlocked this area");
             Debug.Log("Need ultimate ability to enter this area");
         }
         else
