@@ -31,7 +31,7 @@ public class Camera_Controller : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(!inDungeon)
+        if(!inDungeon && _playerTransform)
         {
            Vector3 targetPosition = new(_playerTransform.position.x, _playerTransform.position.y, -100f);
            transform.position = Vector3.Lerp(transform.position, targetPosition, 5f * Time.deltaTime);

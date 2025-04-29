@@ -69,6 +69,7 @@ public class Player_Controller : MonoBehaviour
     public AudioClip ultimateMoveSound;
     public AudioClip ultimateRefreshedSound;
     public AudioClip unlockedNewAbilitySound;
+    public AudioClip fishCollect;
 
     [Header("Player Particle Systems")]
     public ParticleSystem healingParticles;
@@ -535,6 +536,12 @@ public class Player_Controller : MonoBehaviour
     }
 
     //Sample game win
+    [ContextMenu("gameWin")]
+    public void test()
+    {
+        StartCoroutine(gameWin());
+    }    
+
     private IEnumerator gameWin()
     {
         canInput = false;
@@ -544,6 +551,7 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Ult", 0);
         crossFadeIn.SetActive(true);
 
+        Music_Controller.instance.pauseMusic();
         yield return new WaitForSeconds(1f);
 
         //trigger gameover on UI
@@ -675,7 +683,7 @@ public class Player_Controller : MonoBehaviour
             playerAudioSource.PlayOneShot(healthCollect);
             Destroy(collision.gameObject);
         }
-        else if (collision.gameObject.CompareTag("OtherPickUp")) //change the name of otherpickup to what the name 
+        else if (collision.gameObject.CompareTag("OtherPickUp"))
         {
             gold++;
 
@@ -684,9 +692,23 @@ public class Player_Controller : MonoBehaviour
             playerAudioSource.PlayOneShot(goldCollect);
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.CompareTag("FishPickUp"))
+        {
+            playerHealth = maxHealth;
+            playerAudioSource.PlayOneShot(fishCollect);
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("DiamondPickUp"))
+        {
+            gold += 5;
+
+            //Maybe do check in here to see if gold % 5 is true then give player a life
+
+            playerAudioSource.PlayOneShot(goldCollect);
+            Destroy(collision.gameObject);
+        }
         else if(collision.gameObject.CompareTag("UnlockSecondary"))
         {
-            //Baseline unlock ability can add more to this like lights and what not.
             unlockedSecondaryMove = true;
             AreaLock_Controller.instance.unlockSecondaryNeededAreas();
             Destroy(collision.gameObject);
@@ -694,13 +716,12 @@ public class Player_Controller : MonoBehaviour
         }
         else if(collision.gameObject.CompareTag("UnlockUlt"))
         {
-            //Baseline unlock ability can add more to this like lights and what not.
             unlockedUltMove = true;
             AreaLock_Controller.instance.unlockUltimateNeededAreas();
             Destroy(collision.gameObject);
             StartCoroutine(unlockedNewAbility());
         }
-        else if(collision.gameObject.CompareTag("Win")) //Doesnt have to be like this but you get the idea
+        else if(collision.gameObject.CompareTag("Win"))
         {
             gameWin();
             Destroy(collision.gameObject);
