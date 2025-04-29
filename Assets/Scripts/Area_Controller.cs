@@ -16,7 +16,6 @@ public class Area_Controller : MonoBehaviour
         public GameObject areaCollider;
         public List<GameObject> enemies;
         public bool isDiscovered = false;
-        public bool isUnlocked = false;
     }
 
     [Header("Area Controller Misc.")]
