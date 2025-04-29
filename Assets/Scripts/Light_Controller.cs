@@ -3,6 +3,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Light_Controller : MonoBehaviour
 {
+    // Light Controller
     // Creates light flickering.
     // SRC https://discussions.unity.com/t/how-to-randomly-change-the-intensity-of-a-point-light-with-a-script/12987/4
 
