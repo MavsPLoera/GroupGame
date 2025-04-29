@@ -26,14 +26,14 @@ public class ENV01_Movement_Controller : MonoBehaviour
 
     private void Update()
     {
-        if(!_enemyController.isInAnimation)
+        if(_playerTransform && !_enemyController.isInAnimation)
         {
             // Get vector in direction of player.
             Vector2 playerDirection = (_playerTransform.transform.position - transform.position);
 
             // Check distance. Stop if in range to player.
             float distance = playerDirection.magnitude;
-            if(distance <= .8f)
+            if(distance <= .6f)
             {
                 _rb.linearVelocity = Vector2.zero;
                 // TEMP. (?) to replace with hitbox on animation.

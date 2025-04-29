@@ -555,18 +555,23 @@ public class Player_Controller : MonoBehaviour
     private IEnumerator gameOver()
     {
         canInput = false;
+        invincible = true;
+
         rb.linearVelocity = Vector2.zero;
 
         //play animation
         playerAnimator.Play("Player_Hit", 0);
         crossFadeIn.SetActive(true);
 
+        Music_Controller.instance.pauseMusic();
         yield return new WaitForSeconds(1f);
 
+        //Can maybe play game over music?
         //trigger gameover on UI
 
         //destroy gameobject
-        Destroy(gameObject);
+        //gameObject.SetActive(false);
+        Destroy (gameObject);
     }
 
     private IEnumerator loseLife()
