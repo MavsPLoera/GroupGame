@@ -171,6 +171,7 @@ public class Player_Controller : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
 
             //NEED TO ALSO STOP ENEMIES
+            Time.timeScale = 0;
 
             canInput = false;
             isPaused = true;
@@ -180,6 +181,9 @@ public class Player_Controller : MonoBehaviour
             UI_Controller.instance.pauseMenuUI.SetActive(false);
             UI_Controller.instance.playerUI.SetActive(true);
             Music_Controller.instance.resumeMusic(lastPlayedSong);
+
+            Time.timeScale = 1;
+
             canInput = true;
             isPaused = false;
         }
