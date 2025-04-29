@@ -634,7 +634,9 @@ public class Player_Controller : MonoBehaviour
         changeFacingDirectionWarp(Warp_Controller.destinationFacingDirection.Down);
         playerAnimator.Play("Player_Ult", 0);
         playerAudioSource.PlayOneShot(unlockedNewAbilitySound);
+
         yield return new WaitForSeconds(1.5f);
+
         abilityUnlockedLight.SetActive(false);
         canInput = true;
     }
