@@ -16,6 +16,8 @@ TagManager:
   - Win
   - secondaryNeededLock
   - ultimateNeededLock
+  - FishPickUp
+  - DiamondPickUp
   layers:
   - Default
   - TransparentFX
