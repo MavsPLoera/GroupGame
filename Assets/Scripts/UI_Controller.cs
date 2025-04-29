@@ -9,6 +9,7 @@ public class UI_Controller : MonoBehaviour
     public GameObject playerUI;
     public GameObject gameoverUI;
     public GameObject gamewinUI;
+    public GameObject pauseMenuUI;
 
     //[Header("Player UI Objects.")]
     //Add things like buttons, text, etc here to change it
@@ -19,6 +20,8 @@ public class UI_Controller : MonoBehaviour
     //[Header("GameWin UI Objects.")]
     //Add things like buttons, text, etc here to change it
 
+    //[Header("PauseMenu UI Objects.")]
+    //Add things like buttons, text, etc here to change it
 
     [Header("UI Controller Misc.")]
     public TextMeshProUGUI currentLocationText;
