@@ -15,6 +15,7 @@ public class Music_Controller : MonoBehaviour
     public AudioClip cemetaryMusic;
     public AudioClip gameOverMusic;
     public AudioClip gameWinMusic;
+    public AudioClip pausedMusic;
     public Dictionary<AudioClip, float> clipTimes = new();
     public float transitionTime = .5f;
     private float volume;
@@ -40,6 +41,7 @@ public class Music_Controller : MonoBehaviour
         clipTimes[cemetaryMusic] = 0f;
         clipTimes[gameOverMusic] = 0f;
         clipTimes[gameWinMusic] = 0f;
+        clipTimes[pausedMusic] = 0f;
 
         musicAudioSource.clip = ruinedTownMusic;
         volume = musicAudioSource.volume;
@@ -88,12 +90,12 @@ public class Music_Controller : MonoBehaviour
         {
             temp = gameWinMusic;
         }
-        else
+        else if (gameStateMusic == gameOverMusic)
         {
             temp = gameOverMusic;
         }
 
-        if(temp)
+        if(temp && musicAudioSource.clip != temp)
             StartCoroutine(interludeMusic(temp));
     }
 
@@ -138,14 +140,26 @@ public class Music_Controller : MonoBehaviour
      * For future use when pause menu is implemented. Call these methods.
      */
 
-    public void pauseMusic()
+    public AudioClip pauseMusic()
     {
+        AudioClip temp = musicAudioSource.clip;
+        clipTimes[musicAudioSource.clip] = musicAudioSource.time;
         musicAudioSource.Pause();
+        musicAudioSource.clip = pausedMusic;
+        float audioTime = clipTimes[musicAudioSource.clip];
+        musicAudioSource.time = Mathf.Min(audioTime, pausedMusic.length - .01f);
+        musicAudioSource.Play();
+        return temp;
     }
 
-    public void resumeMusic()
+    public void resumeMusic(AudioClip lastPlayedSong)
     {
-        musicAudioSource.UnPause();
+        clipTimes[musicAudioSource.clip] = musicAudioSource.time;
+        musicAudioSource.Pause();
+        musicAudioSource.clip = lastPlayedSong;
+        float audioTime = clipTimes[musicAudioSource.clip];
+        musicAudioSource.time = Mathf.Min(audioTime, lastPlayedSong.length - .01f);
+        musicAudioSource.Play();
     }
 
 }

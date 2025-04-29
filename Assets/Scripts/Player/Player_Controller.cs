@@ -35,6 +35,7 @@ public class Player_Controller : MonoBehaviour
     public bool canSwing = false;
     public bool unlockedSecondaryMove = false;
     public bool unlockedUltMove = false;
+    public bool isPaused = false;
 
     //DONT TOUCH THIS
     public bool invincible = false;
@@ -70,6 +71,7 @@ public class Player_Controller : MonoBehaviour
     public AudioClip ultimateRefreshedSound;
     public AudioClip unlockedNewAbilitySound;
     public AudioClip fishCollect;
+    private AudioClip lastPlayedSong; //NO TOUCHIE
 
     [Header("Player Particle Systems")]
     public ParticleSystem healingParticles;
@@ -159,6 +161,27 @@ public class Player_Controller : MonoBehaviour
         else
         {
             timer = 0.0f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
+        {
+            UI_Controller.instance.pauseMenuUI.SetActive(true);
+            UI_Controller.instance.playerUI.SetActive(false);
+            lastPlayedSong = Music_Controller.instance.pauseMusic();
+            rb.linearVelocity = Vector2.zero;
+
+            //NEED TO ALSO STOP ENEMIES
+
+            canInput = false;
+            isPaused = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && isPaused)
+        {
+            UI_Controller.instance.pauseMenuUI.SetActive(false);
+            UI_Controller.instance.playerUI.SetActive(true);
+            Music_Controller.instance.resumeMusic(lastPlayedSong);
+            canInput = true;
+            isPaused = false;
         }
 
         if (!canInput)
