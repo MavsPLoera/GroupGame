@@ -42,12 +42,12 @@ public class UI_Controller : MonoBehaviour
     public void EnterArea(string name)
     {
         currentLocationText.text = name;
-        StartCoroutine(FadeText(currentLocationText, 0, 1, 0.75f));
+        StartCoroutine(FadeText(currentLocationText, 0, 1, 1f));
     }
 
     public void ExitArea(string name)
     {
-        StartCoroutine(FadeText(currentLocationText, 1, 0, 0.75f));
+        StartCoroutine(FadeText(currentLocationText, 1, 0, 1f));
     }
 
     public void DiscoverLocation(string name)
@@ -60,9 +60,9 @@ public class UI_Controller : MonoBehaviour
     {
         // TODO: add AudioClip.
         locationDiscoveredText.text = $"Discovered {name}";
-        yield return StartCoroutine(FadeText(locationDiscoveredText, 0, 1, 0.75f));
+        yield return StartCoroutine(FadeText(locationDiscoveredText, 0, 1, 1f));
         yield return new WaitForSeconds(textDisplayDuration);
-        yield return StartCoroutine(FadeText(locationDiscoveredText, 1, 0, 0.75f));
+        yield return StartCoroutine(FadeText(locationDiscoveredText, 1, 0, 1f));
         locationDiscoveredText.text = "";
     }
 
