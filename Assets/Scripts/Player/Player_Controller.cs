@@ -9,6 +9,7 @@ public class Player_Controller : MonoBehaviour
 {
     [Header("Player Stats")]
     public float playerMovementspeed;
+    public float playerMovementSpeedUnchanging = 5f;
     public float playerRollSpeed;
     public float playerHealth;
     public float swordDamage;
@@ -133,6 +134,7 @@ public class Player_Controller : MonoBehaviour
 
         //Default amount of healing potions
         healingPotions = 3;
+        playerMovementSpeedUnchanging = playerMovementspeed;
 
         quests.Add(new Quest("TestTitle", "Test Description", "Test Reward"));
     }
@@ -265,8 +267,7 @@ public class Player_Controller : MonoBehaviour
 
     public IEnumerator swing()
     {
-        float temp = playerMovementspeed;
-        playerMovementspeed = temp * .3f;
+        playerMovementspeed = playerMovementSpeedUnchanging * .3f;
 
         //Set animator to swing and stop player from being able to input and swing again.
         playerAnimator.Play("Player_Swing", 0);
@@ -279,7 +280,7 @@ public class Player_Controller : MonoBehaviour
 
         //After the animation finished set the animation state to idle and allow player to be able to swing again and input.
         playerAnimator.Play("Player_Idle", 0);
-        playerMovementspeed = temp;
+        playerMovementspeed = playerMovementSpeedUnchanging;
         canSwing = true;
     }
 
@@ -548,7 +549,6 @@ public class Player_Controller : MonoBehaviour
         //trigger gameover on UI
 
         //destroy gameobject
-
         Destroy(gameObject);
     }
 
@@ -566,7 +566,6 @@ public class Player_Controller : MonoBehaviour
         //trigger gameover on UI
 
         //destroy gameobject
-
         Destroy(gameObject);
     }
 
