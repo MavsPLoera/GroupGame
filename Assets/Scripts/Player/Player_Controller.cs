@@ -59,6 +59,7 @@ public class Player_Controller : MonoBehaviour
     public AudioSource playerAudioSource;
     public AudioSource playerChangingAudioSource;
     public AudioClip goldCollect;
+    public AudioClip healthCollect;
     public AudioClip playerTakeDamage;
     public AudioClip dashSound;
     public AudioClip healingSound;
@@ -93,6 +94,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject respawnPosition;
     public Sword_Controller swordController;
     public GameObject ultLight;
+    public GameObject abilityUnlockedLight;
     public float timer = 0.0f;
     public Slider healthBarSlider;
     public Slider easeHealthBarSlider;
@@ -288,9 +290,8 @@ public class Player_Controller : MonoBehaviour
     {
         //When player is healing we want it to be similar to dark souls. So the players movementspeed is slowed down, and is unable to input until they heal.
         healingSelf = true;
-
-        float temp = playerMovementspeed;
-        playerMovementspeed = temp * .75f;
+        playerMovementspeed = playerMovementSpeedUnchanging * .75f;
+        playChangingPitchSound(healingSound);
 
         //Small duration before the player is actually healed and will not go past Max Health
         yield return new WaitForSeconds(timeBeforeHealing);
@@ -305,12 +306,11 @@ public class Player_Controller : MonoBehaviour
         }
         healingPotions--;
 
-        playChangingPitchSound(healingSound);
         //Return player movespeed back to normal and allow player to use abilities again. Future notice I will need to disable other abilities as well
         yield return new WaitForSeconds(healingSlowdown);
 
         healingSelf = false;
-        playerMovementspeed = temp;
+        playerMovementspeed = playerMovementSpeedUnchanging;
     }
 
     public IEnumerator secondaryMove()
@@ -614,6 +614,18 @@ public class Player_Controller : MonoBehaviour
         playerChangingAudioSource.PlayOneShot(sound);
     }
 
+    private IEnumerator unlockedNewAbility()
+    {
+        canInput = false;
+        abilityUnlockedLight.SetActive(true);
+        changeFacingDirectionWarp(Warp_Controller.destinationFacingDirection.Down);
+        playerAnimator.Play("Player_Ult", 0);
+        playerAudioSource.PlayOneShot(unlockedNewAbilitySound);
+        yield return new WaitForSeconds(1.5f);
+        abilityUnlockedLight.SetActive(false);
+        canInput = true;
+    }
+
     public void TakeDamage(float damage)
     {
         if(invincible)
@@ -655,6 +667,7 @@ public class Player_Controller : MonoBehaviour
             {
                 healingPotions++;
             }
+            playerAudioSource.PlayOneShot(healthCollect);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("OtherPickUp")) //change the name of otherpickup to what the name 
@@ -670,13 +683,17 @@ public class Player_Controller : MonoBehaviour
         {
             //Baseline unlock ability can add more to this like lights and what not.
             unlockedSecondaryMove = true;
+            AreaLock_Controller.instance.unlockSecondaryNeededAreas();
             Destroy(collision.gameObject);
+            StartCoroutine(unlockedNewAbility());
         }
         else if(collision.gameObject.CompareTag("UnlockUlt"))
         {
             //Baseline unlock ability can add more to this like lights and what not.
             unlockedUltMove = true;
+            AreaLock_Controller.instance.unlockUltimateNeededAreas();
             Destroy(collision.gameObject);
+            StartCoroutine(unlockedNewAbility());
         }
         else if(collision.gameObject.CompareTag("Win")) //Doesnt have to be like this but you get the idea
         {
