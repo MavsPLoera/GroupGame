@@ -80,6 +80,23 @@ public class Music_Controller : MonoBehaviour
             StartCoroutine(interludeMusic(temp));
     }
 
+    public void gameCompleteMusic(AudioClip gameStateMusic)
+    {
+        AudioClip temp = null;
+
+        if(gameStateMusic == gameWinMusic)
+        {
+            temp = gameWinMusic;
+        }
+        else
+        {
+            temp = gameOverMusic;
+        }
+
+        if(temp)
+            StartCoroutine(interludeMusic(temp));
+    }
+
     public IEnumerator interludeMusic(AudioClip song)
     {
         float time = 0f;

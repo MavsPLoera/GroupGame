@@ -540,7 +540,13 @@ public class Player_Controller : MonoBehaviour
     public void test()
     {
         StartCoroutine(gameWin());
-    }    
+    }
+
+    [ContextMenu("gameLose")]
+    public void test2()
+    {
+        StartCoroutine(gameOver());
+    }
 
     private IEnumerator gameWin()
     {
@@ -551,10 +557,11 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Ult", 0);
         crossFadeIn.SetActive(true);
 
-        Music_Controller.instance.pauseMusic();
-        yield return new WaitForSeconds(1f);
+        Music_Controller.instance.gameCompleteMusic(Music_Controller.instance.gameWinMusic);
+        yield return new WaitForSeconds(.8f);
 
         //trigger gameover on UI
+        UI_Controller.instance.GameWin();
 
         //destroy gameobject
         Destroy(gameObject);
@@ -571,14 +578,13 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Hit", 0);
         crossFadeIn.SetActive(true);
 
-        Music_Controller.instance.pauseMusic();
-        yield return new WaitForSeconds(1f);
+        Music_Controller.instance.gameCompleteMusic(Music_Controller.instance.gameOverMusic);
+        yield return new WaitForSeconds(.8f);
 
-        //Can maybe play game over music?
         //trigger gameover on UI
+        UI_Controller.instance.GameOver();
 
         //destroy gameobject
-        //gameObject.SetActive(false);
         Destroy (gameObject);
     }
 

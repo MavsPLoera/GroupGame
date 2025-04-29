@@ -5,6 +5,20 @@ using System.Collections.Generic;
 
 public class UI_Controller : MonoBehaviour
 {
+    [Header("UI GameObjects.")]
+    public GameObject playerUI;
+    public GameObject gameoverUI;
+    public GameObject gamewinUI;
+
+    //[Header("Player UI Objects.")]
+    //Add things like buttons, text, etc here to change it
+
+    //[Header("GameOver UI Objects.")]
+    //Add things like buttons, text, etc here to change it
+
+    //[Header("GameWin UI Objects.")]
+    //Add things like buttons, text, etc here to change it
+
 
     [Header("UI Controller Misc.")]
     public TextMeshProUGUI currentLocationText;
@@ -53,6 +67,25 @@ public class UI_Controller : MonoBehaviour
     public void DiscoverLocation(string name)
     {
         StartCoroutine(DisplayDiscoveredLocation(name));
+    }
+
+    public void GameOver()
+    {
+        playerUI.SetActive(false);
+
+        //Add more here in order to change the text
+
+
+        gameoverUI.SetActive(true);
+    }
+
+    public void GameWin()
+    {
+        playerUI.SetActive(false);
+
+        //Add more here in order to change the text
+
+        gamewinUI.SetActive(true);
     }
 
 

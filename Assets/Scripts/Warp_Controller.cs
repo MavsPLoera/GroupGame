@@ -92,13 +92,11 @@ public class Warp_Controller : MonoBehaviour
 
         if (warpType == warpTypes.ToDungeon)
         {
-            //Insert Audio Clip here
             Dungeon_Controller.instance.inDungeon = true;
             Camera_Controller.instance.inDungeon = true;
         }
         else if (warpType == warpTypes.ToOverworld)
         {
-            //Insert Audio Clip here
             Dungeon_Controller.instance.inDungeon = false;
             Camera_Controller.instance.inDungeon = false;
         }
