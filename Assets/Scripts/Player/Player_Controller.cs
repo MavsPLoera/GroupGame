@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -258,13 +257,13 @@ public class Player_Controller : MonoBehaviour
          */
 
         //Ultimate
-        if ((Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.C)) && unlockedUltMove && canUlt)
+        if ((Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.C)) && unlockedUltMove && canUlt && !isMouseOverUI())
         {
             StartCoroutine(ultimateMove());
         }
 
         //Dash
-        if (Input.GetKeyDown(KeyCode.Space) && canDash)
+        if (Input.GetKeyDown(KeyCode.Space) && canDash && !isMouseOverUI())
         {
             if (!(movementDirection.x == 0f && movementDirection.y == 0f))
             {
@@ -273,23 +272,28 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Sword Swing
-        if ((Input.GetButton("Fire1") || Input.GetKeyDown(KeyCode.Z)) && canSwing)
+        if ((Input.GetButton("Fire1") || Input.GetKeyDown(KeyCode.Z)) && canSwing && !isMouseOverUI())
         {
             StartCoroutine(swing());
         }
 
         //Secondary
-        if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && !(arrows <= 0))
+        if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && !(arrows <= 0) && !isMouseOverUI())
         {
             StartCoroutine(secondaryMove());
         }
 
         //Healing Self
         //Need to change key that player uses to heal.
-        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.V)) && !healingSelf && (healingPotions != 0))
+        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.V)) && !healingSelf && (healingPotions != 0) && !isMouseOverUI())
         {
             StartCoroutine(healPlayer());
         }
+    }
+
+    private bool isMouseOverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
     }
 
     public IEnumerator swing()
