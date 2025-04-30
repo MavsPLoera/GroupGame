@@ -118,9 +118,9 @@ GameObject:
   - component: {fileID: 7298762487911763354}
   - component: {fileID: 7559899885142486646}
   - component: {fileID: -7615645063783918074}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wolf
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

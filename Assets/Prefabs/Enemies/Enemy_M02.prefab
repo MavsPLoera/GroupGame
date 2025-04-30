@@ -254,9 +254,9 @@ GameObject:
   - component: {fileID: 8225646387435574582}
   - component: {fileID: 7371816043033888034}
   - component: {fileID: 8831109790537803474}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy_M02
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -363,9 +363,6 @@ MonoBehaviour:
   - {fileID: 808511904288613641, guid: cc4a0dfc97adcf74199368f7866c07ff, type: 3}
   text: {fileID: 302125197368553765}
   genericTextList:
-  - '*growl*'
-  - '*roar*'
-  damageTextList:
   - '*growl*'
   - '*roar*'
   flickerAmount: 3

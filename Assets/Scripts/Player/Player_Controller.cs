@@ -65,6 +65,7 @@ public class Player_Controller : MonoBehaviour
     public AudioClip playerTakeDamage;
     public AudioClip dashSound;
     public AudioClip healingSound;
+    public AudioClip extraLifeSound;
     public AudioClip swordSwingSound;
     public AudioClip bowShootSound;
     public AudioClip arrowsRefilledSound;
@@ -76,11 +77,6 @@ public class Player_Controller : MonoBehaviour
     private AudioClip lastPlayedSong; //NO TOUCHIE
 
     [Header("Player Particle Systems")]
-    public ParticleSystem healingParticles;
-    public ParticleSystem dashDustParticles;
-    public ParticleSystem dashCooldonRefreshedParticles;
-    public ParticleSystem ultimateParticles;
-    public ParticleSystem ultimateRefreshedParticles;
     public ParticleSystem DustFX;
 
     [Header("Player Sword Hitboxes")]
@@ -319,7 +315,7 @@ public class Player_Controller : MonoBehaviour
     {
         //When player is healing we want it to be similar to dark souls. So the players movementspeed is slowed down, and is unable to input until they heal.
         healingSelf = true;
-        playerMovementspeed = playerMovementSpeedUnchanging * .75f;
+        playerMovementspeed = playerMovementSpeedUnchanging * .5f;
         playChangingPitchSound(healingSound);
 
         //Small duration before the player is actually healed and will not go past Max Health
@@ -395,9 +391,6 @@ public class Player_Controller : MonoBehaviour
 
         //Player is able to input after intimidation animation
         canInput = true;
-
-        if(ultimateParticles != null)
-            ultimateParticles.Play();
       
         playerAnimator.Play("Player_Idle", 0);
 
@@ -414,8 +407,7 @@ public class Player_Controller : MonoBehaviour
 
         yield return new WaitForSeconds(ultimateCooldown);
         playerAudioSource.PlayOneShot(ultimateRefreshedSound);
-        if (ultimateRefreshedParticles != null)
-            ultimateRefreshedParticles.Play();
+
         canUlt = true;
     }
 
@@ -425,9 +417,8 @@ public class Player_Controller : MonoBehaviour
          * When the player presses space take the direction the player is moving and set the linear velocity of the player to dash
          * 
          * during this dashing, the player cannot input and cannot dash again until a cool down is up
-         * 
-         * NEED TO ALSO CHANGE THE HITBOXES TO NOT COLLIDE WITH BULLETS like enter the gungeon
          */
+
         playerAudioSource.PlayOneShot(dashSound);
 
         canInput = false;
@@ -441,14 +432,12 @@ public class Player_Controller : MonoBehaviour
         canDash = true;
     }
 
-    //Change this to turn off collisions between enemies and the player
-    //Need to make the collisions between enemies and player last longer to prevent multiple hits.
     private IEnumerator temporaryInvulnerability()
     {
         //Fix to resolve player inputs not being detected
-        canSwing = true;
-        canSecondary = true;
-        canUlt = true;
+        //canSwing = true;
+        //canSecondary = true;
+        //canUlt = true;
 
         //BECAREFUL ABOUT THIS LINE, IF WE CHANGE THE LAYERS THIS WILL BE WRONG
         Physics2D.IgnoreLayerCollision(7, 8, true);
@@ -733,8 +722,16 @@ public class Player_Controller : MonoBehaviour
             gold++;
 
             //Maybe do check in here to see if gold % 5 is true then give player a life
+            if(gold % 10 == 0 && gold != 0)
+            {
+                playerLives++;
+                playerAudioSource.PlayOneShot(extraLifeSound);
+            }
+            else
+            {
+                playerAudioSource.PlayOneShot(goldCollect);
+            }    
 
-            playerAudioSource.PlayOneShot(goldCollect);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("FishPickUp"))
