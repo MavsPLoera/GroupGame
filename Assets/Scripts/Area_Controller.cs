@@ -74,6 +74,7 @@ public class Area_Controller : MonoBehaviour
     {
         if(areaIndex < 0 || areaIndex >= areas.Count || currentArea == null) return;
         string name = currentArea.name;
+        Debug.Log("exit area");
         if(instance)
         {
             UI_Controller.instance.ExitArea(name);

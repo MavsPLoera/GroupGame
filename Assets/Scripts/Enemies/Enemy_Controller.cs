@@ -191,6 +191,7 @@ public class Enemy_Controller : MonoBehaviour
         health = _originalHealth;
         isInAnimation = false;
         _attackCooldown = false;
+        isDead = false;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         StopAllCoroutines();
     }
