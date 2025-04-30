@@ -324,6 +324,7 @@ public class Player_Controller : MonoBehaviour
         yield return new WaitForSeconds(healingSlowdown);
 
         healingSelf = false;
+        UI_Controller.instance.CollectHealth();
         playerMovementspeed = playerMovementSpeedUnchanging;
     }
 
@@ -341,9 +342,11 @@ public class Player_Controller : MonoBehaviour
         playChangingPitchSound(bowShootSound);
         Instantiate(arrow, arrowSpawn.transform.position, gameObject.transform.rotation);
         arrows--;
-        
+
+        UI_Controller.instance.ShootArrow();
+
         //If the player is out of arrows the magical bow will magically reload.
-        if(arrows <= 0)
+        if (arrows <= 0)
         {
             StartCoroutine(reloadArrows());
         }
@@ -360,6 +363,7 @@ public class Player_Controller : MonoBehaviour
         yield return new WaitForSeconds(reloadCoolDown);
         playerAudioSource.PlayOneShot(arrowsRefilledSound);
         arrows = maxArrows;
+        UI_Controller.instance.ShootArrow();
     }
 
     public IEnumerator ultimateMove()
@@ -703,28 +707,31 @@ public class Player_Controller : MonoBehaviour
             {
                 healingPotions++;
             }
+
             playerAudioSource.PlayOneShot(healthCollect);
             Destroy(collision.gameObject);
+
+            UI_Controller.instance.CollectHealth();
         }
         else if (collision.gameObject.CompareTag("OtherPickUp"))
         {
             gold++;
 
             //Maybe do check in here to see if gold % 5 is true then give player a life
-            //FIX THIS
             if(gold % 10 == 0 && gold != 0)
             {
                 playerLives++;
                 playerAudioSource.PlayOneShot(extraLifeSound);
+                UI_Controller.instance.UpdatePlayerLives();
             }
             else
             {
                 playerAudioSource.PlayOneShot(goldCollect);
             }
 
-            UI_Controller.instance.CollectCoin();
-
             Destroy(collision.gameObject);
+
+            UI_Controller.instance.CollectCoin();
         }
         else if (collision.gameObject.CompareTag("FishPickUp"))
         {
@@ -734,19 +741,33 @@ public class Player_Controller : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("DiamondPickUp"))
         {
-            gold += 5;
+            float previousGold = gold;
+            gold += 5f;
 
             //Maybe do check in here to see if gold % 5 is true then give player a life
-
-            UI_Controller.instance.CollectCoin();
+            if ((previousGold / 10f) < (gold / 10f))
+            {
+                playerLives++;
+                playerAudioSource.PlayOneShot(extraLifeSound);
+                UI_Controller.instance.UpdatePlayerLives();
+            }
+            else
+            {
+                playerAudioSource.PlayOneShot(goldCollect);
+            }
 
             playerAudioSource.PlayOneShot(goldCollect);
             Destroy(collision.gameObject);
+
+            UI_Controller.instance.CollectCoin();
         }
         else if(collision.gameObject.CompareTag("UnlockSecondary"))
         {
             unlockedSecondaryMove = true;
             AreaLock_Controller.instance.unlockSecondaryNeededAreas();
+            UI_Controller.instance.ArrowText.gameObject.SetActive(true);
+            UI_Controller.instance.ArrowImage.gameObject.SetActive(true);
+            UI_Controller.instance.ShootArrow();
             Destroy(collision.gameObject);
             StartCoroutine(unlockedNewAbility());
         }

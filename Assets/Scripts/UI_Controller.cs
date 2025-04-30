@@ -17,6 +17,9 @@ public class UI_Controller : MonoBehaviour
     [Header("Player UI Objects.")]
     public TextMeshProUGUI CoinCountText;
     public TextMeshProUGUI HealthPotionsText;
+    public TextMeshProUGUI ArrowText;
+    public TextMeshProUGUI PlayerLivesText;
+    public Image ArrowImage;
 
     //[Header("GameOver UI Objects.")]
     //Add things like buttons, text, etc here to change it
@@ -92,7 +95,10 @@ public class UI_Controller : MonoBehaviour
 
     private void Start()
     {
-        CoinCountText.text = Player_Controller.instance.gold.ToString();
+        CollectCoin();
+        CollectHealth();
+        UpdatePlayerLives();
+
 
         DisplayIntroCutscene();
     }
@@ -126,7 +132,17 @@ public class UI_Controller : MonoBehaviour
     
     public void CollectHealth()
     {
+        HealthPotionsText.text = Player_Controller.instance.healingPotions.ToString() + " / " + Player_Controller.instance.maxHealthPotions.ToString();
+    }
 
+    public void ShootArrow()
+    {
+        ArrowText.text = Player_Controller.instance.arrows.ToString() + " / " + Player_Controller.instance.maxArrows.ToString();
+    }
+
+    public void UpdatePlayerLives()
+    {
+        PlayerLivesText.text = "Lives " + Player_Controller.instance.playerLives.ToString();
     }
 
     public void GameOver()
