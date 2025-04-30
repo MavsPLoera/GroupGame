@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class Tutorial_Controller : MonoBehaviour
@@ -5,6 +7,8 @@ public class Tutorial_Controller : MonoBehaviour
     // Tutorial Controller
     // Handles tutorial section and
     // triggers assoc. popups.
+
+    public List<GameObject> tutorialColliders;
 
     public static Tutorial_Controller instance;
 
@@ -20,13 +24,9 @@ public class Tutorial_Controller : MonoBehaviour
         }
     }
 
-    void Start()
+    public void DisplayTutorial()
     {
         UI_Controller.instance.PopupText("Use WASD to move. Press SPACE to dash.");
-    }
-
-    void Update()
-    {
-        
+        UI_Controller.instance.PopupText("Left Click to attack.");
     }
 }

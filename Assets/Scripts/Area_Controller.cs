@@ -64,7 +64,10 @@ public class Area_Controller : MonoBehaviour
         }
         UI_Controller.instance.EnterArea(currentArea.name);
 
-        currentArea?.enemies.ForEach(enemy => enemy.SetActive(true));
+        if(!currentArea.isCleared)
+        {
+            currentArea?.enemies.ForEach(enemy => enemy.SetActive(true));
+        }
     }
 
     public void ExitArea(int areaIndex)
