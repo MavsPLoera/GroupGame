@@ -171,7 +171,8 @@ public class UI_Controller : MonoBehaviour
         lastPlayedSong = Music_Controller.instance.pauseMusic();
         Time.timeScale = 0;
 
-        if (Player_Controller.instance.quests.Count != 0)
+        /*
+        if(Player_Controller.instance.quests.Count != 0)
         {
             IndexText.gameObject.SetActive(true);
             QuestTitleText.gameObject.SetActive(true);
@@ -188,9 +189,9 @@ public class UI_Controller : MonoBehaviour
         else
         {
             NoQuestsText.text = "No quests";
-
             NoQuestsText.gameObject.SetActive(true);
         }
+        */
 
         Player_Controller.instance.canInput = false;
         Player_Controller.instance.isPaused = true;
@@ -210,7 +211,7 @@ public class UI_Controller : MonoBehaviour
 
     public void indexQuestLeft()
     {
-        if (!(questIndex - 1 < 0))
+        if(!(questIndex - 1 < 0))
         {
             questIndex--;
             IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
@@ -222,6 +223,7 @@ public class UI_Controller : MonoBehaviour
 
     public void UnpauseGame()
     {
+        /*
         IndexText.gameObject.SetActive(false);
         QuestTitleText.gameObject.SetActive(false);
         QuestDescriptionText.gameObject.SetActive(false);
@@ -229,6 +231,7 @@ public class UI_Controller : MonoBehaviour
         indexRightButton.gameObject.SetActive(false);
         indexLeftButton.gameObject.SetActive(false);
         NoQuestsText.gameObject.SetActive(false);
+        */
         pauseMenuUI.SetActive(false);
         playerUI.SetActive(true);
         Music_Controller.instance.resumeMusic(lastPlayedSong);

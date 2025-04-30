@@ -7,7 +7,7 @@ public class SceneController : MonoBehaviour
     public void loadMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
-        //Time.timeScale = 1.0f;
+        if(Time.timeScale == 0) Time.timeScale = 1.0f; // ExitGame button from PauseMenu.
     }
     
     public void startGame()
