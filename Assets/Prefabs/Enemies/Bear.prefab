@@ -369,6 +369,8 @@ MonoBehaviour:
   knockbackAmount: 90
   enemyType: 3
   isInAnimation: 0
+  isDead: 0
+  wasKilled: 0
   _enemyAudioSource: {fileID: 0}
   enemyDamaged: {fileID: 8300000, guid: fc47a30667a19bc488cd079a0a891bc1, type: 3}
   enemySwing: {fileID: 8300000, guid: 1678bd9afb2abb54ea2f56151d018578, type: 3}
@@ -412,7 +414,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.05088997, y: -0.27214813}
+  m_Offset: {x: -0.05088997, y: -0.12531087}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -422,7 +424,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.2920151, y: 0.51316833}
+  m_Size: {x: 1.2920151, y: 0.80684286}
   m_EdgeRadius: 0
 --- !u!50 &8225646387435574582
 Rigidbody2D:

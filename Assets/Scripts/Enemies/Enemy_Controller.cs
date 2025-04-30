@@ -31,7 +31,8 @@ public class Enemy_Controller : MonoBehaviour
     public float knockbackAmount;
     public EnemyType enemyType; // ATM used for triggering appropriate animations for each enemy type.
     public bool isInAnimation;
-    private bool isDead = false;
+    public bool isDead = false;
+    public bool wasKilled = false; // Refactor.
     public AudioSource _enemyAudioSource;
     public AudioClip enemyDamaged;
     public AudioClip enemySwing;
@@ -112,7 +113,7 @@ public class Enemy_Controller : MonoBehaviour
     public void Attack(Collision2D collision)
     {
         // Allow attack despite cooldown if in collision.
-        if(!isInAnimation && (!_attackCooldown || collision != null))
+        if(!isInAnimation && (!_attackCooldown || collision != null) && !isDead)
         {
             // TEMP.
             StartCoroutine(Swing());
@@ -285,6 +286,7 @@ public class Enemy_Controller : MonoBehaviour
         yield return new WaitForSeconds(.6f);
         isInAnimation = false;
         gameObject.SetActive(false);
+        wasKilled = true;
     }
 
     private IEnumerator AttackCooldown()

@@ -89,6 +89,7 @@ public class Area_Controller : MonoBehaviour
         {
             // Reset current area state on death.
             currentArea?.enemies.ForEach(enemy => enemy.SetActive(false));
+            currentArea.isCleared = false;
             currentArea = null;
         }    
         else
@@ -96,6 +97,7 @@ public class Area_Controller : MonoBehaviour
             // Reset passed in area index.
             currentArea = areas[areaIndex];
             currentArea?.enemies.ForEach(enemy => enemy.SetActive(false));
+            currentArea.isCleared = false;
             currentArea = null;
         }
     }
