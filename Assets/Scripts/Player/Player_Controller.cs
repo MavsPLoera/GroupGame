@@ -73,7 +73,6 @@ public class Player_Controller : MonoBehaviour
     public AudioClip ultimateRefreshedSound;
     public AudioClip unlockedNewAbilitySound;
     public AudioClip fishCollect;
-    private AudioClip lastPlayedSong; //NO TOUCHIE
 
     [Header("Player Particle Systems")]
     public ParticleSystem DustFX;
@@ -139,6 +138,7 @@ public class Player_Controller : MonoBehaviour
         playerMovementSpeedUnchanging = playerMovementspeed;
 
         quests.Add(new Quest("TestTitle", "Test Description", "Test Reward"));
+        quests.Add(new Quest("TestTitle2", "Test Description2", "Test Reward2"));
     }
 
     // Update is called once per frame
@@ -162,26 +162,11 @@ public class Player_Controller : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape) && !isPaused && !isTransitioning)
         {
-            UI_Controller.instance.pauseMenuUI.SetActive(true);
-            UI_Controller.instance.playerUI.SetActive(false);
-            lastPlayedSong = Music_Controller.instance.pauseMusic();
-            rb.linearVelocity = Vector2.zero;
-
-            Time.timeScale = 0;
-
-            canInput = false;
-            isPaused = true;
+            UI_Controller.instance.PauseGame();
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && isPaused && !isTransitioning)
         {
-            UI_Controller.instance.pauseMenuUI.SetActive(false);
-            UI_Controller.instance.playerUI.SetActive(true);
-            Music_Controller.instance.resumeMusic(lastPlayedSong);
-
-            Time.timeScale = 1;
-
-            canInput = true;
-            isPaused = false;
+            UI_Controller.instance.UnpauseGame();
         }
 
         if (!canInput)

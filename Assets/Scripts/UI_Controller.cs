@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using static System.TimeZoneInfo;
+using UnityEngine.UI;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -22,7 +23,15 @@ public class UI_Controller : MonoBehaviour
     //[Header("GameWin UI Objects.")]
     //Add things like buttons, text, etc here to change it
 
-    //[Header("PauseMenu UI Objects.")]
+    [Header("PauseMenu UI Objects.")]
+    public TextMeshProUGUI IndexText;
+    public TextMeshProUGUI QuestTitleText;
+    public TextMeshProUGUI QuestDescriptionText;
+    public TextMeshProUGUI QuestRewardText;
+    public TextMeshProUGUI NoQuestsText;
+    public Button indexRightButton;
+    public Button indexLeftButton;
+    public int questIndex;
     //Add things like buttons, text, etc here to change it
 
     [Header("CutScene UI Objects")]
@@ -46,6 +55,7 @@ public class UI_Controller : MonoBehaviour
     public float textDisplayDuration;
     public GameObject crossFadeIn;
     public GameObject crossFadeOut;
+    private AudioClip lastPlayedSong; //NO TOUCHIE
 
     public static UI_Controller instance;
 
@@ -123,6 +133,81 @@ public class UI_Controller : MonoBehaviour
         //Add more here in order to change the text
 
         gamewinUI.SetActive(true);
+    }
+
+    public void PauseGame()
+    {
+        pauseMenuUI.SetActive(true);
+        playerUI.SetActive(false);
+        lastPlayedSong = Music_Controller.instance.pauseMusic();
+        Time.timeScale = 0;
+
+        if (Player_Controller.instance.quests.Count != 0)
+        {
+            IndexText.gameObject.SetActive(true);
+            QuestTitleText.gameObject.SetActive(true);
+            QuestDescriptionText.gameObject.SetActive(true);
+            QuestRewardText.gameObject.SetActive(true);
+            indexRightButton.gameObject.SetActive(true);
+            indexLeftButton.gameObject.SetActive(true);
+
+            IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
+            QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
+            QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
+            QuestRewardText.text = Player_Controller.instance.quests[questIndex].reward;
+        }
+        else
+        {
+            NoQuestsText.text = "No quests";
+
+            NoQuestsText.gameObject.SetActive(true);
+        }
+
+        Player_Controller.instance.canInput = false;
+        Player_Controller.instance.isPaused = true;
+    }
+
+    public void indexQuestRight()
+    {
+        if(!(questIndex + 1 > Player_Controller.instance.quests.Count - 1))
+        {
+            questIndex++;
+            IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
+            QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
+            QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
+            QuestRewardText.text = Player_Controller.instance.quests[questIndex].reward;
+        }
+    }
+
+    public void indexQuestLeft()
+    {
+        if (!(questIndex - 1 < 0))
+        {
+            questIndex--;
+            IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
+            QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
+            QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
+            QuestRewardText.text = Player_Controller.instance.quests[questIndex].reward;
+        }
+    }
+
+    public void UnpauseGame()
+    {
+        IndexText.gameObject.SetActive(false);
+        QuestTitleText.gameObject.SetActive(false);
+        QuestDescriptionText.gameObject.SetActive(false);
+        QuestRewardText.gameObject.SetActive(false);
+        indexRightButton.gameObject.SetActive(false);
+        indexLeftButton.gameObject.SetActive(false);
+        NoQuestsText.gameObject.SetActive(false);
+        pauseMenuUI.SetActive(false);
+        playerUI.SetActive(true);
+        Music_Controller.instance.resumeMusic(lastPlayedSong);
+
+        Time.timeScale = 1;
+
+        Player_Controller.instance.canInput = true;
+        Player_Controller.instance.isPaused = false;
     }
 
     public void DisplayIntroCutscene()
