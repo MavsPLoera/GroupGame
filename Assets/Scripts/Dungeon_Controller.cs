@@ -62,7 +62,7 @@ public class Dungeon_Controller: MonoBehaviour
             {
                 if(_debug) Debug.Log($"Room Cleared (Update)");
                 currentRoom.isCleared = true;
-                if(currentRoom.playerUnlock != null)
+                if(currentRoom.playerUnlock != null && currentDungeon.isCleared)
                 {
                     currentRoom.playerUnlock.SetActive(true);
                 }

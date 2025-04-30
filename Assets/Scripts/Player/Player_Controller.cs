@@ -652,7 +652,7 @@ public class Player_Controller : MonoBehaviour
         playerChangingAudioSource.PlayOneShot(sound);
     }
 
-    private IEnumerator unlockedNewAbility()
+    private IEnumerator unlockedNewAbility(System.Action callback = null)
     {
         canInput = false;
         abilityUnlockedLight.SetActive(true);
@@ -664,6 +664,7 @@ public class Player_Controller : MonoBehaviour
 
         abilityUnlockedLight.SetActive(false);
         canInput = true;
+        callback?.Invoke();
     }
 
     public void TakeDamage(float damage)
@@ -775,7 +776,11 @@ public class Player_Controller : MonoBehaviour
             UI_Controller.instance.ArrowImage.gameObject.SetActive(true);
             UI_Controller.instance.ShootArrow();
             Destroy(collision.gameObject);
-            StartCoroutine(unlockedNewAbility());
+            StartCoroutine(unlockedNewAbility(() =>
+            {
+                // Trigger cutscene after animation finishes.
+                Game_Progress_Controller.instance.StartCH2();
+            }));
         }
         else if(collision.gameObject.CompareTag("UnlockUlt"))
         {

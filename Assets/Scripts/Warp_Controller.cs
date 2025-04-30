@@ -87,7 +87,7 @@ public class Warp_Controller : MonoBehaviour
 
         if(gameObject.CompareTag("EndTutorial"))
         {
-            UI_Controller.instance.DisplayCH1Custscene();
+            Game_Progress_Controller.instance.StartCH1();
         }
 
         //Cross fade in complete, no cross fade out to new destination.

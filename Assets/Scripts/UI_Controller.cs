@@ -98,9 +98,6 @@ public class UI_Controller : MonoBehaviour
         CollectCoin();
         CollectHealth();
         UpdatePlayerLives();
-
-
-        DisplayIntroCutscene();
     }
 
     public void EnterArea(string name)
