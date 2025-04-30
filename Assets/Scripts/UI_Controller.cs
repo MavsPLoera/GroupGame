@@ -261,6 +261,12 @@ public class UI_Controller : MonoBehaviour
         StartCoroutine(Cutscene(2));
     }
 
+    public void DisplayCH3Custscene()
+    {
+        cutsceneTitleText.text = "Chapter 03";
+        StartCoroutine(Cutscene(3));
+    }
+
     private IEnumerator DisplayPopupText(string text, TextMeshProUGUI displayText)
     {
         // TODO: pass and play AudioClip.

@@ -63,7 +63,22 @@ public class Game_Progress_Controller : MonoBehaviour
         Camera_Controller.instance.inDungeon = false;
         Player_Controller.instance.transform.position = new Vector3(-126.5f, 4.5f, 0);
         SavePlayerProgress();
+        // Unlock new area.
+        AreaLock_Controller.instance.unlockSecondaryNeededAreas();
         chapterIdx = 2;
+    }
+
+    public void StartCH3()
+    {
+        UI_Controller.instance.DisplayCH3Custscene();
+        // Move player to The Pale Mare.
+        Dungeon_Controller.instance.inDungeon = false;
+        Camera_Controller.instance.inDungeon = false;
+        Player_Controller.instance.transform.position = new Vector3(-126.5f, 4.5f, 0);
+        SavePlayerProgress();
+        // Unlock new area.
+        AreaLock_Controller.instance.unlockUltimateNeededAreas();
+        chapterIdx = 3;
     }
 
     public void ResetToLastCheckpoint()
