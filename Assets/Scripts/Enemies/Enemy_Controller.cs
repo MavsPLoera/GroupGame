@@ -106,7 +106,7 @@ public class Enemy_Controller : MonoBehaviour
                 OnDeath();
             }
         }
-        StartCoroutine(DisplayText(TextType.Damage, damage));
+        // StartCoroutine(DisplayText(TextType.Damage, damage));
     }
 
     public void Attack(Collision2D collision)
