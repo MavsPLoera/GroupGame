@@ -14,4 +14,9 @@ public class Cutscene_Controller : MonoBehaviour
     {
         
     }
+
+    public void IntroCutscene()
+    {
+
+    }
 }

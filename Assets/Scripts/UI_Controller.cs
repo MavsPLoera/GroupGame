@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using static System.TimeZoneInfo;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class UI_Controller : MonoBehaviour
     public GameObject gameoverUI;
     public GameObject gamewinUI;
     public GameObject pauseMenuUI;
+    public GameObject cutsceneUI;
 
     //[Header("Player UI Objects.")]
     //Add things like buttons, text, etc here to change it
@@ -23,12 +25,21 @@ public class UI_Controller : MonoBehaviour
     //[Header("PauseMenu UI Objects.")]
     //Add things like buttons, text, etc here to change it
 
+    [Header("CutScene UI Objects")]
+    public TextMeshProUGUI cutsceneDisplayText;
+    public GameObject cutsceneImage;
+    public string cutsceneText;
+    public float cutsceneDuration;
+    public float cutsceneTextDuration;
+
     [Header("UI Controller Misc.")]
     public TextMeshProUGUI currentLocationText;
     public TextMeshProUGUI locationDiscoveredText;
     public TextMeshProUGUI dungeonClearedText;
     public TextMeshProUGUI hintText;
     public float textDisplayDuration;
+    public GameObject crossFadeIn;
+    public GameObject crossFadeOut;
 
     public static UI_Controller instance;
 
@@ -55,6 +66,11 @@ public class UI_Controller : MonoBehaviour
         {
             dungeonClearedText.text = "";
         }
+    }
+
+    private void Start()
+    {
+        DisplayIntroCutscene();
     }
 
     public void EnterArea(string name)
@@ -98,6 +114,15 @@ public class UI_Controller : MonoBehaviour
         gamewinUI.SetActive(true);
     }
 
+    public void DisplayIntroCutscene()
+    {
+        playerUI.SetActive(false);
+        cutsceneUI.SetActive(true);
+        Player_Controller.instance.canInput = false;
+        cutsceneDisplayText.text = "";
+        StartCoroutine(IntroCutscene());
+    }
+
     private IEnumerator DisplayPopupText(string text, TextMeshProUGUI displayText)
     {
         // TODO: pass and play AudioClip.
@@ -121,5 +146,19 @@ public class UI_Controller : MonoBehaviour
             yield return null;
         }
         textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
+    }
+
+    private IEnumerator IntroCutscene()
+    {
+        yield return new WaitForSeconds(1);
+        for(int i = 0; i < cutsceneText.Length; i++)
+        {
+            cutsceneDisplayText.text += cutsceneText[i];
+            yield return new WaitForSeconds(cutsceneTextDuration);
+        }
+        yield return new WaitForSeconds(cutsceneDuration);
+        cutsceneUI.SetActive(false);
+        playerUI.SetActive(true);
+        Player_Controller.instance.canInput = true;
     }
 }
