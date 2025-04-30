@@ -219,10 +219,10 @@ MonoBehaviour:
   enemyType: 4
   isInAnimation: 0
   _enemyAudioSource: {fileID: 0}
-  enemyDamaged: {fileID: 0}
-  enemySwing: {fileID: 0}
+  enemyDamaged: {fileID: 8300000, guid: b2bc033575afcfb46855f349c8fc47eb, type: 3}
+  enemySwing: {fileID: 8300000, guid: aaa7e41daa565ca45b590e2cbd193db1, type: 3}
   enemyShoot: {fileID: 0}
-  enemeyDeath: {fileID: 0}
+  enemeyDeath: {fileID: 8300000, guid: b93d3880cb6ba8647910bae2215a1cb9, type: 3}
   health: 10
   damage: 10
   flickerDuration: 0.1

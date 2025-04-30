@@ -13,6 +13,7 @@ public class Dungeon_Controller: MonoBehaviour
     public class Dungeon
     {
         public List<DungeonRoom> rooms;
+        public GameObject playerUnlock;
         public bool isCleared = false;
     }
 
@@ -23,7 +24,6 @@ public class Dungeon_Controller: MonoBehaviour
         public GameObject roomCollider;
         public List<GameObject> enemies;
         public List<GameObject> warps;
-        public GameObject playerUnlock;
         public bool isCleared = false;
     }
 
@@ -62,10 +62,6 @@ public class Dungeon_Controller: MonoBehaviour
             {
                 if(_debug) Debug.Log($"Room Cleared (Update)");
                 currentRoom.isCleared = true;
-                if(currentRoom.playerUnlock != null && currentDungeon.isCleared)
-                {
-                    currentRoom.playerUnlock.SetActive(true);
-                }
                 currentRoom.warps?.ForEach(warp => warp.SetActive(true));
             }
         }
@@ -78,6 +74,10 @@ public class Dungeon_Controller: MonoBehaviour
         {
             // If in a dungeon, continually check if that dungeon is cleared.
             currentDungeon.isCleared = currentDungeon.rooms?.All(room => room.isCleared) ?? false;
+            if(currentDungeon.isCleared && currentDungeon.playerUnlock != null)
+            {
+                currentDungeon.playerUnlock.SetActive(true);
+            }
         }
     }
 
