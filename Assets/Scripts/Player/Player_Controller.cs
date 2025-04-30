@@ -69,6 +69,7 @@ public class Player_Controller : MonoBehaviour
     public AudioClip bowShootSound;
     public AudioClip arrowsRefilledSound;
     public AudioClip ultimateMoveSound;
+    public AudioClip ultimateAlmostDone;
     public AudioClip ultimateRefreshedSound;
     public AudioClip unlockedNewAbilitySound;
     public AudioClip fishCollect;
@@ -385,6 +386,7 @@ public class Player_Controller : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         playerAnimator.Play("Player_Ult", 0);
         ultLight.gameObject.SetActive(true);
+        playerAudioSource.PlayOneShot(ultimateMoveSound);
 
         //Increase damage during ult
         swordDamage += swordDamageUltIncrease;
@@ -396,10 +398,14 @@ public class Player_Controller : MonoBehaviour
 
         if(ultimateParticles != null)
             ultimateParticles.Play();
-        playChangingPitchSound(ultimateMoveSound);
+      
         playerAnimator.Play("Player_Idle", 0);
 
-        yield return new WaitForSeconds(ultimateDuration);
+        yield return new WaitForSeconds(ultimateDuration - 3f);
+
+        playerAudioSource.PlayOneShot(ultimateAlmostDone);
+
+        yield return new WaitForSeconds(3f);
 
         ultLight.gameObject.SetActive(false);
 
@@ -585,7 +591,9 @@ public class Player_Controller : MonoBehaviour
         crossFadeIn.SetActive(true);
 
         Music_Controller.instance.gameCompleteMusic(Music_Controller.instance.gameWinMusic);
-        yield return new WaitForSeconds(.8f);
+        yield return new WaitForSeconds(1.1f);
+
+        crossFadeIn.SetActive(false);
 
         //trigger gameover on UI
         UI_Controller.instance.GameWin();
@@ -606,7 +614,9 @@ public class Player_Controller : MonoBehaviour
         crossFadeIn.SetActive(true);
 
         Music_Controller.instance.gameCompleteMusic(Music_Controller.instance.gameOverMusic);
-        yield return new WaitForSeconds(.8f);
+        yield return new WaitForSeconds(1.1f);
+
+        crossFadeIn.SetActive(false);
 
         //trigger gameover on UI
         UI_Controller.instance.GameOver();
