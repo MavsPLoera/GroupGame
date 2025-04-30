@@ -637,6 +637,8 @@ public class Player_Controller : MonoBehaviour
         playerLives--;
         playerHealth = maxHealth;
 
+        UI_Controller.instance.UpdatePlayerLives();
+
         yield return new WaitForSeconds(.25f);
 
         //Disable the crossfade to let the player see again and allow them to input.
