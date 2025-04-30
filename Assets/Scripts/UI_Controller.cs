@@ -27,10 +27,12 @@ public class UI_Controller : MonoBehaviour
 
     [Header("CutScene UI Objects")]
     public TextMeshProUGUI cutsceneDisplayText;
-    public GameObject cutsceneImage;
-    public string cutsceneText;
+    public GameObject cutsceneContinue;
+    public GameObject introCutsceneImage;
+    public string introCutsceneText;
     public float cutsceneDuration;
     public float cutsceneTextDuration;
+    private bool cutsceneSkip = false;
 
     [Header("UI Controller Misc.")]
     public TextMeshProUGUI currentLocationText;
@@ -65,6 +67,11 @@ public class UI_Controller : MonoBehaviour
         else
         {
             dungeonClearedText.text = "";
+        }
+
+        if(cutsceneUI.activeSelf && !cutsceneSkip && Input.GetMouseButtonDown(0))
+        {
+            cutsceneSkip = true;
         }
     }
 
@@ -118,9 +125,10 @@ public class UI_Controller : MonoBehaviour
     {
         playerUI.SetActive(false);
         cutsceneUI.SetActive(true);
+        cutsceneContinue.SetActive(false);
         Player_Controller.instance.canInput = false;
         cutsceneDisplayText.text = "";
-        StartCoroutine(IntroCutscene());
+        StartCoroutine(Cutscene(cutsceneDisplayText, introCutsceneText));
     }
 
     private IEnumerator DisplayPopupText(string text, TextMeshProUGUI displayText)
@@ -148,15 +156,24 @@ public class UI_Controller : MonoBehaviour
         textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
     }
 
-    private IEnumerator IntroCutscene()
+    private IEnumerator Cutscene(TextMeshProUGUI displayText, string contentText)
     {
         yield return new WaitForSeconds(1);
-        for(int i = 0; i < cutsceneText.Length; i++)
+        for(int i = 0; i < contentText.Length; i++)
         {
-            cutsceneDisplayText.text += cutsceneText[i];
+            if(cutsceneSkip)
+            {
+                displayText.text = contentText;
+                break;
+            }
+            displayText.text += contentText[i];
             yield return new WaitForSeconds(cutsceneTextDuration);
         }
-        yield return new WaitForSeconds(cutsceneDuration);
+        // yield return new WaitForSeconds(cutsceneDuration);
+        yield return new WaitForSeconds(0.2f);
+        cutsceneContinue.SetActive(true);
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        cutsceneContinue.SetActive(false);
         cutsceneUI.SetActive(false);
         playerUI.SetActive(true);
         Player_Controller.instance.canInput = true;
