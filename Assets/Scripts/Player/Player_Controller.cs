@@ -711,6 +711,7 @@ public class Player_Controller : MonoBehaviour
             gold++;
 
             //Maybe do check in here to see if gold % 5 is true then give player a life
+            //FIX THIS
             if(gold % 10 == 0 && gold != 0)
             {
                 playerLives++;
@@ -719,7 +720,9 @@ public class Player_Controller : MonoBehaviour
             else
             {
                 playerAudioSource.PlayOneShot(goldCollect);
-            }    
+            }
+
+            UI_Controller.instance.CollectCoin();
 
             Destroy(collision.gameObject);
         }
@@ -734,6 +737,8 @@ public class Player_Controller : MonoBehaviour
             gold += 5;
 
             //Maybe do check in here to see if gold % 5 is true then give player a life
+
+            UI_Controller.instance.CollectCoin();
 
             playerAudioSource.PlayOneShot(goldCollect);
             Destroy(collision.gameObject);

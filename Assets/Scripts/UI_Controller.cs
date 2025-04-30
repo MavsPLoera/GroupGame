@@ -14,8 +14,9 @@ public class UI_Controller : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject cutsceneUI;
 
-    //[Header("Player UI Objects.")]
-    //Add things like buttons, text, etc here to change it
+    [Header("Player UI Objects.")]
+    public TextMeshProUGUI CoinCountText;
+    public TextMeshProUGUI HealthPotionsText;
 
     //[Header("GameOver UI Objects.")]
     //Add things like buttons, text, etc here to change it
@@ -91,6 +92,8 @@ public class UI_Controller : MonoBehaviour
 
     private void Start()
     {
+        CoinCountText.text = Player_Controller.instance.gold.ToString();
+
         DisplayIntroCutscene();
     }
 
@@ -114,6 +117,16 @@ public class UI_Controller : MonoBehaviour
     public void PopupText(string text)
     {
         StartCoroutine(DisplayPopupText(text, hintText));
+    }
+
+    public void CollectCoin()
+    {
+        CoinCountText.text = Player_Controller.instance.gold.ToString();
+    }   
+    
+    public void CollectHealth()
+    {
+
     }
 
     public void GameOver()
