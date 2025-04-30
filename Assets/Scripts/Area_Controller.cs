@@ -74,7 +74,6 @@ public class Area_Controller : MonoBehaviour
     {
         if(areaIndex < 0 || areaIndex >= areas.Count || currentArea == null) return;
         string name = currentArea.name;
-        Debug.Log("exit area");
         if(instance)
         {
             UI_Controller.instance.ExitArea(name);
@@ -84,11 +83,21 @@ public class Area_Controller : MonoBehaviour
         currentArea = null;
     }
 
-    public void ResetArea()
+    public void ResetArea(int areaIndex = -1)
     {
-        // Reset current area state on death.
-        currentArea.enemies.ForEach(enemy => enemy.SetActive(false));
-        currentArea = null;
+        if(areaIndex == -1)
+        {
+            // Reset current area state on death.
+            currentArea.enemies.ForEach(enemy => enemy.SetActive(false));
+            currentArea = null;
+        }    
+        else
+        {
+            // Reset passed in area index.
+            currentArea = areas[areaIndex];
+            currentArea.enemies.ForEach(enemy => enemy.SetActive(false));
+            currentArea = null;
+        }
     }
 
 }

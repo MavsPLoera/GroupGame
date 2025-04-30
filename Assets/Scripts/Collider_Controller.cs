@@ -44,14 +44,19 @@ public class Collider_Controller : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            if (colliderType == Collider_Type.Room)
+            if(colliderType == Collider_Type.Room)
             {
                 if(_debug) Debug.Log($"Player Exited Room {roomIndex + 1}");
                 Dungeon_Controller.instance.ExitRoom(dungeonIndex, roomIndex);
             }
-            else if (colliderType == Collider_Type.Area)
+            else if(colliderType == Collider_Type.Area)
             {
-                if(!Player_Controller.instance.isTransitioning) return;
+                // if(!Player_Controller.instance.canInput) return;
+                if(Player_Controller.instance.isTransitioning)
+                {
+                    Area_Controller.instance.ResetArea(areaIndex);
+                    return;
+                }
                 if(_debug) Debug.Log($"Player Exited Area {areaIndex + 1}");
                 Area_Controller.instance.ExitArea(areaIndex);
             }
