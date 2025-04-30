@@ -32,6 +32,8 @@ public class Game_Progress_Controller : MonoBehaviour
     {
         savedRespawn = Player_Controller.instance.respawnPosition.transform.position;
         StartIntro();
+        Player_Controller.instance.quests
+            .Add(new Quest("Make Contact", "Make haste to The Pale Mare in Saltmourne. Your contact is waiting for there for you.", "???"));
     }
 
     void Update()

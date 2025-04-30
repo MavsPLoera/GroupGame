@@ -28,6 +28,7 @@ public class UI_Controller : MonoBehaviour
     //Add things like buttons, text, etc here to change it
 
     [Header("PauseMenu UI Objects.")]
+    public TextMeshProUGUI QuestMenuTitleText;
     public TextMeshProUGUI IndexText;
     public TextMeshProUGUI QuestTitleText;
     public TextMeshProUGUI QuestDescriptionText;
@@ -167,8 +168,7 @@ public class UI_Controller : MonoBehaviour
         playerUI.SetActive(false);
         lastPlayedSong = Music_Controller.instance.pauseMusic();
         Time.timeScale = 0;
-
-        /*
+        QuestMenuTitleText.gameObject.SetActive(true);
         if(Player_Controller.instance.quests.Count != 0)
         {
             IndexText.gameObject.SetActive(true);
@@ -177,18 +177,24 @@ public class UI_Controller : MonoBehaviour
             QuestRewardText.gameObject.SetActive(true);
             indexRightButton.gameObject.SetActive(true);
             indexLeftButton.gameObject.SetActive(true);
+            NoQuestsText.gameObject.SetActive(false);
 
             IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
             QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
             QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
-            QuestRewardText.text = Player_Controller.instance.quests[questIndex].reward;
+            QuestRewardText.text = $"Reward: {Player_Controller.instance.quests[questIndex].reward}";
         }
         else
         {
-            NoQuestsText.text = "No quests";
+            IndexText.gameObject.SetActive(false);
+            QuestTitleText.gameObject.SetActive(false);
+            QuestDescriptionText.gameObject.SetActive(false);
+            QuestRewardText.gameObject.SetActive(false);
+            indexRightButton.gameObject.SetActive(false);
+            indexLeftButton.gameObject.SetActive(false);
+            NoQuestsText.text = "No active quests";
             NoQuestsText.gameObject.SetActive(true);
         }
-        */
 
         Player_Controller.instance.canInput = false;
         Player_Controller.instance.isPaused = true;
@@ -220,7 +226,6 @@ public class UI_Controller : MonoBehaviour
 
     public void UnpauseGame()
     {
-        /*
         IndexText.gameObject.SetActive(false);
         QuestTitleText.gameObject.SetActive(false);
         QuestDescriptionText.gameObject.SetActive(false);
@@ -228,7 +233,6 @@ public class UI_Controller : MonoBehaviour
         indexRightButton.gameObject.SetActive(false);
         indexLeftButton.gameObject.SetActive(false);
         NoQuestsText.gameObject.SetActive(false);
-        */
         pauseMenuUI.SetActive(false);
         playerUI.SetActive(true);
         Music_Controller.instance.resumeMusic(lastPlayedSong);
@@ -261,9 +265,9 @@ public class UI_Controller : MonoBehaviour
     {
         // TODO: pass and play AudioClip.
         displayText.text = text;
-        yield return StartCoroutine(FadeText(displayText, 0, 1, 1f));
+        yield return StartCoroutine(FadeText(displayText, 0, 1, 1));
         yield return new WaitForSeconds(textDisplayDuration);
-        yield return StartCoroutine(FadeText(displayText, 1, 0, 1f));
+        yield return StartCoroutine(FadeText(displayText, 1, 0, 1));
         displayText.text = "";
     }
 
@@ -306,8 +310,11 @@ public class UI_Controller : MonoBehaviour
             yield return new WaitForSeconds(cutsceneTextDuration);
         }
         // yield return new WaitForSeconds(cutsceneDuration);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f);
         cutsceneContinue.SetActive(true);
+        TextMeshProUGUI continueText = cutsceneContinue.GetComponentInChildren<TextMeshProUGUI>();
+        continueText.alpha = 0f;
+        StartCoroutine(FadeText(continueText, 0, 1, 1));
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
         cutsceneContinue.SetActive(false);
         cutsceneImages[idx].SetActive(false);

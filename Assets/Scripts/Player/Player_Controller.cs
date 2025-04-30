@@ -136,9 +136,6 @@ public class Player_Controller : MonoBehaviour
         //Default amount of healing potions
         healingPotions = 3;
         playerMovementSpeedUnchanging = playerMovementspeed;
-
-        quests.Add(new Quest("TestTitle", "Test Description", "Test Reward"));
-        quests.Add(new Quest("TestTitle2", "Test Description2", "Test Reward2"));
     }
 
     // Update is called once per frame
@@ -633,6 +630,10 @@ public class Player_Controller : MonoBehaviour
             Dungeon_Controller.instance.inDungeon = false;
             Dungeon_Controller.instance.ResetRoom();
             Camera_Controller.instance.inDungeon = false;
+        }
+        if(Area_Controller.instance.currentArea != null) 
+        {
+            Area_Controller.instance.ResetArea();
         }
 
         //Minus the player lives and set maxHealth back to full

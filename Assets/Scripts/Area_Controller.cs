@@ -88,14 +88,14 @@ public class Area_Controller : MonoBehaviour
         if(areaIndex == -1)
         {
             // Reset current area state on death.
-            currentArea.enemies.ForEach(enemy => enemy.SetActive(false));
+            currentArea?.enemies.ForEach(enemy => enemy.SetActive(false));
             currentArea = null;
         }    
         else
         {
             // Reset passed in area index.
             currentArea = areas[areaIndex];
-            currentArea.enemies.ForEach(enemy => enemy.SetActive(false));
+            currentArea?.enemies.ForEach(enemy => enemy.SetActive(false));
             currentArea = null;
         }
     }
