@@ -581,7 +581,8 @@ public class Player_Controller : MonoBehaviour
         UI_Controller.instance.GameWin();
 
         //destroy gameobject
-        Destroy(gameObject);
+        // Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private IEnumerator gameOver()
@@ -604,7 +605,8 @@ public class Player_Controller : MonoBehaviour
         UI_Controller.instance.GameOver();
 
         //destroy gameobject
-        Destroy (gameObject);
+        //Destroy (gameObject);
+        gameObject.SetActive(false);
     }
 
     private IEnumerator loseLife()
