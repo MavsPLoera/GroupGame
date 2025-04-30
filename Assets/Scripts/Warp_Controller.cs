@@ -85,6 +85,11 @@ public class Warp_Controller : MonoBehaviour
         Player_Controller.instance.changeFacingDirectionWarp(direction);
         Player_Controller.instance.playerAnimator.Play("Player_Idle", 0);
 
+        if(gameObject.CompareTag("EndTutorial"))
+        {
+            UI_Controller.instance.DisplayCH1Custscene();
+        }
+
         //Cross fade in complete, no cross fade out to new destination.
         crossFadeIn.SetActive(false);
         crossFadeOut.SetActive(true);

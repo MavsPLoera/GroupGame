@@ -27,9 +27,13 @@ public class UI_Controller : MonoBehaviour
 
     [Header("CutScene UI Objects")]
     public TextMeshProUGUI cutsceneDisplayText;
+    public TextMeshProUGUI cutsceneSubtitleText;
+    public TextMeshProUGUI cutsceneTitleText;
     public GameObject cutsceneContinue;
-    public GameObject introCutsceneImage;
-    public string introCutsceneText;
+    public List<string> cutsceneTexts;
+    public List<string> cutsceneSubtitles;
+    public List<GameObject> cutsceneImages;
+    // public string introCutsceneText;
     public float cutsceneDuration;
     public float cutsceneTextDuration;
     private bool cutsceneSkip = false;
@@ -123,12 +127,20 @@ public class UI_Controller : MonoBehaviour
 
     public void DisplayIntroCutscene()
     {
-        playerUI.SetActive(false);
-        cutsceneUI.SetActive(true);
-        cutsceneContinue.SetActive(false);
-        Player_Controller.instance.canInput = false;
-        cutsceneDisplayText.text = "";
-        StartCoroutine(Cutscene(cutsceneDisplayText, introCutsceneText));
+        cutsceneTitleText.text = "Prologue";
+        StartCoroutine(Cutscene(0));
+    }
+
+    public void DisplayCH1Custscene()
+    {
+        cutsceneTitleText.text = "Chapter 01";
+        StartCoroutine(Cutscene(1));
+    }
+
+    public void DisplayCH2Custscene()
+    {
+        cutsceneTitleText.text = "Chapter 02";
+        StartCoroutine(Cutscene(2));
     }
 
     private IEnumerator DisplayPopupText(string text, TextMeshProUGUI displayText)
@@ -156,17 +168,27 @@ public class UI_Controller : MonoBehaviour
         textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
     }
 
-    private IEnumerator Cutscene(TextMeshProUGUI displayText, string contentText)
+    private IEnumerator Cutscene(int idx)
     {
+        playerUI.SetActive(false);
+        cutsceneUI.SetActive(true);
+        cutsceneContinue.SetActive(false);
+        cutsceneSkip = false;
+        Player_Controller.instance.canInput = false;
+        Player_Controller.instance.isTransitioning = true;
+        cutsceneDisplayText.text = "";
+        string contentText = cutsceneTexts[idx];
+        cutsceneImages[idx].SetActive(true);
+        cutsceneSubtitleText.text = cutsceneSubtitles[idx];
         yield return new WaitForSeconds(1);
         for(int i = 0; i < contentText.Length; i++)
         {
             if(cutsceneSkip)
             {
-                displayText.text = contentText;
+                cutsceneDisplayText.text = contentText;
                 break;
             }
-            displayText.text += contentText[i];
+            cutsceneDisplayText.text += contentText[i];
             yield return new WaitForSeconds(cutsceneTextDuration);
         }
         // yield return new WaitForSeconds(cutsceneDuration);
@@ -174,8 +196,10 @@ public class UI_Controller : MonoBehaviour
         cutsceneContinue.SetActive(true);
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
         cutsceneContinue.SetActive(false);
+        cutsceneImages[idx].SetActive(false);
         cutsceneUI.SetActive(false);
         playerUI.SetActive(true);
         Player_Controller.instance.canInput = true;
+        Player_Controller.instance.isTransitioning = false;
     }
 }
