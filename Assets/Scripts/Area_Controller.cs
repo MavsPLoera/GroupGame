@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using System.Linq;
 
 public class Area_Controller : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Area_Controller : MonoBehaviour
         public GameObject areaCollider;
         public List<GameObject> enemies;
         public bool isDiscovered = false;
+        public bool isCleared = false;
     }
 
     [Header("Area Controller Misc.")]
@@ -36,6 +38,20 @@ public class Area_Controller : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(currentArea != null && !currentArea.isCleared)
+        {
+            // Continually check enemies. If all dead, set isCleared.
+            List<GameObject> currentEnemies = currentArea.enemies?.Where(enemy => enemy.activeSelf).ToList();
+
+            if(currentEnemies != null && currentEnemies.Count == 0)
+            {
+                currentArea.isCleared = true;
+            }
+        }
+    }
+
     public void EnterArea(int areaIndex)
     {
         if(areaIndex < 0 || areaIndex >= areas.Count) return;
@@ -47,6 +63,8 @@ public class Area_Controller : MonoBehaviour
             UI_Controller.instance.DiscoverLocation(currentArea.name);
         }
         UI_Controller.instance.EnterArea(currentArea.name);
+
+        currentArea?.enemies.ForEach(enemy => enemy.SetActive(true));
     }
 
     public void ExitArea(int areaIndex)
@@ -57,6 +75,15 @@ public class Area_Controller : MonoBehaviour
         {
             UI_Controller.instance.ExitArea(name);
         }
+
+        currentArea?.enemies.ForEach(enemy => enemy.SetActive(false));
+        currentArea = null;
+    }
+
+    public void ResetArea()
+    {
+        // Reset current area state on death.
+        currentArea.enemies.ForEach(enemy => enemy.SetActive(false));
         currentArea = null;
     }
 

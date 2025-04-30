@@ -53,7 +53,7 @@ public class Dungeon_Controller: MonoBehaviour
     {
         if(currentRoom != null && !currentRoom.isCleared && !isTransitioning)
         {
-            // Continually check enemies. If all dead, set isCleared and open doors.
+            // Continually check enemies. If all dead, set isCleared and enable warps.
             List<GameObject> currentEnemies = currentRoom.enemies?
                 .Where(enemy => enemy.activeSelf)
                 .ToList();

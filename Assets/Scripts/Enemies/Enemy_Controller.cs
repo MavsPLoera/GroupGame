@@ -27,7 +27,6 @@ public class Enemy_Controller : MonoBehaviour
     public List<GameObject> drops;
     public TextMeshProUGUI text;
     public string[] genericTextList;
-    public string[] damageTextList;
     public float flickerAmount;
     public float knockbackAmount;
     public EnemyType enemyType; // ATM used for triggering appropriate animations for each enemy type.
@@ -95,26 +94,19 @@ public class Enemy_Controller : MonoBehaviour
         if(_debug) Debug.Log($"Damaged {gameObject.name} {damage}");
         health -= damage;
 
-        if (!isDead)
+        if(!isDead)
         {
             _enemyAudioSource.PlayOneShot(enemyDamaged);
             StartCoroutine(Knockback(direction));
             StartCoroutine(FlickerSprite());
 
-            if (health <= 0f)
+            if(health <= 0f)
             {
-                if (_debug) Debug.Log($"{gameObject.name} Dead");
+                if(_debug) Debug.Log($"{gameObject.name} Dead");
                 OnDeath();
             }
         }
-
-        /*
-        int textChance = Random.Range(0, 100);
-        if(textChance <= 25)
-        {
-            StartCoroutine(DisplayText(TextType.Damage));
-        }
-        */
+        StartCoroutine(DisplayText(TextType.Damage, damage));
     }
 
     public void Attack(Collision2D collision)
@@ -122,9 +114,8 @@ public class Enemy_Controller : MonoBehaviour
         // Allow attack despite cooldown if in collision.
         if(!isInAnimation && (!_attackCooldown || collision != null))
         {
-            // TEMP
+            // TEMP.
             StartCoroutine(Swing());
-            // collision?.gameObject.GetComponent<Player_Controller>().TakeDamage(damage);
             Player_Controller.instance.TakeDamage(damage);
             StartCoroutine(AttackCooldown());
         }
@@ -133,17 +124,21 @@ public class Enemy_Controller : MonoBehaviour
     private void OnDeath()
     {
         // Drop item.
-        int dropChance = Random.Range(1, 101);
-        if(dropChance <= 10)
+        if(drops != null)
         {
-            // Drop health poition.
-            Instantiate(drops[1], transform.position, transform.rotation);
-        }
-        else if(dropChance <= 35)
-        {
-            // Drop gold.
-            Instantiate(drops[0], transform.position, transform.rotation);
-        }
+            int dropChance = Random.Range(1, 101);
+            if (dropChance <= 10)
+            {
+                // Drop health pickup.
+                if(drops[1] != null) Instantiate(drops[1], transform.position, transform.rotation);
+            }
+            // else if(dropChance <= 35)
+            else // Guarantee a drop.
+            {
+                // Drop alt. pickup.
+                if (drops[0] != null) Instantiate(drops[0], transform.position, transform.rotation);
+            }
+        }    
         StartCoroutine(Death());
     }
 
@@ -224,7 +219,7 @@ public class Enemy_Controller : MonoBehaviour
         _spriteRenderer.color = _originalColor;
     }
 
-    private IEnumerator DisplayText(TextType textType)
+    private IEnumerator DisplayText(TextType textType, float damage = 0)
     {
         switch(textType)
         {
@@ -232,7 +227,7 @@ public class Enemy_Controller : MonoBehaviour
                 text.text = genericTextList[Random.Range(0, genericTextList.Length)];
                 break;
             case TextType.Damage:
-                text.text = damageTextList[Random.Range(0, damageTextList.Length)];
+                text.text = $"{damage}";
                 break;
             default:
                 break;
