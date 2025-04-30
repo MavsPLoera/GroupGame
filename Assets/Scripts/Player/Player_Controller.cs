@@ -741,22 +741,28 @@ public class Player_Controller : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("DiamondPickUp"))
         {
+            //Bad programming because I am a god level programmer
             float previousGold = gold;
-            gold += 5f;
+            bool extraLife = false;
 
-            //Maybe do check in here to see if gold % 5 is true then give player a life
-            if ((previousGold / 10f) < (gold / 10f))
+            for(int i = 0; i < 5; i++)
             {
-                playerLives++;
-                playerAudioSource.PlayOneShot(extraLifeSound);
-                UI_Controller.instance.UpdatePlayerLives();
+                gold++;
+
+                if (gold % 10 == 0 && gold != 0)
+                {
+                    playerLives++;
+                    playerAudioSource.PlayOneShot(extraLifeSound);
+                    UI_Controller.instance.UpdatePlayerLives();
+                    extraLife = true;
+                }
             }
-            else
-            {
+
+            if(!extraLife)
                 playerAudioSource.PlayOneShot(goldCollect);
-            }
 
-            playerAudioSource.PlayOneShot(goldCollect);
+            //------------------------------------
+
             Destroy(collision.gameObject);
 
             UI_Controller.instance.CollectCoin();
