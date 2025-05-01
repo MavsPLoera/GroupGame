@@ -560,7 +560,7 @@ public class Player_Controller : MonoBehaviour
         StartCoroutine(gameOver());
     }
 
-    private IEnumerator gameWin()
+    public IEnumerator gameWin()
     {
         canInput = false;
         rb.linearVelocity = Vector2.zero;
@@ -852,13 +852,11 @@ public class Player_Controller : MonoBehaviour
         }
         else if(collision.gameObject.CompareTag("Win"))
         {
+            Destroy(collision.gameObject);
             StartCoroutine(unlockedNewAbility(() =>
             {
                 // Trigger cutscene after animation finishes.
                 Game_Progress_Controller.instance.StartOutro();
-                gameWin();
-                Destroy(collision.gameObject);
-                canInput = false;
             }));
         }
     }

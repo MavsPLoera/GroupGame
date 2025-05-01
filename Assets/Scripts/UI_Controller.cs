@@ -291,7 +291,11 @@ public class UI_Controller : MonoBehaviour
     public void DisplayOutroCutscene()
     {
         cutsceneTitleText.text = "Epilogue";
-        StartCoroutine(Cutscene(4));
+        StartCoroutine(Cutscene(4, () =>
+        {
+            StartCoroutine(Player_Controller.instance.gameWin());
+            Player_Controller.instance.canInput = false;
+        }));
     }
 
     private IEnumerator DisplayPopupText(string text, TextMeshProUGUI displayText)
@@ -319,7 +323,7 @@ public class UI_Controller : MonoBehaviour
         textToFade.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
     }
 
-    private IEnumerator Cutscene(int idx)
+    private IEnumerator Cutscene(int idx, System.Action callback = null)
     {
         playerUI.SetActive(false);
         cutsceneUI.SetActive(true);
@@ -356,5 +360,6 @@ public class UI_Controller : MonoBehaviour
         playerUI.SetActive(true);
         Player_Controller.instance.canInput = true;
         Player_Controller.instance.isTransitioning = false;
+        callback?.Invoke();
     }
 }
