@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class Music_Controller : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Music_Controller : MonoBehaviour
     public AudioClip gameOverMusic;
     public AudioClip gameWinMusic;
     public AudioClip pausedMusic;
+    public AudioClip mainMenuMusic;
     public Dictionary<AudioClip, float> clipTimes = new();
     public float transitionTime = .5f;
     private float volume;
@@ -42,8 +44,16 @@ public class Music_Controller : MonoBehaviour
         clipTimes[gameOverMusic] = 0f;
         clipTimes[gameWinMusic] = 0f;
         clipTimes[pausedMusic] = 0f;
+        clipTimes[mainMenuMusic] = 0f;
 
-        musicAudioSource.clip = ruinedTownMusic;
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            musicAudioSource.clip = mainMenuMusic;
+        }
+        else
+        {
+            musicAudioSource.clip = ruinedTownMusic;
+        }
         volume = musicAudioSource.volume;
         musicAudioSource.Play();
     }
