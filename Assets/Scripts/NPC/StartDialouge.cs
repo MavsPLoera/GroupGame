@@ -16,7 +16,11 @@ public class StartDialogue : MonoBehaviour
     [SerializeField] private Button rejectButton;
     [SerializeField] private bool isQuest; // For non-quest dialogue.
     [SerializeField] private Canvas canvas;
+    public string[] questTitles;
+    public string[] questDescriptions;
+    public string[] questRewards;
     private bool questDecision = false;
+    private int questIdx = 0;
 
     [Header("Dialogue Content")]
     [SerializeField] private string[] dialogueSlides;
@@ -92,6 +96,10 @@ public class StartDialogue : MonoBehaviour
     public void AcceptQuest()
     {
         Debug.Log("Quest accepted!");
+        UI_Controller.instance.PopupText("Quest accepted.");
+        Player_Controller.instance.quests.Add(new Quest(questTitles[questIdx], questDescriptions[questIdx], questRewards[questIdx]));
+        if(questIdx == 0) AreaLock_Controller.instance.unlockSewers(); // Refactor.
+        questIdx++;
         questDecision = true;
         CloseDialogue();
     }
@@ -99,6 +107,7 @@ public class StartDialogue : MonoBehaviour
     public void RejectQuest()
     {
         Debug.Log("Quest rejected!");
+        UI_Controller.instance.PopupText("Quest rejected.");
         questDecision = false;
         CloseDialogue();
     }
