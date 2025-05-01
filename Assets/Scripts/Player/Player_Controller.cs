@@ -841,7 +841,7 @@ public class Player_Controller : MonoBehaviour
             }));
 
             quests[1].isComplete = true;
-            quests.Add(new Quest("Lonesome Road", "You have looted the catacombs in the sewers and now have proven your worth. Find and clear out dungeons on your way to Kharon's Hollow, the Holy Grail of crypts. You should start by travelling to \"The Bleak\", a forest northwest of town", false));
+            quests.Add(new Quest("Lonesome Road", "You have looted the catacombs in the sewers and now have proven your worth. Find and clear out dungeons on your way to Kharon's Hollow, the Holy Grail of crypts. You should first travel to \"The Bleak\", a forest northwest of town. Rumors are a tomb is nearby", false));
             UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
             UI_Controller.instance.ActiveQuest();
         }

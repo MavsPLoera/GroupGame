@@ -331,6 +331,7 @@ public class UI_Controller : MonoBehaviour
         cutsceneSkip = false;
         Player_Controller.instance.canInput = false;
         Player_Controller.instance.isTransitioning = true;
+        Player_Controller.instance.rb.constraints = RigidbodyConstraints2D.FreezeAll;
         cutsceneDisplayText.text = "";
         string contentText = cutsceneTexts[idx];
         cutsceneImages[idx].SetActive(true);
@@ -375,6 +376,7 @@ public class UI_Controller : MonoBehaviour
         // ---
         Player_Controller.instance.canInput = true;
         Player_Controller.instance.isTransitioning = false;
+        Player_Controller.instance.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         callback?.Invoke();
     }
 }
