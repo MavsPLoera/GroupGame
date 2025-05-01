@@ -36,11 +36,6 @@ public class Game_Progress_Controller : MonoBehaviour
             .Add(new Quest("Make Contact", "Make haste to The Pale Mare in Saltmourne. Your contact is waiting there for you.", "???"));
     }
 
-    void Update()
-    {
-        
-    }
-
     public void StartIntro()
     {
         UI_Controller.instance.DisplayIntroCutscene();
@@ -81,10 +76,16 @@ public class Game_Progress_Controller : MonoBehaviour
         chapterIdx = 3;
     }
 
+    public void StartOutro()
+    {
+
+    }
+
     public void ResetToLastCheckpoint()
     {
         // Called from GameOver Panel to reset player's progress
         // to last saved state.
+        // Update player.
         Player_Controller.instance.healingPotions = savedHealingPotions;
         Player_Controller.instance.arrows = savedArrows;
         Player_Controller.instance.gold = savedGold;
@@ -93,10 +94,15 @@ public class Game_Progress_Controller : MonoBehaviour
         Player_Controller.instance.playerLives = 3;
         Player_Controller.instance.isPaused = false;
         Player_Controller.instance.isTransitioning = false;
-        Dungeon_Controller.instance.inDungeon = false;
-        Camera_Controller.instance.inDungeon = false;
+        Player_Controller.instance.invincible = false;
         Player_Controller.instance.gameObject.SetActive(true);
+        // Update UI.
         UI_Controller.instance.gameoverUI.SetActive(false);
+        UI_Controller.instance.CollectCoin();
+        UI_Controller.instance.CollectHealth();
+        UI_Controller.instance.UpdatePlayerLives();
+        UI_Controller.instance.ActiveQuest();
+        // Redo chapter cutscene.
         switch (chapterIdx)
         {
             case 0:

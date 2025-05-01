@@ -589,6 +589,18 @@ public class Player_Controller : MonoBehaviour
 
         rb.linearVelocity = Vector2.zero;
 
+        //If the player was in the dungeon then we have to let the controllers know the player is no longer in the dungeon
+        if (Dungeon_Controller.instance.inDungeon || Camera_Controller.instance.inDungeon)
+        {
+            Dungeon_Controller.instance.inDungeon = false;
+            Dungeon_Controller.instance.ResetRoom();
+            Camera_Controller.instance.inDungeon = false;
+        }
+        if (Area_Controller.instance.currentArea != null)
+        {
+            Area_Controller.instance.ResetArea();
+        }
+
         //play animation
         playerAnimator.Play("Player_Hit", 0);
         crossFadeIn.SetActive(true);
@@ -832,10 +844,19 @@ public class Player_Controller : MonoBehaviour
             unlockedUltMove = true;
             AreaLock_Controller.instance.unlockUltimateNeededAreas();
             Destroy(collision.gameObject);
-            StartCoroutine(unlockedNewAbility());
+            StartCoroutine(unlockedNewAbility(() =>
+            {
+                // Trigger cutscene after animation finishes.
+                Game_Progress_Controller.instance.StartCH3();
+            }));
         }
         else if(collision.gameObject.CompareTag("Win"))
         {
+            StartCoroutine(unlockedNewAbility(() =>
+            {
+                // Trigger cutscene after animation finishes.
+                Game_Progress_Controller.instance.StartOutro();
+            }));
             gameWin();
             Destroy(collision.gameObject);
             canInput = false;
