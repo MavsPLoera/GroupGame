@@ -1273,12 +1273,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[ Space ] - Dash
+  m_text: '[ Escape ] - Pause
 
-    [ Left Click ] - Primary Attack
+    [ Space ] - Dash
 
-    [ Alt ] - Secondary
-    Attack (once unlocked)
+    [ Left Click ] - Primary
+    Attack
+
+    [ Right Click / Alt ] - Secondary Attack (once unlocked)
+
+    [ E
+    ] - Heal
 
     [ R ] - Ultimate Attack (once unlocked)'
   m_isRightToLeft: 0
@@ -1512,7 +1517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &747373345
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3296,7 +3301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2101893513
 RectTransform:
   m_ObjectHideFlags: 0

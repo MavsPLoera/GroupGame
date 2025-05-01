@@ -617,6 +617,7 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Hit", 0);
         crossFadeIn.SetActive(true);
 
+        //UPDATE THIS 
         Music_Controller.instance.warpChangeMusic(Warp_Controller.destinationMusic.Tavern);
         yield return new WaitForSeconds(1f);
 
@@ -640,9 +641,13 @@ public class Player_Controller : MonoBehaviour
         playerLives--;
         playerHealth = maxHealth;
 
+        if(healingPotions < 3)
+            healingPotions = 3;
+
+        UI_Controller.instance.CollectHealth();
         UI_Controller.instance.UpdatePlayerLives();
 
-        yield return new WaitForSeconds(.25f);
+        yield return new WaitForSeconds(1.1f);
 
         //Disable the crossfade to let the player see again and allow them to input.
         crossFadeIn.SetActive(false);
@@ -650,7 +655,7 @@ public class Player_Controller : MonoBehaviour
         invincible = false;
     }
 
-    private void playChangingPitchSound(AudioClip sound)
+    public void playChangingPitchSound(AudioClip sound)
     {
         float temp = Random.Range(.9f, 1.1f);
         playerChangingAudioSource.pitch = temp;
@@ -698,6 +703,42 @@ public class Player_Controller : MonoBehaviour
             StartCoroutine(loseLife());
         }
         playerHealth -= damage;
+    }
+
+    public void giveReward(float maxHealthIncrease, int maxPotionsIncrease, float swordDamageIncrease, float goldReward, int healthPoitionReward)
+    {
+        maxHealth += maxHealthIncrease;
+        maxHealthPotions += maxPotionsIncrease;
+        swordDamage += swordDamageIncrease;
+
+        if(goldReward != 0f)
+        {
+            for (int i = 0; i < goldReward; i++)
+            {
+                gold++;
+
+                if (gold % 10 == 0 && gold != 0)
+                {
+                    playerLives++;
+                }
+            }
+        }
+
+
+        if ((healingPotions + healthPoitionReward) >= maxHealthPotions)
+        {
+            healingPotions = maxHealthPotions;
+        }
+        else
+        {
+            healingPotions += healthPoitionReward;
+        }
+
+        UI_Controller.instance.CollectCoin();
+        UI_Controller.instance.CollectHealth();
+        UI_Controller.instance.UpdatePlayerLives();
+
+        //Can move quest to completed or anything else or remove quest from the player
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -748,7 +789,6 @@ public class Player_Controller : MonoBehaviour
         else if (collision.gameObject.CompareTag("DiamondPickUp"))
         {
             //Bad programming because I am a god level programmer
-            float previousGold = gold;
             bool extraLife = false;
 
             for(int i = 0; i < 5; i++)
@@ -812,8 +852,10 @@ public class Quest
     public string reward;
 
     public float maxHealthIncrease;
-    public float maxPotionsIncrease;
+    public int maxPotionsIncrease;
     public float swordDamageIncrease;
+    public float goldReward;
+    public int healthPoitionReward;
 
     public Quest(string questTitle, string questDescription, string reward)
     {

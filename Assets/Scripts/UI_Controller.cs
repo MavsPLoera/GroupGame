@@ -19,6 +19,7 @@ public class UI_Controller : MonoBehaviour
     public TextMeshProUGUI HealthPotionsText;
     public TextMeshProUGUI ArrowText;
     public TextMeshProUGUI PlayerLivesText;
+    public TextMeshProUGUI currentQuestTitle;
     public Image ArrowImage;
 
     //[Header("GameOver UI Objects.")]
@@ -36,7 +37,7 @@ public class UI_Controller : MonoBehaviour
     public TextMeshProUGUI NoQuestsText;
     public Button indexRightButton;
     public Button indexLeftButton;
-    public int questIndex;
+    public int questIndex = 0;
     //Add things like buttons, text, etc here to change it
 
     [Header("CutScene UI Objects")]
@@ -99,6 +100,7 @@ public class UI_Controller : MonoBehaviour
         CollectCoin();
         CollectHealth();
         UpdatePlayerLives();
+        ActiveQuest();
     }
 
     public void EnterArea(string name)
@@ -131,6 +133,19 @@ public class UI_Controller : MonoBehaviour
     public void CollectHealth()
     {
         HealthPotionsText.text = Player_Controller.instance.healingPotions.ToString() + " / " + Player_Controller.instance.maxHealthPotions.ToString();
+    }
+
+    public void ActiveQuest()
+    {
+        if(Player_Controller.instance.quests.Count != 0)
+        {
+            currentQuestTitle.text = Player_Controller.instance.quests[questIndex].questTitle;
+        }
+        else
+        {
+            currentQuestTitle.text = "No active quest";
+        }
+            
     }
 
     public void ShootArrow()
@@ -239,6 +254,7 @@ public class UI_Controller : MonoBehaviour
 
         Time.timeScale = 1;
 
+        ActiveQuest();
         Player_Controller.instance.canInput = true;
         Player_Controller.instance.isPaused = false;
     }

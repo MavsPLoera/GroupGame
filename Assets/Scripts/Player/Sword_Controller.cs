@@ -3,6 +3,7 @@ using UnityEngine;
 public class Sword_Controller : MonoBehaviour
 {
     public BoxCollider2D swordHitBox;
+    public AudioClip arrowBreak;
 
     void Start()
     {
@@ -14,7 +15,9 @@ public class Sword_Controller : MonoBehaviour
         if (collision.CompareTag("Bullet"))
         {
             //Can do calculation to see if the sword cut the arrow in half
+            
             Destroy(collision.gameObject);
+            Player_Controller.instance.playChangingPitchSound(arrowBreak);
         }
     }
 
