@@ -40,6 +40,7 @@ public class PlayerArrow_Controller : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject.tag);
         if (collision.gameObject.CompareTag("Enemy"))
         {
             rb.linearVelocity = Vector2.zero;

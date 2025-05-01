@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 7516561354122103566}
   m_Layer: 10
   m_Name: Feet
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -347,6 +347,7 @@ MonoBehaviour:
   isInAnimation: 0
   isDead: 0
   wasKilled: 0
+  guarenteedDrop: 0
   _enemyAudioSource: {fileID: 0}
   enemyDamaged: {fileID: 8300000, guid: 460bc646f5e698640bc70d0c2a5bcc23, type: 3}
   enemySwing: {fileID: 8300000, guid: 66e23a827d7c94f47bb60b86ebbb3461, type: 3}

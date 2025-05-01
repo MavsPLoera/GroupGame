@@ -729,7 +729,7 @@ public class Player_Controller : MonoBehaviour
             {
                 gold++;
 
-                if (gold % 10 == 0 && gold != 0)
+                if (gold % 20 == 0 && gold != 0)
                 {
                     playerLives++;
                 }
@@ -777,7 +777,7 @@ public class Player_Controller : MonoBehaviour
             gold++;
 
             //Maybe do check in here to see if gold % 5 is true then give player a life
-            if(gold % 10 == 0 && gold != 0)
+            if(gold % 20 == 0 && gold != 0)
             {
                 playerLives++;
                 playerAudioSource.PlayOneShot(extraLifeSound);
@@ -807,7 +807,7 @@ public class Player_Controller : MonoBehaviour
             {
                 gold++;
 
-                if (gold % 10 == 0 && gold != 0)
+                if (gold % 20 == 0 && gold != 0)
                 {
                     playerLives++;
                     playerAudioSource.PlayOneShot(extraLifeSound);
