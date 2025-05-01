@@ -146,8 +146,10 @@ public class Music_Controller : MonoBehaviour
         clipTimes[musicAudioSource.clip] = musicAudioSource.time;
         musicAudioSource.Pause();
         musicAudioSource.clip = pausedMusic;
-        float audioTime = clipTimes[musicAudioSource.clip];
-        musicAudioSource.time = Mathf.Min(audioTime, pausedMusic.length - .01f);
+
+        //float audioTime = clipTimes[musicAudioSource.clip];
+        //changed audioTime to 0f, makes pause music always play from start
+        musicAudioSource.time = 0f;
         musicAudioSource.Play();
         return temp;
     }
