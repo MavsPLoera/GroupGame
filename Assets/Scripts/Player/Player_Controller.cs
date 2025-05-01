@@ -749,7 +749,7 @@ public class Player_Controller : MonoBehaviour
         UI_Controller.instance.CollectCoin();
         UI_Controller.instance.CollectHealth();
         UI_Controller.instance.UpdatePlayerLives();
-
+        UI_Controller.instance.PopupText("Quest reward received");
         //Can move quest to completed or anything else or remove quest from the player
     }
 
@@ -812,6 +812,7 @@ public class Player_Controller : MonoBehaviour
                     playerLives++;
                     playerAudioSource.PlayOneShot(extraLifeSound);
                     UI_Controller.instance.UpdatePlayerLives();
+                    UI_Controller.instance.PopupText("Extra life gained");
                     extraLife = true;
                 }
             }
