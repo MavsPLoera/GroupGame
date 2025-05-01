@@ -840,7 +840,7 @@ public class Player_Controller : MonoBehaviour
             }));
 
             quests[1].isComplete = true;
-            quests.Add(new Quest("On My Own", "You have cleared the sewers and now haven proven your worth. Clear out dungeons on your way to Kharon's Hollow. The enetrace to Bleak is to the left of the tavern", false));
+            quests.Add(new Quest("On My Own", "You have cleared the sewers and now haven proven your worth. Clear out dungeons on your way to Kharon's Hollow. The enetrace to The Bleak is to the left of the tavern.", false));
             UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
             UI_Controller.instance.ActiveQuest();
         }
@@ -855,10 +855,10 @@ public class Player_Controller : MonoBehaviour
                 // Game_Progress_Controller.instance.StartCH3();
             }));
 
-            //quests[2].isComplete = true;
-            //quests.Add(new Quest("On My Own", "You have cleared the sewers and now haven proven your worth. Clear out dungeons on your way to Kharon's Hollow. The enetrace to Bleak is to the left of the tavern", false));
-            //UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
-            //UI_Controller.instance.ActiveQuest();
+            quests[2].isComplete = true;
+            quests.Add(new Quest("Heavy is the crown", "Head to the Kharon's Hollow, steal the jewel from his crown.", false));
+            UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
+            UI_Controller.instance.ActiveQuest();
         }
         else if(collision.gameObject.CompareTag("Win"))
         {
