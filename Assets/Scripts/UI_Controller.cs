@@ -335,6 +335,11 @@ public class UI_Controller : MonoBehaviour
         string contentText = cutsceneTexts[idx];
         cutsceneImages[idx].SetActive(true);
         cutsceneSubtitleText.text = cutsceneSubtitles[idx];
+        // ---
+        crossFadeOut.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        crossFadeOut.SetActive(false);
+        // ---
         yield return new WaitForSeconds(1);
         for(int i = 0; i < contentText.Length; i++)
         {
@@ -354,10 +359,20 @@ public class UI_Controller : MonoBehaviour
         continueText.alpha = 0f;
         StartCoroutine(FadeText(continueText, 0, 1, 1));
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        // ---
+        crossFadeIn.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        crossFadeIn.SetActive(false);
+        // ---
         cutsceneContinue.SetActive(false);
         cutsceneImages[idx].SetActive(false);
         cutsceneUI.SetActive(false);
         playerUI.SetActive(true);
+        // ---
+        crossFadeOut.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        crossFadeOut.SetActive(false);
+        // ---
         Player_Controller.instance.canInput = true;
         Player_Controller.instance.isTransitioning = false;
         callback?.Invoke();
