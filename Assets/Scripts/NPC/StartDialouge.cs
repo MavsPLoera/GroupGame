@@ -99,6 +99,7 @@ public class StartDialogue : MonoBehaviour
         Player_Controller.instance.quests.Add(new Quest(questTitles[questIdx], questDescriptions[questIdx], false));
         Game_Progress_Controller.instance.CompleteQuest(questIdx);
         questIdx++;
+        UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
         UI_Controller.instance.ActiveQuest();
         questDecision = true;
         CloseDialogue();

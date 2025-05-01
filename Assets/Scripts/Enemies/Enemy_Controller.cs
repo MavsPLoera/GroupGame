@@ -114,7 +114,7 @@ public class Enemy_Controller : MonoBehaviour
     public void Attack(Collision2D collision)
     {
         // Allow attack despite cooldown if in collision.
-        if(!isInAnimation && (!_attackCooldown || collision != null) && !isDead)
+        if(!isInAnimation && (!_attackCooldown || collision != null) && !isDead && _playerTransform)
         {
             // TEMP.
             StartCoroutine(Swing());
