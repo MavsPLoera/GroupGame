@@ -16,6 +16,7 @@ public class Music_Controller : MonoBehaviour
     public AudioClip gameOverMusic;
     public AudioClip gameWinMusic;
     public AudioClip pausedMusic;
+    public AudioClip winterForestWolfHowl;
     public Dictionary<AudioClip, float> clipTimes = new();
     public float transitionTime = .5f;
     private float volume;
@@ -162,6 +163,11 @@ public class Music_Controller : MonoBehaviour
         float audioTime = clipTimes[musicAudioSource.clip];
         musicAudioSource.time = Mathf.Min(audioTime, lastPlayedSong.length - .01f);
         musicAudioSource.Play();
+    }
+
+    public void awoooooooooooooooo()
+    {
+        musicAudioSource.PlayOneShot(winterForestWolfHowl);
     }
 
 }
