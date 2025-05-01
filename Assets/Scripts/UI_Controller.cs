@@ -20,6 +20,7 @@ public class UI_Controller : MonoBehaviour
     public TextMeshProUGUI ArrowText;
     public TextMeshProUGUI PlayerLivesText;
     public TextMeshProUGUI currentQuestTitle;
+    public TextMeshProUGUI currentQuestStatus;
     public Image ArrowImage;
 
     //[Header("GameOver UI Objects.")]
@@ -33,7 +34,7 @@ public class UI_Controller : MonoBehaviour
     public TextMeshProUGUI IndexText;
     public TextMeshProUGUI QuestTitleText;
     public TextMeshProUGUI QuestDescriptionText;
-    public TextMeshProUGUI QuestRewardText;
+    public TextMeshProUGUI QuestStatusText;
     public TextMeshProUGUI NoQuestsText;
     public Button indexRightButton;
     public Button indexLeftButton;
@@ -140,10 +141,12 @@ public class UI_Controller : MonoBehaviour
         if(Player_Controller.instance.quests.Count != 0)
         {
             currentQuestTitle.text = Player_Controller.instance.quests[questIndex].questTitle;
+            currentQuestStatus.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
         }
         else
         {
             currentQuestTitle.text = "No active quest";
+            currentQuestStatus.text = "";
         }
             
     }
@@ -189,7 +192,7 @@ public class UI_Controller : MonoBehaviour
             IndexText.gameObject.SetActive(true);
             QuestTitleText.gameObject.SetActive(true);
             QuestDescriptionText.gameObject.SetActive(true);
-            QuestRewardText.gameObject.SetActive(true);
+            QuestStatusText.gameObject.SetActive(true);
             indexRightButton.gameObject.SetActive(true);
             indexLeftButton.gameObject.SetActive(true);
             NoQuestsText.gameObject.SetActive(false);
@@ -197,14 +200,14 @@ public class UI_Controller : MonoBehaviour
             IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
             QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
             QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
-            QuestRewardText.text = $"Reward: {Player_Controller.instance.quests[questIndex].reward}";
+            QuestStatusText.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
         }
         else
         {
             IndexText.gameObject.SetActive(false);
             QuestTitleText.gameObject.SetActive(false);
             QuestDescriptionText.gameObject.SetActive(false);
-            QuestRewardText.gameObject.SetActive(false);
+            QuestStatusText.gameObject.SetActive(false);
             indexRightButton.gameObject.SetActive(false);
             indexLeftButton.gameObject.SetActive(false);
             NoQuestsText.text = "No active quests";
@@ -223,7 +226,7 @@ public class UI_Controller : MonoBehaviour
             IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
             QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
             QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
-            QuestRewardText.text = Player_Controller.instance.quests[questIndex].reward;
+            currentQuestStatus.text = QuestStatusText.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
         }
     }
 
@@ -235,7 +238,7 @@ public class UI_Controller : MonoBehaviour
             IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
             QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
             QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
-            QuestRewardText.text = Player_Controller.instance.quests[questIndex].reward;
+            currentQuestStatus.text = QuestStatusText.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
         }
     }
 
@@ -244,7 +247,7 @@ public class UI_Controller : MonoBehaviour
         IndexText.gameObject.SetActive(false);
         QuestTitleText.gameObject.SetActive(false);
         QuestDescriptionText.gameObject.SetActive(false);
-        QuestRewardText.gameObject.SetActive(false);
+        QuestStatusText.gameObject.SetActive(false);
         indexRightButton.gameObject.SetActive(false);
         indexLeftButton.gameObject.SetActive(false);
         NoQuestsText.gameObject.SetActive(false);

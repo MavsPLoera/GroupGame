@@ -870,7 +870,7 @@ public class Quest
     public int questID;
     public string questTitle;
     public string questDescription;
-    public string reward;
+    public bool isComplete;
 
     public float maxHealthIncrease;
     public int maxPotionsIncrease;
@@ -878,15 +878,15 @@ public class Quest
     public float goldReward;
     public int healthPoitionReward;
 
-    public Quest(string questTitle, string questDescription, string reward)
+    public Quest(string questTitle, string questDescription, bool isComplete)
     {
         this.questTitle = questTitle;
         this.questDescription = questDescription;
-        this.reward = reward;
+        this.isComplete = isComplete;
     }
 
     public override string ToString()
     {
-        return $" {questTitle}, {questDescription}, {reward}";
+        return $"{questTitle}, {questDescription}, ({(isComplete ? "Complete" : "Incomplete")})";
     }
 }
