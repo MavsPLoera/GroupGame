@@ -162,7 +162,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 7
 --- !u!114 &7112975035673419250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Intensity: 2
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 
+  m_ApplyToSortingLayers: 000000009ffc7e52ab9da946
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
