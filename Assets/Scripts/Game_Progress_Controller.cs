@@ -118,6 +118,7 @@ public class Game_Progress_Controller : MonoBehaviour
         UI_Controller.instance.CollectCoin();
         UI_Controller.instance.CollectHealth();
         UI_Controller.instance.UpdatePlayerLives();
+        UI_Controller.instance.ShootArrow();
         UI_Controller.instance.ActiveQuest();
         // Redo chapter cutscene.
         switch (chapterIdx)
