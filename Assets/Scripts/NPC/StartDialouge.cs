@@ -97,8 +97,11 @@ public class StartDialogue : MonoBehaviour
         Debug.Log("Quest accepted!");
         UI_Controller.instance.PopupText("Quest accepted");
         Player_Controller.instance.quests.Add(new Quest(questTitles[questIdx], questDescriptions[questIdx], false));
+        // Bad choice to do it this way, but I'm tired boss. On accept of new quest, complete previous.
+        Player_Controller.instance.quests[questIdx].isComplete = true;
         if(questIdx == 0) AreaLock_Controller.instance.unlockSewers(); // Refactor.
         questIdx++;
+        UI_Controller.instance.ActiveQuest();
         questDecision = true;
         CloseDialogue();
     }
