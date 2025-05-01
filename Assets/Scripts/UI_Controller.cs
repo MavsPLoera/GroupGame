@@ -62,6 +62,8 @@ public class UI_Controller : MonoBehaviour
     public float textDisplayDuration;
     public GameObject crossFadeIn;
     public GameObject crossFadeOut;
+    public AudioClip textSFX;
+    public AudioSource UIAudioSource;
     private AudioClip lastPlayedSong; //NO TOUCHIE
 
     public static UI_Controller instance;
@@ -286,6 +288,12 @@ public class UI_Controller : MonoBehaviour
         StartCoroutine(Cutscene(3));
     }
 
+    public void DisplayOutroCutscene()
+    {
+        cutsceneTitleText.text = "Epilogue";
+        StartCoroutine(Cutscene(4));
+    }
+
     private IEnumerator DisplayPopupText(string text, TextMeshProUGUI displayText)
     {
         // TODO: pass and play AudioClip.
@@ -331,6 +339,7 @@ public class UI_Controller : MonoBehaviour
                 cutsceneDisplayText.text = contentText;
                 break;
             }
+            UIAudioSource.PlayOneShot(textSFX);
             cutsceneDisplayText.text += contentText[i];
             yield return new WaitForSeconds(cutsceneTextDuration);
         }

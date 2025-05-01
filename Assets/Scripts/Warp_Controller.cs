@@ -89,6 +89,14 @@ public class Warp_Controller : MonoBehaviour
         {
             Game_Progress_Controller.instance.StartCH1();
         }
+        else if(gameObject.CompareTag("EndCH1") && !Game_Progress_Controller.instance.CH2)
+        {
+            Game_Progress_Controller.instance.StartCH2();
+        }
+        else if(gameObject.CompareTag("EndCH2") && !Game_Progress_Controller.instance.CH3)
+        {
+            Game_Progress_Controller.instance.StartCH3();
+        }
 
         //Cross fade in complete, no cross fade out to new destination.
         crossFadeIn.SetActive(false);

@@ -13,6 +13,8 @@ public class Game_Progress_Controller : MonoBehaviour
     public float savedGold;
     public Vector3 savedRespawn;
     public int chapterIdx = 0;
+    public bool CH2 = false;
+    public bool CH3 = false;
 
     public static Game_Progress_Controller instance;
 
@@ -52,6 +54,7 @@ public class Game_Progress_Controller : MonoBehaviour
 
     public void StartCH2()
     {
+        CH2 = true;
         UI_Controller.instance.DisplayCH2Custscene();
         // Move player to The Pale Mare.
         Dungeon_Controller.instance.inDungeon = false;
@@ -65,6 +68,7 @@ public class Game_Progress_Controller : MonoBehaviour
 
     public void StartCH3()
     {
+        CH3 = true;
         UI_Controller.instance.DisplayCH3Custscene();
         // Move player to The Pale Mare.
         Dungeon_Controller.instance.inDungeon = false;
@@ -78,7 +82,7 @@ public class Game_Progress_Controller : MonoBehaviour
 
     public void StartOutro()
     {
-
+        UI_Controller.instance.DisplayOutroCutscene();
     }
 
     public void ResetToLastCheckpoint()

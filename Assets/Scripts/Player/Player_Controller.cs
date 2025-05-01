@@ -836,7 +836,7 @@ public class Player_Controller : MonoBehaviour
             StartCoroutine(unlockedNewAbility(() =>
             {
                 // Trigger cutscene after animation finishes.
-                Game_Progress_Controller.instance.StartCH2();
+                // Game_Progress_Controller.instance.StartCH2();
             }));
         }
         else if(collision.gameObject.CompareTag("UnlockUlt"))
@@ -847,7 +847,7 @@ public class Player_Controller : MonoBehaviour
             StartCoroutine(unlockedNewAbility(() =>
             {
                 // Trigger cutscene after animation finishes.
-                Game_Progress_Controller.instance.StartCH3();
+                // Game_Progress_Controller.instance.StartCH3();
             }));
         }
         else if(collision.gameObject.CompareTag("Win"))
@@ -856,10 +856,10 @@ public class Player_Controller : MonoBehaviour
             {
                 // Trigger cutscene after animation finishes.
                 Game_Progress_Controller.instance.StartOutro();
+                gameWin();
+                Destroy(collision.gameObject);
+                canInput = false;
             }));
-            gameWin();
-            Destroy(collision.gameObject);
-            canInput = false;
         }
     }
 }
