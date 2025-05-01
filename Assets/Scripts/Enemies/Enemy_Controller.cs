@@ -1,8 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 
 public class Enemy_Controller : MonoBehaviour
 {
@@ -39,6 +39,7 @@ public class Enemy_Controller : MonoBehaviour
     public AudioClip enemySwing;
     public AudioClip enemyShoot;
     public AudioClip enemeyDeath;
+    public Slider healthSlider;
     public ParticleSystem hitParticles;
 
     [Header("Enemy Stats.")]
@@ -70,10 +71,16 @@ public class Enemy_Controller : MonoBehaviour
         _originalColor = _spriteRenderer.color;
         _originalHealth = health;
         GetComponentInChildren<Canvas>().worldCamera = Camera_Controller.instance.GetComponent<Camera>();
+        healthSlider.maxValue = _originalHealth;
     }
 
     private void Update()
     {
+        if(healthSlider.value != health)
+        {
+            healthSlider.value = health;
+        }
+
         if(!isInAnimation)
         {
             _animator.SetFloat("moveX", _rb.linearVelocity.x);
