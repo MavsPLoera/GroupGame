@@ -39,6 +39,7 @@ public class Enemy_Controller : MonoBehaviour
     public AudioClip enemySwing;
     public AudioClip enemyShoot;
     public AudioClip enemeyDeath;
+    public ParticleSystem hitParticles;
 
     [Header("Enemy Stats.")]
     public float health;
@@ -102,7 +103,10 @@ public class Enemy_Controller : MonoBehaviour
             StartCoroutine(Knockback(direction));
             StartCoroutine(FlickerSprite());
 
-            if(health <= 0f)
+            if(hitParticles != null)
+                hitParticles.Play();
+
+            if (health <= 0f)
             {
                 if(_debug) Debug.Log($"{gameObject.name} Dead");
                 OnDeath();
@@ -129,18 +133,18 @@ public class Enemy_Controller : MonoBehaviour
         if(drops != null)
         {
             int dropChance = Random.Range(1, 101);
-            if (dropChance <= 10)
+            if (guarenteedDrop)
+            {
+                // Drop alt. pickup.
+                if (drops[1] != null) Instantiate(drops[0], transform.position, transform.rotation);
+            }
+            else if (dropChance <= 10)
             {
                 // Drop health pickup.
                 if(drops[1] != null) Instantiate(drops[1], transform.position, transform.rotation);
             }
             // else if(dropChance <= 35)
-            else if(dropChance <= 45)// Guarantee a drop.
-            {
-                // Drop alt. pickup.
-                if (drops[0] != null) Instantiate(drops[0], transform.position, transform.rotation);
-            }
-            else if(guarenteedDrop)
+            else if(dropChance <= 50)// Guarantee a drop.
             {
                 // Drop alt. pickup.
                 if (drops[0] != null) Instantiate(drops[0], transform.position, transform.rotation);
