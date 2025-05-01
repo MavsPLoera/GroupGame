@@ -24,6 +24,7 @@ public class Dungeon_Controller: MonoBehaviour
         public GameObject roomCollider;
         public List<GameObject> enemies;
         public List<GameObject> warps;
+        public List<GameObject> particleEffects;
         public bool isCleared = false;
     }
 
@@ -90,6 +91,7 @@ public class Dungeon_Controller: MonoBehaviour
         // Get current room, set vars., and turn on lights.
         currentRoom = currentDungeon.rooms[roomIndex];
         currentRoom.lights.ForEach(light => light.SetActive(true));
+        currentRoom?.particleEffects.ForEach(effect => effect.SetActive(true));
 
         // Enable enemies and freeze their positions.
         if(!currentRoom.isCleared)
@@ -134,6 +136,7 @@ public class Dungeon_Controller: MonoBehaviour
         // Get current room and turn off light.
         DungeonRoom currentRoom = dungeons[dungeonIndex].rooms[roomIndex];
         currentRoom.lights.ForEach(light => light.SetActive(false));
+        currentRoom?.particleEffects.ForEach(effect => effect.SetActive(false));
     }
 
     public void ResetRoom()
@@ -141,6 +144,7 @@ public class Dungeon_Controller: MonoBehaviour
         // Reset current room state on death.
         currentRoom.enemies.ForEach(enemy => enemy.SetActive(false));
         currentRoom.warps.ForEach(warp => warp.SetActive(false));
+        currentRoom?.particleEffects.ForEach(effect => effect.SetActive(false));
         currentRoom.isCleared = false;
         currentRoom = null;
         currentDungeon = null;
