@@ -841,7 +841,7 @@ public class Player_Controller : MonoBehaviour
             }));
 
             quests[1].isComplete = true;
-            quests.Add(new Quest("On My Own", "You have cleared the sewers and now haven proven your worth. Clear out dungeons on your way to Kharon's Hollow. The enetrace to The Bleak is to the left of the tavern.", false));
+            quests.Add(new Quest("Lonesome Road", "You have looted the catacombs in the sewers and now haven proven your worth. Find and clear out dungeons on your way to Kharon's Hollow, the Holy Grail of crypts. You should start by travelling to \"The Bleak\", a forest northwest of town", false));
             UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
             UI_Controller.instance.ActiveQuest();
         }
@@ -857,7 +857,7 @@ public class Player_Controller : MonoBehaviour
             }));
 
             quests[2].isComplete = true;
-            quests.Add(new Quest("Heavy is the crown", "Head to the Kharon's Hollow, steal the jewel from his crown.", false));
+            quests.Add(new Quest("Heavy is The Crown", "The dead king's time has come. Head to Kharon's Hollow. Steal the riches from his tomb", false));
             UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
             UI_Controller.instance.ActiveQuest();
         }
