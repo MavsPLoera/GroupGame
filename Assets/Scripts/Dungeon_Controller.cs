@@ -75,8 +75,9 @@ public class Dungeon_Controller: MonoBehaviour
         {
             // If in a dungeon, continually check if that dungeon is cleared.
             currentDungeon.isCleared = currentDungeon.rooms?.All(room => room.isCleared) ?? false;
-            if(currentDungeon.isCleared && currentDungeon.playerUnlock != null)
+            if(currentDungeon.isCleared && currentDungeon.playerUnlock != null && !currentDungeon.playerUnlock.activeSelf)
             {
+                UI_Controller.instance.PopupText("Dungeon cleared. You'll find your reward at the exit");
                 currentDungeon.playerUnlock.SetActive(true);
             }
         }
