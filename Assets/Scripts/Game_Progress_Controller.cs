@@ -10,7 +10,10 @@ public class Game_Progress_Controller : MonoBehaviour
     [Header("Saved Player Stats")]
     public int savedHealingPotions;
     public int savedArrows;
+    public int savedLives;
     public float savedGold;
+    public float savedHealth;
+    public float savedDamage;
     public Vector3 savedRespawn;
     public int chapterIdx = 0;
     public bool CH2 = false;
@@ -89,13 +92,16 @@ public class Game_Progress_Controller : MonoBehaviour
     {
         // Called from GameOver Panel to reset player's progress
         // to last saved state.
+        // Update area.
+        Area_Controller.instance.FullReset();
         // Update player.
         Player_Controller.instance.healingPotions = savedHealingPotions;
         Player_Controller.instance.arrows = savedArrows;
         Player_Controller.instance.gold = savedGold;
+        Player_Controller.instance.playerLives = savedLives;
+        Player_Controller.instance.playerHealth = savedHealth;
+        Player_Controller.instance.swordDamage = savedDamage;
         Player_Controller.instance.respawnPosition.transform.position  = Player_Controller.instance.transform.position = savedRespawn;
-        Player_Controller.instance.playerHealth = 100;
-        Player_Controller.instance.playerLives = 3;
         Player_Controller.instance.isPaused = false;
         Player_Controller.instance.isTransitioning = false;
         Player_Controller.instance.invincible = false;
@@ -126,7 +132,18 @@ public class Game_Progress_Controller : MonoBehaviour
     private void SavePlayerProgress()
     {
         savedHealingPotions = Player_Controller.instance.healingPotions;
-        savedArrows = Player_Controller.instance.arrows;
+        savedArrows = Player_Controller.instance.maxArrows;
         savedGold = Player_Controller.instance.gold;
+        savedHealth = Player_Controller.instance.maxHealth;
+        savedLives = Player_Controller.instance.playerLives;
+        savedDamage = Player_Controller.instance.swordDamage;
+    }
+
+    // Ideally we should instead have a set of quests that can exist and keep track of whether
+    // they've been accepted and completed rather than approach it this way.
+    public void CompleteQuest(int questIdx)
+    {
+        Player_Controller.instance.quests[questIdx].isComplete = true;
+        if (questIdx == 0) AreaLock_Controller.instance.unlockSewers();
     }
 }

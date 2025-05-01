@@ -64,9 +64,21 @@ public class Area_Controller : MonoBehaviour
         }
         UI_Controller.instance.EnterArea(currentArea.name);
 
+        /*
         if(!currentArea.isCleared)
         {
             currentArea?.enemies.ForEach(enemy => enemy.SetActive(true));
+        }
+        */
+        if(currentArea != null && currentArea.enemies != null)
+        {
+            foreach(GameObject enemy in currentArea.enemies)
+            {
+                if(enemy.GetComponent<Enemy_Controller>().wasKilled == false)
+                {
+                    enemy.SetActive(true);
+                }
+            }
         }
     }
 
@@ -102,4 +114,11 @@ public class Area_Controller : MonoBehaviour
         }
     }
 
+    public void FullReset()
+    {
+        foreach(var area in areas)
+        {
+            area?.enemies.ForEach(enemy => enemy.GetComponent<Enemy_Controller>().wasKilled = false);
+        }
+    }
 }

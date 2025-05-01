@@ -118,7 +118,7 @@ public class Enemy_Controller : MonoBehaviour
             // TEMP.
             StartCoroutine(Swing());
             Player_Controller.instance.TakeDamage(damage);
-            StartCoroutine(AttackCooldown());
+            if(gameObject) StartCoroutine(AttackCooldown());
         }
     }
 
@@ -139,7 +139,8 @@ public class Enemy_Controller : MonoBehaviour
                 // Drop alt. pickup.
                 if (drops[0] != null) Instantiate(drops[0], transform.position, transform.rotation);
             }
-        }    
+        }
+        wasKilled = true;
         StartCoroutine(Death());
     }
 
@@ -286,7 +287,6 @@ public class Enemy_Controller : MonoBehaviour
         yield return new WaitForSeconds(.6f);
         isInAnimation = false;
         gameObject.SetActive(false);
-        wasKilled = true;
     }
 
     private IEnumerator AttackCooldown()
