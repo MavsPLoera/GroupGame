@@ -33,6 +33,7 @@ public class Enemy_Controller : MonoBehaviour
     public bool isInAnimation;
     public bool isDead = false;
     public bool wasKilled = false; // Refactor.
+    public bool guarenteedDrop = false;
     public AudioSource _enemyAudioSource;
     public AudioClip enemyDamaged;
     public AudioClip enemySwing;
@@ -134,7 +135,7 @@ public class Enemy_Controller : MonoBehaviour
                 if(drops[1] != null) Instantiate(drops[1], transform.position, transform.rotation);
             }
             // else if(dropChance <= 35)
-            else // Guarantee a drop.
+            else if(guarenteedDrop)// Guarantee a drop.
             {
                 // Drop alt. pickup.
                 if (drops[0] != null) Instantiate(drops[0], transform.position, transform.rotation);

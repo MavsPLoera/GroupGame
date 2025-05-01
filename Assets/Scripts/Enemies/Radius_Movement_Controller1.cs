@@ -3,6 +3,7 @@ using UnityEngine;
 public class Radius_Movement_Controller : MonoBehaviour
 {
     [Header("Radius Stats.")]
+    public float radius = 5f;
     public float speedMin;
     public float speedMax;
 
@@ -36,7 +37,7 @@ public class Radius_Movement_Controller : MonoBehaviour
                 _enemyController.Attack(null);
             }
             // Check distance. Move toward if in range to player.
-            else if(distance <= 5f)
+            else if(distance <= radius)
             {
                 moveDirection = moveDirection.normalized;
                 MoveToward(moveDirection);
