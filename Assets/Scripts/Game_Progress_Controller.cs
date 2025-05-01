@@ -72,8 +72,6 @@ public class Game_Progress_Controller : MonoBehaviour
         {
             Player_Controller.instance.quests[1].isComplete = true;
         }
-        Player_Controller.instance.quests
-            .Add(new Quest("On Your Own, After All", "The lead turned out to be successful. You should explore for more crypts up north.", false));
     }
 
     public void StartCH3()
