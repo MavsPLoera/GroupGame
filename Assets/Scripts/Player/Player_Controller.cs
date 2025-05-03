@@ -509,7 +509,7 @@ public class Player_Controller : MonoBehaviour
         {
             facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(0f, .6f, 0f) + transform.position;
-            movementDirection = new Vector2(0f, 1).normalized;
+            movementDirection = new Vector2(x_raw, y_raw).normalized;
             playerAnimator.SetFloat("moveX", 0);
             playerAnimator.SetFloat("moveY", 1);
             swordController.updateHitBox(swingUpOffset, swingUpSize);
@@ -518,7 +518,7 @@ public class Player_Controller : MonoBehaviour
         {
             facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(0f, -.7f, 0f) + transform.position;
-            movementDirection = new Vector2(0f, -1).normalized;
+            movementDirection = new Vector2(x_raw, y_raw).normalized;
             playerAnimator.SetFloat("moveX", 0);
             playerAnimator.SetFloat("moveY", -1);
             swordController.updateHitBox(swingDownOffset, swingDownSize);
@@ -527,7 +527,7 @@ public class Player_Controller : MonoBehaviour
         {
             facingTowards.transform.position = new Vector3(1f, 0f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(.6f, 0f, 0f) + transform.position;
-            movementDirection = new Vector2(1, 0f).normalized;
+            movementDirection = new Vector2(x_raw, y_raw).normalized;
             playerAnimator.SetFloat("moveX", 1);
             playerAnimator.SetFloat("moveY", 0);
             swordController.updateHitBox(swingRightOffset, swingRightSize);
@@ -536,7 +536,7 @@ public class Player_Controller : MonoBehaviour
         {
             facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;
-            movementDirection = new Vector2(-1, 0f).normalized;
+            movementDirection = new Vector2(x_raw, y_raw).normalized;
             playerAnimator.SetFloat("moveX", -1);
             playerAnimator.SetFloat("moveY", 0);
             swordController.updateHitBox(swingLeftOffset, swingLeftSize);
