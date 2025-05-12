@@ -39,6 +39,10 @@ public class UI_Controller : MonoBehaviour
     public Button indexRightButton;
     public Button indexLeftButton;
     public int questIndex = 0;
+    public bool fullscreenOn = false;
+    public TextMeshProUGUI resolutionText;
+    public int resolutionIndex = 0;
+    public List<Resolution> resolutions = new List<Resolution>();
     //Add things like buttons, text, etc here to change it
 
     [Header("CutScene UI Objects")]
@@ -78,6 +82,15 @@ public class UI_Controller : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        resolutions.Add(new Resolution(1920, 1080));
+        resolutions.Add(new Resolution(1600, 900));
+        resolutions.Add(new Resolution(1280, 720));
+        resolutions.Add(new Resolution(1152, 648));
+        resolutions.Add(new Resolution(1024, 576));
+
+        resolutionText.text = resolutions[resolutionIndex].ToString();
+        Screen.SetResolution(resolutions[resolutionIndex].width, resolutions[resolutionIndex].height, fullscreenOn);
     }
 
     private void Update()
@@ -264,6 +277,44 @@ public class UI_Controller : MonoBehaviour
         Player_Controller.instance.isPaused = false;
     }
 
+    public void fullScreen()
+    {
+        fullscreenOn = !fullscreenOn;
+    }
+
+    public void indexRightScreenResolution()
+    {
+        if (resolutionIndex + 1 == resolutions.Count)
+        {
+            resolutionIndex = 0;
+        }
+        else
+        {
+            resolutionIndex++;
+        }
+
+        resolutionText.text = resolutions[resolutionIndex].ToString(); 
+    }
+
+    public void indexLeftScreenResolution()
+    {
+        if (resolutionIndex - 1 <= -1)
+        {
+            resolutionIndex = resolutions.Count - 1;
+        }
+        else
+        {
+            resolutionIndex--;
+        }
+
+        resolutionText.text = resolutions[resolutionIndex].ToString();
+    }
+
+    public void setScreenResolution()
+    {
+        Screen.SetResolution(resolutions[resolutionIndex].width, resolutions[resolutionIndex].height, fullscreenOn);
+    }
+
     public void DisplayIntroCutscene()
     {
         cutsceneTitleText.text = "Prologue";
@@ -378,5 +429,22 @@ public class UI_Controller : MonoBehaviour
         Player_Controller.instance.isTransitioning = false;
         Player_Controller.instance.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         callback?.Invoke();
+    }
+}
+
+public class Resolution
+{
+    public int width;
+    public int height;
+
+    public Resolution(int width, int height)    
+    {
+        this.width = width;
+        this.height = height;
+    }
+
+    public override string ToString()
+    {
+        return width + "x" + height;
     }
 }
