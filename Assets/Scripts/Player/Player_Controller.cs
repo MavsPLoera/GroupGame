@@ -141,6 +141,7 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (healthBarSlider.value != playerHealth)
         {
             healthBarSlider.value = playerHealth;
@@ -265,12 +266,30 @@ public class Player_Controller : MonoBehaviour
             StartCoroutine(secondaryMove());
         }
 
-        //Healing Self
-        //Need to change key that player uses to heal.
-        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.V)) && !healingSelf && (healingPotions != 0) && !isMouseOverUI())
+        //Interact Button
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(healPlayer());
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, facingTowards.transform.position - transform.position, 1f, LayerMask.GetMask("Interact"));
+
+            if(hit)
+            {
+                //hit.collider.gameObject.GetComponent<Interaction_Controller>.Interact();
+                Debug.Log("Hit!");
+            }
+            else
+            {
+                Debug.Log("Nothing");
+            }
         }
+
+
+
+        ////Healing Self
+        ////Need to change key that player uses to heal.
+        //if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.V)) && !healingSelf && (healingPotions != 0) && !isMouseOverUI())
+        //{
+        //    StartCoroutine(healPlayer());
+        //}
     }
 
     private bool isMouseOverUI()
@@ -870,6 +889,11 @@ public class Player_Controller : MonoBehaviour
                 Game_Progress_Controller.instance.StartOutro();
             }));
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position, facingTowards.transform.position - transform.position);
     }
 }
 
