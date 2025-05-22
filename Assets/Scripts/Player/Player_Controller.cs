@@ -167,6 +167,15 @@ public class Player_Controller : MonoBehaviour
             UI_Controller.instance.UnpauseGame();
         }
 
+        //Swap R input to allow the player to force complete dialogue system
+        if(Dialogue_Controller.instance.inConversation)
+        {
+            if (Input.GetKeyDown(KeyCode.R) && Dialogue_Controller.instance.isBuilding && Dialogue_Controller.instance.lineCanBeInterupted)
+            {
+                Dialogue_Controller.instance.ForceComplete();
+            }
+        }
+
         if (!canInput)
         {
             return;
@@ -267,18 +276,13 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Interact Button
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !Dialogue_Controller.instance.inConversation)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, facingTowards.transform.position - transform.position, 1f, LayerMask.GetMask("Interact"));
 
             if(hit)
             {
-                //hit.collider.gameObject.GetComponent<Interaction_Controller>.Interact();
-                Debug.Log("Hit!");
-            }
-            else
-            {
-                Debug.Log("Nothing");
+                hit.collider.gameObject.GetComponent<NPC_Controller>().Interact();
             }
         }
 
