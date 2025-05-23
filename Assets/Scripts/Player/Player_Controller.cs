@@ -284,6 +284,9 @@ public class Player_Controller : MonoBehaviour
             {
                 hit.collider.gameObject.GetComponent<NPC_Controller>().Interact();
             }
+
+            rb.linearVelocity = Vector2.zero;
+            playerAnimator.Play("Player_Idle", 0);
         }
 
 
