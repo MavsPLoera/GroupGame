@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
-using Unity.Burst.Intrinsics;
-using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Dialogue_Controller : MonoBehaviour
 {
     public GameObject DialogueBox;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI dialogueText;
+    public Button[] choiceButtons;
+
     public int charactersPerCycle = 5;
     public float speed = 3f;
+    private int skipToLine = -1;
+    public int characterSoundDelay;
     private int defaultCharactersPerCycle;
     private float defaultSpeed;
     public Coroutine buildingText = null;
@@ -19,6 +24,8 @@ public class Dialogue_Controller : MonoBehaviour
     public bool isBuilding = false;
     public bool inConversation = false;
     public bool lineCanBeInterupted = true;
+    public bool waitForUserInput = true;
+    public bool buttonNotSelected = true;
 
     public AudioSource textAudioSource;
     public AudioClip textAudioClip;
@@ -44,66 +51,81 @@ public class Dialogue_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Could make this a event in order to make this more optimized. Alot of the functionality of our game can be transformed into events to allow for more modulation in our code.
-        if (inConversation)
+        if (Input.GetKeyDown(KeyCode.R) && isBuilding && lineCanBeInterupted)
         {
-            Player_Controller.instance.canInput = false;
-        }
-        else
-        {
-            Player_Controller.instance.canInput = true;
+            ForceComplete();
         }
     }
 
     public IEnumerator WaitForUserInput()
     {
-        while(!Input.GetKeyDown(KeyCode.R))
+        while (!Input.GetKeyDown(KeyCode.R))
             yield return null;
+    }
+
+    public void ButtonPressed()
+    {
+        buttonNotSelected = false;
+    }
+
+    public void setSkipToIndex(int index)
+    {
+        skipToLine = index;
+    }
+
+    public IEnumerator WaitForUserChoiceSelection()
+    {
+        while (buttonNotSelected)
+            yield return null;
+
+        GameObject temp = EventSystem.current.currentSelectedGameObject;
+
+        setSkipToIndex(temp.GetComponent<ButtonChoice_Controller>().SkipToWhatLine);
     }
 
     public IEnumerator DialogueInteraction(List<DialogueLine> dialogue)
     {
         inConversation = true;
         DialogueBox.SetActive(true);
-        foreach (DialogueLine line in dialogue)
-        {
-            if(line.dialogue != null)
-            {
-                //Modify for clearing and appendeding
-                //Also for adding a command to change the build type.
-                //Also to change text color for certain words
+        DialogueLine line = null;
+        Player_Controller.instance.canInput = false;
 
+        for (int i = 0; i < dialogue.Count; i++)
+        {
+            line = dialogue[i];
+
+            if (line.dialogue != null)
+            {
                 //Make this better
-                if(line.dialogue.dialogueModifier != null)
+                if (line.dialogue.dialogueModifier != null)
                 {
-                    if (line.dialogue.dialogueModifier.charactersPerCycle != -1)
+                    if (line.dialogue.dialogueModifier.charactersPerCycle != 0)
                         charactersPerCycle = line.dialogue.dialogueModifier.charactersPerCycle;
+
                     if (line.dialogue.dialogueModifier.characterBuildSpeed > 0.0f)
                         speed = line.dialogue.dialogueModifier.characterBuildSpeed;
-                    lineCanBeInterupted = !line.dialogue.dialogueModifier.cantBeInterupted;
-                }
 
+                    lineCanBeInterupted = !line.dialogue.dialogueModifier.cantBeInterupted;
+                    waitForUserInput = line.dialogue.dialogueModifier.waitForUserInput;
+                }
 
                 switch (line.dialogue.signal)
                 {
-                    case Dialogue.StartSignal.C: case Dialogue.StartSignal.NONE:
+                    case Dialogue.StartSignal.C:
+                    case Dialogue.StartSignal.NONE:
                         dialogueText.text = line.dialogue.dialogue;
-                        nameText.text = line.name;
                         dialogueText.maxVisibleCharacters = 0;
                         break;
                     case Dialogue.StartSignal.A:
                         dialogueText.text += line.dialogue.dialogue;
-                        nameText.text = line.name;
                         break;
                     case Dialogue.StartSignal.WA:
                         yield return new WaitForSeconds(line.dialogue.delay);
                         dialogueText.text += line.dialogue.dialogue;
-                        nameText.text = line.name;
                         break;
                     case Dialogue.StartSignal.WC:
                         yield return new WaitForSeconds(line.dialogue.delay);
                         dialogueText.text = line.dialogue.dialogue;
-                        nameText.text = line.name;
                         dialogueText.maxVisibleCharacters = 0;
                         break;
                 }
@@ -111,7 +133,7 @@ public class Dialogue_Controller : MonoBehaviour
 
                 if (!isBuilding)
                 {
-                    if(line.dialogue.buildMethod == Dialogue.BuildMethod.typeWriter)
+                    if (line.dialogue.buildMethod == Dialogue.BuildMethod.typeWriter)
                     {
                         buildingText = StartCoroutine(BuildTextTypeWriter(line));
                     }
@@ -123,15 +145,52 @@ public class Dialogue_Controller : MonoBehaviour
 
                 yield return buildingText;
 
-                yield return StartCoroutine(WaitForUserInput());
+                if (waitForUserInput)
+                {
+                    yield return StartCoroutine(WaitForUserInput());
+                }
+                else if (line.choices != null)
+                {
+                    yield return StartCoroutine(WaitForUserChoiceSelection());
 
+                    for (int j = 0; j < choiceButtons.Length; j++)
+                    {
+                        choiceButtons[j].gameObject.SetActive(false);
+                    }
+
+                    if (skipToLine >= dialogue.Count)
+                    {
+                        Debug.LogError("Skipping to line that is outside avalible dialogue lines");
+                        i = dialogue.Count;
+                    }
+                    else
+                    {
+                        i = skipToLine - 1;
+                        nameText.text = "";
+                        dialogueText.text = "";
+                    }
+                }
+
+                if (line.command != null)
+                {
+                    foreach (string dialogueCommand in line.command)
+                    {
+                        DialogueCommands_Controller.instance.CallCommand(dialogueCommand);
+                    }
+                }
+
+                //Reset Dialogue Modifiers
+                buttonNotSelected = true;
                 lineCanBeInterupted = true;
+                waitForUserInput = true;
                 charactersPerCycle = defaultCharactersPerCycle;
                 speed = defaultSpeed;
             }
         }
         DialogueBox.SetActive(false);
+        Player_Controller.instance.canInput = true;
         inConversation = false;
+        skipToLine = -1;
     }
 
     public void ForceComplete()
@@ -144,19 +203,35 @@ public class Dialogue_Controller : MonoBehaviour
     {
         isBuilding = true;
 
-        //dialogueText.text = dialougeLine.dialogue.dialogue;
-        //nameText.text = dialougeLine.name; 
-        //dialogueText.maxVisibleCharacters = 0;
-        //dialogueText.ForceMeshUpdate();
+        nameText.text = dialougeLine.name;
 
         //Prevent String interupts by setting text to dialogue line once then letting player see the text
         while (dialogueText.maxVisibleCharacters < dialogueText.textInfo.characterCount)
         {
             dialogueText.maxVisibleCharacters += charactersPerCycle;
-            textAudioSource.PlayOneShot(textAudioSource.clip);
+
+            if (dialogueText.maxVisibleCharacters % characterSoundDelay == 0)
+                textAudioSource.PlayOneShot(textAudioClip);
 
             yield return new WaitForSeconds(.015f / speed);
         }
+
+        if (dialougeLine.choices != null && !(dialougeLine.choices.Count() > choiceButtons.Length))
+        {
+            for (int i = 0; i < dialougeLine.choices.Count; i++)
+            {
+                choiceButtons[i].gameObject.SetActive(true);
+                ButtonChoice_Controller temp = choiceButtons[i].GetComponent<ButtonChoice_Controller>();
+                temp.SetButtonText(dialougeLine.choices[i].choiceText);
+                temp.SetSkipToWhatLine(dialougeLine.choices[i].choiceIndex);
+            }
+
+            EventSystem.current.SetSelectedGameObject(choiceButtons[0].gameObject);
+        }
+        //else
+        //{
+        //    Debug.LogError($"To many choices, Dialogue controller only has {choiceButtons.Length} buttons.");
+        //}
 
         buildingText = null;
         isBuilding = false;
@@ -168,10 +243,8 @@ public class Dialogue_Controller : MonoBehaviour
     {
         isBuilding = true;
 
-        //dialogueText.text = dialougeLine.dialogue.dialogue;
-        //nameText.text = dialougeLine.name;
+        nameText.text = dialougeLine.name;
         dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
-        //dialogueText.ForceMeshUpdate();
 
         buildingText = null;
         isBuilding = false;

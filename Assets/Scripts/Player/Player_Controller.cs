@@ -91,6 +91,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject facingTowards;
     public GameObject arrowSpawn;
     public GameObject respawnPosition;
+    public GameObject canIntectIndicator;
     public Sword_Controller swordController;
     public GameObject ultLight;
     public GameObject abilityUnlockedLight;
@@ -174,6 +175,7 @@ public class Player_Controller : MonoBehaviour
             {
                 Dialogue_Controller.instance.ForceComplete();
             }
+            rb.linearVelocity = Vector2.zero;
         }
 
         if (!canInput)
@@ -282,7 +284,7 @@ public class Player_Controller : MonoBehaviour
 
             if(hit)
             {
-                hit.collider.gameObject.GetComponent<NPC_Controller>().Interact();
+                hit.collider.gameObject.GetComponent<Interact_Controller>().Interact();
             }
 
             rb.linearVelocity = Vector2.zero;
