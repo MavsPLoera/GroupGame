@@ -175,7 +175,6 @@ public class Player_Controller : MonoBehaviour
             {
                 Dialogue_Controller.instance.ForceComplete();
             }
-            rb.linearVelocity = Vector2.zero;
         }
 
         if (!canInput)
