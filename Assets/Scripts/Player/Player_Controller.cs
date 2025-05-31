@@ -177,7 +177,7 @@ public class Player_Controller : MonoBehaviour
             }
         }
 
-        if (!canInput)
+        if (!canInput || Dialogue_Controller.instance.inConversation)
         {
             return;
         }
