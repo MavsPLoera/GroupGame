@@ -221,7 +221,7 @@ public class Player_Controller : MonoBehaviour
                 playerAnimator.Play("Player_Idle", 0);
             }
 
-            rb.linearVelocity = movementDirection * playerMovementspeed;
+            rb.linearVelocity = movementDirection.normalized * playerMovementspeed;
         }
         else
         {

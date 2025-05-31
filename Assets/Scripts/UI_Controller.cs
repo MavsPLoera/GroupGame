@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using static System.TimeZoneInfo;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -43,6 +44,8 @@ public class UI_Controller : MonoBehaviour
     public TextMeshProUGUI resolutionText;
     public int resolutionIndex = 0;
     public List<Resolution> resolutions = new List<Resolution>();
+    public Camera mainCamera;
+    public PixelPerfectCamera pxielPerfectCamera;
     //Add things like buttons, text, etc here to change it
 
     [Header("CutScene UI Objects")]
@@ -83,12 +86,7 @@ public class UI_Controller : MonoBehaviour
             Destroy(gameObject);
         }
 
-        resolutions.Add(new Resolution(1920, 1080));
-        resolutions.Add(new Resolution(1600, 900));
-        resolutions.Add(new Resolution(1280, 720));
-        resolutions.Add(new Resolution(1152, 648));
-        resolutions.Add(new Resolution(1024, 576));
-
+        pxielPerfectCamera = mainCamera.GetComponent<PixelPerfectCamera>();
         resolutionText.text = resolutions[resolutionIndex].ToString();
         Screen.SetResolution(resolutions[resolutionIndex].width, resolutions[resolutionIndex].height, fullscreenOn);
     }
@@ -432,6 +430,7 @@ public class UI_Controller : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class Resolution
 {
     public int width;
