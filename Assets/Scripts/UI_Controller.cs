@@ -2,10 +2,10 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using static System.TimeZoneInfo;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
-using UnityEditor;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -32,6 +32,7 @@ public class UI_Controller : MonoBehaviour
     //Add things like buttons, text, etc here to change it
 
     [Header("PauseMenu UI Objects.")]
+    public GameObject firstButtonInPauseMenu;
     public TextMeshProUGUI QuestMenuTitleText;
     public TextMeshProUGUI IndexText;
     public TextMeshProUGUI QuestTitleText;
@@ -115,7 +116,7 @@ public class UI_Controller : MonoBehaviour
         CollectCoin();
         CollectHealth();
         UpdatePlayerLives();
-        ActiveQuest();
+        //ActiveQuest();
     }
 
     public void EnterArea(string name)
@@ -199,8 +200,11 @@ public class UI_Controller : MonoBehaviour
         pauseMenuUI.SetActive(true);
         playerUI.SetActive(false);
         lastPlayedSong = Music_Controller.instance.pauseMusic();
+        EventSystem.current.SetSelectedGameObject(firstButtonInPauseMenu);
+
         Time.timeScale = 0;
         QuestMenuTitleText.gameObject.SetActive(true);
+
         if(Player_Controller.instance.quests.Count != 0)
         {
             IndexText.gameObject.SetActive(true);
@@ -274,6 +278,24 @@ public class UI_Controller : MonoBehaviour
         ActiveQuest();
         Player_Controller.instance.canInput = true;
         Player_Controller.instance.isPaused = false;
+    }
+
+    public void ChangeSelectedButtonText()
+    {
+        GameObject temp = EventSystem.current.currentSelectedGameObject;
+        TextMeshProUGUI buttonText = temp.GetComponentInChildren<TextMeshProUGUI>();
+        buttonText.color = Color.white;
+        buttonText.fontSize = 45;
+        buttonText.ForceMeshUpdate();
+    }
+
+    public void ChangeSelectedButtonTextBack()
+    {
+        GameObject temp = EventSystem.current.currentSelectedGameObject;
+        TextMeshProUGUI buttonText = temp.GetComponentInChildren<TextMeshProUGUI>();
+        buttonText.color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+        buttonText.fontSize = 40;
+        buttonText.ForceMeshUpdate();
     }
 
     public void fullScreen()
