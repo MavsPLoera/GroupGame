@@ -22,6 +22,9 @@ TagManager:
   - sewersLock
   - EndCH1
   - EndCH2
+  - GameSettings
+  - VideoSettings
+  - AudioSettings
   layers:
   - Default
   - TransparentFX

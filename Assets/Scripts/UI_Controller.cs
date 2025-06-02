@@ -57,9 +57,9 @@ public class UI_Controller : MonoBehaviour
     public GameObject videoSettingsButton;
     public GameObject audioSettingsButton;
     public Button closeButton;
-    public GameObject lastGameObjectInGameSettings;
-    public GameObject lastGameObjectInVideoSettings;
-    public GameObject lastGameObjectInAudioSettings;
+    public Toggle lastGameObjectInGameSettings;
+    public Button lastGameObjectInVideoSettings;
+    public Slider lastGameObjectInAudioSettings;
 
     [Header("CutScene UI Objects")]
     public TextMeshProUGUI cutsceneDisplayText;
@@ -322,20 +322,25 @@ public class UI_Controller : MonoBehaviour
 
     public void UpdateCloseOptionsButton()
     {
-        //GameObject temp = EventSystem.current.currentSelectedGameObject;
+        GameObject temp = EventSystem.current.currentSelectedGameObject;
+        Navigation tempNav = new Navigation();
+        tempNav.mode = Navigation.Mode.Explicit;
 
-        //if (temp == gameSettingsButton)
-        //{
-        //    closeButton.GetComponent<Button>().navigation.selectOnUp = lastGameObjectInGameSettings;
-        //}
-        //else if (temp == videoSettingsButton)
-        //{
-        //    closeButton.GetComponent<Button>().selectOnUp = lastGameObjectInGameSettings;
-        //}
-        //else if (temp == audioSettingsButton)
-        //{
-        //    closeButton.GetComponent<Button>().navigation.selectOnUp = lastGameObjectInGameSettings;
-        //}
+        if (temp.CompareTag("GameSettings"))
+        {
+            tempNav.selectOnUp = lastGameObjectInGameSettings;
+            closeButton.GetComponent<Button>().navigation = tempNav;
+        }
+        else if (temp.CompareTag("VideoSettings"))
+        {
+            tempNav.selectOnUp = lastGameObjectInVideoSettings;
+            closeButton.GetComponent<Button>().navigation = tempNav;
+        }
+        else if (temp.CompareTag("AudioSettings"))
+        {
+            tempNav.selectOnUp = lastGameObjectInAudioSettings;
+            closeButton.GetComponent<Button>().navigation = tempNav;
+        }
     }
 
     public void fullScreen()
