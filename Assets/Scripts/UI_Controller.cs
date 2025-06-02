@@ -50,6 +50,17 @@ public class UI_Controller : MonoBehaviour
     public PixelPerfectCamera pxielPerfectCamera;
     //Add things like buttons, text, etc here to change it
 
+    [Header("Options UI Objects.")]
+    public GameObject firstButtonInOptionsMenu;
+    public GameObject gameSettings;
+    public GameObject gameSettingsButton;
+    public GameObject videoSettingsButton;
+    public GameObject audioSettingsButton;
+    public Button closeButton;
+    public GameObject lastGameObjectInGameSettings;
+    public GameObject lastGameObjectInVideoSettings;
+    public GameObject lastGameObjectInAudioSettings;
+
     [Header("CutScene UI Objects")]
     public TextMeshProUGUI cutsceneDisplayText;
     public TextMeshProUGUI cutsceneSubtitleText;
@@ -79,7 +90,7 @@ public class UI_Controller : MonoBehaviour
 
     private void Awake()
     {
-        if(!instance)
+        if (!instance)
         {
             instance = this;
         }
@@ -95,7 +106,7 @@ public class UI_Controller : MonoBehaviour
 
     private void Update()
     {
-        if(Dungeon_Controller.instance.inDungeon && Dungeon_Controller.instance.currentDungeon != null)
+        if (Dungeon_Controller.instance.inDungeon && Dungeon_Controller.instance.currentDungeon != null)
         {
             bool isCleared = Dungeon_Controller.instance.currentDungeon.isCleared;
             dungeonClearedText.text = isCleared ? "(Cleared)" : "(Not Cleared)";
@@ -105,7 +116,7 @@ public class UI_Controller : MonoBehaviour
             dungeonClearedText.text = "";
         }
 
-        if(cutsceneUI.activeSelf && !cutsceneSkip && Input.GetMouseButtonDown(0))
+        if (cutsceneUI.activeSelf && !cutsceneSkip && Input.GetMouseButtonDown(0))
         {
             cutsceneSkip = true;
         }
@@ -144,8 +155,8 @@ public class UI_Controller : MonoBehaviour
     public void CollectCoin()
     {
         CoinCountText.text = Player_Controller.instance.gold.ToString();
-    }   
-    
+    }
+
     public void CollectHealth()
     {
         HealthPotionsText.text = Player_Controller.instance.healingPotions.ToString() + " / " + Player_Controller.instance.maxHealthPotions.ToString();
@@ -153,7 +164,7 @@ public class UI_Controller : MonoBehaviour
 
     public void ActiveQuest()
     {
-        if(Player_Controller.instance.quests.Count != 0)
+        if (Player_Controller.instance.quests.Count != 0)
         {
             currentQuestTitle.text = Player_Controller.instance.quests[questIndex].questTitle;
             currentQuestStatus.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
@@ -163,7 +174,7 @@ public class UI_Controller : MonoBehaviour
             currentQuestTitle.text = "No active quest";
             currentQuestStatus.text = "";
         }
-            
+
     }
 
     public void ShootArrow()
@@ -205,7 +216,7 @@ public class UI_Controller : MonoBehaviour
         Time.timeScale = 0;
         QuestMenuTitleText.gameObject.SetActive(true);
 
-        if(Player_Controller.instance.quests.Count != 0)
+        if (Player_Controller.instance.quests.Count != 0)
         {
             IndexText.gameObject.SetActive(true);
             QuestTitleText.gameObject.SetActive(true);
@@ -238,7 +249,7 @@ public class UI_Controller : MonoBehaviour
 
     public void indexQuestRight()
     {
-        if(!(questIndex + 1 > Player_Controller.instance.quests.Count - 1))
+        if (!(questIndex + 1 > Player_Controller.instance.quests.Count - 1))
         {
             questIndex++;
             IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
@@ -250,7 +261,7 @@ public class UI_Controller : MonoBehaviour
 
     public void indexQuestLeft()
     {
-        if(!(questIndex - 1 < 0))
+        if (!(questIndex - 1 < 0))
         {
             questIndex--;
             IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
@@ -296,6 +307,35 @@ public class UI_Controller : MonoBehaviour
         buttonText.color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
         buttonText.fontSize = 40;
         buttonText.ForceMeshUpdate();
+    }
+
+    public void OpenOptions()
+    {
+        EventSystem.current.SetSelectedGameObject(firstButtonInOptionsMenu);
+        gameSettings.SetActive(true);
+    }
+
+    public void CloseOptions()
+    {
+        EventSystem.current.SetSelectedGameObject(firstButtonInPauseMenu);
+    }
+
+    public void UpdateCloseOptionsButton()
+    {
+        //GameObject temp = EventSystem.current.currentSelectedGameObject;
+
+        //if (temp == gameSettingsButton)
+        //{
+        //    closeButton.GetComponent<Button>().navigation.selectOnUp = lastGameObjectInGameSettings;
+        //}
+        //else if (temp == videoSettingsButton)
+        //{
+        //    closeButton.GetComponent<Button>().selectOnUp = lastGameObjectInGameSettings;
+        //}
+        //else if (temp == audioSettingsButton)
+        //{
+        //    closeButton.GetComponent<Button>().navigation.selectOnUp = lastGameObjectInGameSettings;
+        //}
     }
 
     public void fullScreen()
