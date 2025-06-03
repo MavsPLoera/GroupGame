@@ -42,7 +42,7 @@ public class UI_Controller : MonoBehaviour
     public Button indexRightButton;
     public Button indexLeftButton;
     public int questIndex = 0;
-    public bool fullscreenOn = false;
+    public bool fullscreenOn = true;
     public TextMeshProUGUI resolutionText;
     public int resolutionIndex = 0;
     public List<Resolution> resolutions = new List<Resolution>();

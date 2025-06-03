@@ -26,7 +26,7 @@ public class Camera_Controller : MonoBehaviour
     {
         _playerTransform = Player_Controller.instance.transform;
         inDungeon = false;
-        transform.position = _playerTransform.position;
+        //transform.position = _playerTransform.position;
     }
 
     private void LateUpdate()
