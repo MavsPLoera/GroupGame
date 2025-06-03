@@ -296,7 +296,7 @@ public class UI_Controller : MonoBehaviour
 
     public void changeScreenResColorBack()
     {
-        resolutionButton.GetComponent<Image>().color  = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+        resolutionButton.GetComponent<Image>().color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
     }
 
     public void ChangeSelectedButtonText()
