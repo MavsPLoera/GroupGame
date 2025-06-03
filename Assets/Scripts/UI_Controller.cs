@@ -53,9 +53,7 @@ public class UI_Controller : MonoBehaviour
     [Header("Options UI Objects.")]
     public GameObject firstButtonInOptionsMenu;
     public GameObject gameSettings;
-    public GameObject gameSettingsButton;
-    public GameObject videoSettingsButton;
-    public GameObject audioSettingsButton;
+    public GameObject resolutionButton;
     public Button closeButton;
     public Toggle lastGameObjectInGameSettings;
     public Button lastGameObjectInVideoSettings;
@@ -291,6 +289,16 @@ public class UI_Controller : MonoBehaviour
         Player_Controller.instance.isPaused = false;
     }
 
+    public void changeScreenResColor()
+    {
+        resolutionButton.GetComponent<Image>().color = Color.white;
+    }
+
+    public void changeScreenResColorBack()
+    {
+        resolutionButton.GetComponent<Image>().color  = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+    }
+
     public void ChangeSelectedButtonText()
     {
         GameObject temp = EventSystem.current.currentSelectedGameObject;
@@ -307,6 +315,76 @@ public class UI_Controller : MonoBehaviour
         buttonText.color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
         buttonText.fontSize = 40;
         buttonText.ForceMeshUpdate();
+    }
+
+    public void ChangeSelectedToggle()
+    {
+        Toggle temp = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>();
+        ColorBlock tempToggle = temp.colors;
+        tempToggle.normalColor = Color.white;
+        temp.colors = tempToggle;
+
+        TextMeshProUGUI toggleText = temp.GetComponentInChildren<TextMeshProUGUI>();
+        toggleText.color = Color.white;
+        toggleText.ForceMeshUpdate();
+    }
+
+    public void ChangeSelectedToggleBack()
+    {
+        Toggle temp = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>();
+        ColorBlock tempToggle = temp.colors;
+        tempToggle.normalColor = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+        temp.colors = tempToggle;
+
+        TextMeshProUGUI toggleText = temp.GetComponentInChildren<TextMeshProUGUI>();
+        toggleText.color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+        toggleText.ForceMeshUpdate();
+    }
+
+    public void ChangeSelectedSlider()
+    {
+        Slider temp = EventSystem.current.currentSelectedGameObject.GetComponent<Slider>();
+        TextMeshProUGUI sliderTitleText = temp.GetComponentInChildren<TextMeshProUGUI>();
+        sliderTitleText.color = Color.white;
+        sliderTitleText.fontSize = 38;
+        sliderTitleText.ForceMeshUpdate();
+
+        Image[] tempImage = EventSystem.current.currentSelectedGameObject.GetComponentsInChildren<Image>();
+
+        foreach (Image image in tempImage)
+        {
+            if (image.CompareTag("Fill"))
+            {
+                image.color = Color.white;
+            }
+        }
+
+        ColorBlock tempToggle = temp.colors;
+        tempToggle.normalColor = Color.white;
+        temp.colors = tempToggle;
+    }
+
+    public void ChangeSelectedSliderBack()
+    {
+        Slider temp = EventSystem.current.currentSelectedGameObject.GetComponent<Slider>();
+        TextMeshProUGUI sliderTitleText = temp.GetComponentInChildren<TextMeshProUGUI>();
+        sliderTitleText.color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+        sliderTitleText.fontSize = 36;
+        sliderTitleText.ForceMeshUpdate();
+
+        Image[] tempImage = EventSystem.current.currentSelectedGameObject.GetComponentsInChildren<Image>();
+
+        foreach(Image image in tempImage)
+        {
+            if(image.CompareTag("Fill"))
+            {
+                image.color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+            }
+        }
+
+        ColorBlock tempToggle = temp.colors;
+        tempToggle.normalColor = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+        temp.colors = tempToggle;
     }
 
     public void OpenOptions()
