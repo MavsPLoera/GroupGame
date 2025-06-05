@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using UnityEngine.Audio;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -58,6 +59,9 @@ public class UI_Controller : MonoBehaviour
     public Toggle lastGameObjectInGameSettings;
     public Button lastGameObjectInVideoSettings;
     public Slider lastGameObjectInAudioSettings;
+    public Slider masterVolume;
+    public Slider musicVolume;
+    public Slider sfxVolume;
 
     [Header("CutScene UI Objects")]
     public TextMeshProUGUI cutsceneDisplayText;
@@ -80,6 +84,7 @@ public class UI_Controller : MonoBehaviour
     public float textDisplayDuration;
     public GameObject crossFadeIn;
     public GameObject crossFadeOut;
+    public AudioMixer audioMixer;
     public AudioClip textSFX;
     public AudioSource UIAudioSource;
     private AudioClip lastPlayedSong; //NO TOUCHIE
@@ -126,6 +131,10 @@ public class UI_Controller : MonoBehaviour
         CollectHealth();
         UpdatePlayerLives();
         //ActiveQuest();
+
+        changeMasterVolume();
+        changeMusicVolume();
+        changeSFXVolume();
     }
 
     public void EnterArea(string name)
@@ -287,6 +296,21 @@ public class UI_Controller : MonoBehaviour
         ActiveQuest();
         Player_Controller.instance.canInput = true;
         Player_Controller.instance.isPaused = false;
+    }
+
+    public void changeMasterVolume()
+    {
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(masterVolume.value) * 20);
+    }
+
+    public void changeMusicVolume()
+    {
+        audioMixer.SetFloat("MusicVolume", Mathf.Log10(musicVolume.value) * 20);
+    }
+
+    public void changeSFXVolume()
+    {
+        audioMixer.SetFloat("SFXVolume", Mathf.Log10(sfxVolume.value) * 20);
     }
 
     public void changeScreenResColor()
