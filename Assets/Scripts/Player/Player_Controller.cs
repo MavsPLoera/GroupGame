@@ -171,7 +171,7 @@ public class Player_Controller : MonoBehaviour
         //Swap R input to allow the player to force complete dialogue system
         if(Dialogue_Controller.instance.inConversation)
         {
-            if (Input.GetKeyDown(KeyCode.R) && Dialogue_Controller.instance.isBuilding && Dialogue_Controller.instance.lineCanBeInterupted)
+            if ((Input.GetKeyDown(KeyCode.R) || Input.GetButton("Fire3")) && Dialogue_Controller.instance.isBuilding && Dialogue_Controller.instance.lineCanBeInterupted)
             {
                 Dialogue_Controller.instance.ForceComplete();
             }
@@ -271,23 +271,22 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Secondary
-        if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && !(arrows <= 0) && !isMouseOverUI())
+        if ((Input.GetButton("Jump") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && !(arrows <= 0) && !isMouseOverUI())
         {
             StartCoroutine(secondaryMove());
         }
 
         //Interact Button
-        if (Input.GetKeyDown(KeyCode.E) && !Dialogue_Controller.instance.inConversation)
+        if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.E)) && !Dialogue_Controller.instance.inConversation)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, facingTowards.transform.position - transform.position, 1f, LayerMask.GetMask("Interact"));
 
             if(hit)
             {
                 hit.collider.gameObject.GetComponent<Interact_Controller>().Interact();
+                rb.linearVelocity = Vector2.zero;
+                playerAnimator.Play("Player_Idle", 0);
             }
-
-            rb.linearVelocity = Vector2.zero;
-            playerAnimator.Play("Player_Idle", 0);
         }
 
 
@@ -532,7 +531,7 @@ public class Player_Controller : MonoBehaviour
          * One of the others things we need to do is change the sword hit box based on the direction the player is facing. Making sure the sword hitbox is consistent no matter the direction.
          */
 
-        if (y_raw == 1f)
+        if (y_raw > .5f)
         {
             facingTowards.transform.position = new Vector3(0f, 1f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(0f, .6f, 0f) + transform.position;
@@ -541,7 +540,7 @@ public class Player_Controller : MonoBehaviour
             playerAnimator.SetFloat("moveY", 1);
             swordController.updateHitBox(swingUpOffset, swingUpSize);
         }
-        else if (y_raw == -1f)
+        else if (y_raw < -.5f)
         {
             facingTowards.transform.position = new Vector3(0f, -1f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(0f, -.7f, 0f) + transform.position;
@@ -550,7 +549,7 @@ public class Player_Controller : MonoBehaviour
             playerAnimator.SetFloat("moveY", -1);
             swordController.updateHitBox(swingDownOffset, swingDownSize);
         }
-        else if (x_raw == 1f)
+        else if (x_raw > .5f)
         {
             facingTowards.transform.position = new Vector3(1f, 0f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(.6f, 0f, 0f) + transform.position;
@@ -559,7 +558,7 @@ public class Player_Controller : MonoBehaviour
             playerAnimator.SetFloat("moveY", 0);
             swordController.updateHitBox(swingRightOffset, swingRightSize);
         }
-        else if (x_raw == -1f)
+        else if (x_raw < -.5f)
         {
             facingTowards.transform.position = new Vector3(-1f, 0f, 0f) + transform.position;
             arrowSpawn.transform.position = new Vector3(-.6f, 0f, 0f) + transform.position;

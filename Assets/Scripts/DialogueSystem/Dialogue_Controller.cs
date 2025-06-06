@@ -48,18 +48,10 @@ public class Dialogue_Controller : MonoBehaviour
         defaultSpeed = speed;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R) && isBuilding && lineCanBeInterupted)
-        {
-            ForceComplete();
-        }
-    }
-
     public IEnumerator WaitForUserInput()
     {
-        while (!Input.GetKeyDown(KeyCode.R))
+        //Keep looping until either R or Right GamePad is pressed.
+        while ((!Input.GetButtonDown("Fire3") && !Input.GetKeyDown(KeyCode.R)))
             yield return null;
     }
 
