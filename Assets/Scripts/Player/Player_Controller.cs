@@ -88,6 +88,7 @@ public class Player_Controller : MonoBehaviour
     public Vector2 swingLeftSize;
 
     [Header("Player Misc.")]
+    public Item[] playerItems = new Item[12];
     public GameObject facingTowards;
     public GameObject arrowSpawn;
     public GameObject respawnPosition;
@@ -175,6 +176,23 @@ public class Player_Controller : MonoBehaviour
             {
                 Dialogue_Controller.instance.ForceComplete();
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if(!UI_Controller.instance.OptionsPanel.activeSelf)
+            {
+                UI_Controller.instance.openOptions();
+                rb.linearVelocity = Vector2.zero;
+                playerAnimator.Play("Player_Idle", 0);
+                canInput = false;
+            }
+            else
+            {
+                UI_Controller.instance.OptionsPanel.SetActive(false);
+                canInput = true;
+            }
+            
         }
 
         if (!canInput || Dialogue_Controller.instance.inConversation)
@@ -929,4 +947,14 @@ public class Quest
     {
         return $"{questTitle}, {questDescription}, ({(isComplete ? "Complete" : "Incomplete")})";
     }
+}
+
+[System.Serializable]
+public class Item
+{
+    public string name;
+    public string quantity;
+    public string description;
+    public Sprite itemInventoryImage;
+    public Sprite itemEquipedImage;
 }

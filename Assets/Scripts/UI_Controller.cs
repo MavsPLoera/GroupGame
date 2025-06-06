@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 using UnityEngine.Audio;
+using NUnit.Framework.Constraints;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -62,6 +63,11 @@ public class UI_Controller : MonoBehaviour
     public Slider masterVolume;
     public Slider musicVolume;
     public Slider sfxVolume;
+
+    [Header("Inventory UI Objects.")]
+    public GameObject OptionsPanel;
+    public GameObject firstButtonInInventory;
+    public GameObject[] inventoryButtonImages;
 
     [Header("CutScene UI Objects")]
     public TextMeshProUGUI cutsceneDisplayText;
@@ -296,6 +302,27 @@ public class UI_Controller : MonoBehaviour
         ActiveQuest();
         Player_Controller.instance.canInput = true;
         Player_Controller.instance.isPaused = false;
+    }
+
+
+    public void openOptions()
+    {
+        OptionsPanel.gameObject.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstButtonInInventory);
+
+        for (int i = 0; i < inventoryButtonImages.Length; i++)
+        {
+            Image temp = inventoryButtonImages[i].GetComponentInChildren<Image>();
+
+            if (Player_Controller.instance.playerItems[i].itemInventoryImage != null)
+            {
+                temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
+                temp.color = new Color(1, 1, 1, 1);
+            }
+                
+            
+        }
+
     }
 
     public void changeMasterVolume()
