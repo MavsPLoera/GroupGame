@@ -67,7 +67,9 @@ public class UI_Controller : MonoBehaviour
     [Header("Inventory UI Objects.")]
     public GameObject OptionsPanel;
     public GameObject firstButtonInInventory;
-    public GameObject[] inventoryButtonImages;
+    public InventoryButton[] inventoryButtonImages;
+    public TextMeshProUGUI itemNameText;
+    public TextMeshProUGUI itemDescriptionText;
 
     [Header("CutScene UI Objects")]
     public TextMeshProUGUI cutsceneDisplayText;
@@ -312,17 +314,31 @@ public class UI_Controller : MonoBehaviour
 
         for (int i = 0; i < inventoryButtonImages.Length; i++)
         {
-            Image temp = inventoryButtonImages[i].GetComponentInChildren<Image>();
+            Image temp = inventoryButtonImages[i].image;
 
             if (Player_Controller.instance.playerItems[i].itemInventoryImage != null)
             {
                 temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
                 temp.color = new Color(1, 1, 1, 1);
+
+                if(Player_Controller.instance.playerItems[i].quantity > 0)
+                    inventoryButtonImages[i].quanitityText.text = Player_Controller.instance.playerItems[i].quantity.ToString();
+
             }
-                
-            
+
+            inventoryButtonImages[i].item = Player_Controller.instance.playerItems[i];
         }
 
+        updateInventoryText();
+    }
+
+    public void updateInventoryText()
+    {
+        int buttonIndex = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        Item temp = inventoryButtonImages[buttonIndex].item;
+
+        itemNameText.text = temp.name;
+        itemDescriptionText.text = temp.description;
     }
 
     public void changeMasterVolume()
@@ -643,4 +659,13 @@ public class Resolution
     {
         return width + "x" + height;
     }
+}
+
+[System.Serializable]
+public class InventoryButton
+{
+    public Image image;
+    public TextMeshProUGUI quanitityText;
+
+    public Item item { get; set; }
 }

@@ -953,7 +953,7 @@ public class Quest
 public class Item
 {
     public string name;
-    public string quantity;
+    public float quantity;
     public string description;
     public Sprite itemInventoryImage;
     public Sprite itemEquipedImage;
