@@ -578,7 +578,7 @@ public class UI_Controller : MonoBehaviour
         TextMeshProUGUI continueText = cutsceneContinue.GetComponentInChildren<TextMeshProUGUI>();
         continueText.alpha = 0f;
         StartCoroutine(FadeText(continueText, 0, 1, 1));
-        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire3"));
         // ---
         crossFadeIn.SetActive(true);
         yield return new WaitForSeconds(1.5f);
