@@ -206,17 +206,17 @@ public class Player_Controller : MonoBehaviour
             {
                 playerAnimator.Play("Player_Walk", 0);
 
-                if (!DustFX.isPlaying)
-                {
-                    DustFX.Play();
-                }
+                //if (!DustFX.isPlaying)
+                //{
+                //    DustFX.Play();
+                //}
             }
             else
             {
-                if (DustFX.isPlaying)
-                {
-                    DustFX.Stop();
-                }
+                //if (DustFX.isPlaying)
+                //{
+                //    DustFX.Stop();
+                //}
 
                 playerAnimator.Play("Player_Idle", 0);
             }
