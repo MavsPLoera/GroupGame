@@ -310,7 +310,6 @@ public class UI_Controller : MonoBehaviour
     public void openOptions()
     {
         OptionsPanel.gameObject.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(firstButtonInInventory);
 
         for (int i = 0; i < inventoryButtonImages.Length; i++)
         {
@@ -321,15 +320,20 @@ public class UI_Controller : MonoBehaviour
                 temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
                 temp.color = new Color(1, 1, 1, 1);
 
-                if(Player_Controller.instance.playerItems[i].quantity > 0)
-                    inventoryButtonImages[i].quanitityText.text = Player_Controller.instance.playerItems[i].quantity.ToString();
+                if (Player_Controller.instance.playerItems[i].quantity > 0)
+                    updateItemQuantity(i);
 
             }
 
             inventoryButtonImages[i].item = Player_Controller.instance.playerItems[i];
         }
 
-        updateInventoryText();
+        EventSystem.current.SetSelectedGameObject(firstButtonInInventory);
+    }
+
+    public void updateItemQuantity(int index)
+    {
+        inventoryButtonImages[index].quanitityText.text = Player_Controller.instance.playerItems[index].quantity.ToString();
     }
 
     public void updateInventoryText()

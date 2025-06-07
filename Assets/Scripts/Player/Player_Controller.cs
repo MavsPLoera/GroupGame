@@ -733,6 +733,52 @@ public class Player_Controller : MonoBehaviour
         callback?.Invoke();
     }
 
+    public void addItem(Item itemAdded)
+    {
+        int hasItem = -1;
+        int temp;
+
+        for (int i = 0; i < playerItems.Length; i++)
+        {
+            if(itemAdded.name == playerItems[i].name)
+                hasItem = i;
+        }
+
+        if(hasItem != -1)
+        {
+            playerItems[hasItem].quantity += itemAdded.quantity;
+            UI_Controller.instance.updateItemQuantity(hasItem);
+        }
+        else
+        {
+            temp = checkInventoryFull();
+            if (temp != -1)
+            {
+                playerItems[temp] = itemAdded;
+            }
+            else
+            {
+                Debug.Log("Inventory Full");
+            }
+        }
+    }
+
+    public int checkInventoryFull()
+    {
+        int indexToReturn = -1;
+        for (int i = 0; i < playerItems.Length; i++)
+        {
+            if (playerItems[i].name == "")
+            {
+                indexToReturn = i;
+                return indexToReturn;
+            }
+                
+        }
+
+        return indexToReturn;
+    }
+
     public void TakeDamage(float damage)
     {
         if(invincible)
