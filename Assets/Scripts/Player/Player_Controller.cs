@@ -304,6 +304,11 @@ public class Player_Controller : MonoBehaviour
                 hit.collider.gameObject.GetComponent<Interact_Controller>().Interact();
                 rb.linearVelocity = Vector2.zero;
                 playerAnimator.Play("Player_Idle", 0);
+                Debug.Log("hit");
+            }
+            else
+            {
+                Debug.Log("no hit");
             }
         }
 
@@ -748,6 +753,7 @@ public class Player_Controller : MonoBehaviour
         {
             playerItems[hasItem].quantity += itemAdded.quantity;
             UI_Controller.instance.updateItemQuantity(hasItem);
+            UI_Controller.instance.CollectCoin();
         }
         else
         {
@@ -755,6 +761,7 @@ public class Player_Controller : MonoBehaviour
             if (temp != -1)
             {
                 playerItems[temp] = itemAdded;
+                UI_Controller.instance.CollectCoin();
             }
             else
             {
@@ -999,6 +1006,7 @@ public class Quest
 public class Item
 {
     public string name;
+    public float cost;
     public float quantity;
     public string description;
     public Sprite itemInventoryImage;

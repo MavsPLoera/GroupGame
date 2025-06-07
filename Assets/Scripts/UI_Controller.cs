@@ -307,6 +307,10 @@ public class UI_Controller : MonoBehaviour
     }
 
 
+    /*
+     * INVENTORY
+     */
+
     public void openOptions()
     {
         OptionsPanel.gameObject.SetActive(true);
@@ -320,7 +324,7 @@ public class UI_Controller : MonoBehaviour
                 temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
                 temp.color = new Color(1, 1, 1, 1);
 
-                if (Player_Controller.instance.playerItems[i].quantity > 0)
+                if (Player_Controller.instance.playerItems[i].quantity > 1)
                     updateItemQuantity(i);
 
             }
@@ -344,6 +348,12 @@ public class UI_Controller : MonoBehaviour
         itemNameText.text = temp.name;
         itemDescriptionText.text = temp.description;
     }
+
+
+
+    /*
+     *  SETTINGS - VOLUME
+     */
 
     public void changeMasterVolume()
     {

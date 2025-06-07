@@ -1,18 +1,18 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class Item_Controller : MonoBehaviour
 {
-    public float itemCost;
-    public int quantity;
-    public string description;
-    public string itemName;
+    public Item item;
+
 
     private void Start()
     {
-        TextMeshPro[] texts = GetComponentsInChildren<TextMeshPro>();
-        texts[1].text = itemCost.ToString();
-        texts[0].text = $"{itemName} {(quantity > 0 ? $"X{quantity}" : "")}";
+        TextMeshPro costText = GetComponentInChildren<TextMeshPro>();
+        costText.text = item.cost.ToString();
+
+        item.itemInventoryImage = GetComponent<SpriteRenderer>().sprite;
     }
 
 
@@ -20,15 +20,9 @@ public class Item_Controller : MonoBehaviour
     {
         float temp = collision.gameObject.GetComponent<Player_Controller>().gold;
 
-        if(temp - itemCost >= 0)
+        if(temp - item.cost >= 0)
         {
-            //call buy item pass in gameobject with tag for the player that bought item
-            Item item = new Item();
-            item.quantity = quantity;
-            item.description = description;
-            item.name = itemName;
-            item.itemInventoryImage = GetComponent<SpriteRenderer>().sprite;
-
+            Player_Controller.instance.gold -= item.cost;
             Player_Controller.instance.addItem(item);
             Debug.Log("Bought Item!");
             Destroy(gameObject);
@@ -38,5 +32,12 @@ public class Item_Controller : MonoBehaviour
             //Call UI to say you dont have enough funds
             Debug.Log("Youre Broke!");
         }
+    }
+
+    public void showItemDescription()
+    {
+        string[] temp = { $"narrator:\"{item.name} - cost {item.cost} gold.{{c}} {item.description}\"" };
+        List<DialogueLine> dialogueLines = DialogueParser_Controller.instance.ParseConversation(temp);
+        StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(dialogueLines));
     }
 }
