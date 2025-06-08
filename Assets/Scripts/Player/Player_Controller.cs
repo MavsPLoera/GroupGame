@@ -92,7 +92,7 @@ public class Player_Controller : MonoBehaviour
     public Item[] playerItems = new Item[15];
     public Item[] playerArrows = new Item[3];
     public Item[] playerAccessories = new Item[3];
-
+    public float maxQuantityPerItem;
     public GameObject facingTowards;
     public GameObject arrowSpawn;
     public GameObject respawnPosition;
@@ -780,41 +780,17 @@ public class Player_Controller : MonoBehaviour
     #region inventory
     public void addItem(Item itemAdded)
     {
-        if (itemAdded.name.ToLower().Contains("arrow"))
+        int itemExists = checkItemAlreadyExists(playerItems, itemAdded);
+        int inventoryFull = checkInventoryFull();
+
+        if (itemExists != -1)
         {
-            int itemExists = checkItemAlreadyExists(playerArrows, itemAdded);
-            int inventoryFull = checkArrowInventoryFull();
-
-            if (itemExists != -1)
-            {
-                playerArrows[itemExists].quantity += itemAdded.quantity;
-                UI_Controller.instance.updateArrowItemQuantity(itemExists);
-            }
-            else
-            {
-                if (inventoryFull != -1)
-                {
-                    playerArrows[inventoryFull] = itemAdded;
-                    playerArrows[inventoryFull].hasItem = true;
-                }
-                else
-                {
-                    Debug.Log("Arrow Inventory Full");
-                }
-            }
-
-        }
-        else
-        {
-            int itemExists = checkItemAlreadyExists(playerItems, itemAdded);
-            int inventoryFull = checkInventoryFull();
-
-            if (itemExists != -1)
+            if(playerItems[itemExists].quantity + itemAdded.quantity <= maxQuantityPerItem)
             {
                 playerItems[itemExists].quantity += itemAdded.quantity;
                 UI_Controller.instance.updateItemQuantity(itemExists);
             }
-            else
+            else if(playerItems[itemExists].quantity == maxQuantityPerItem)
             {
                 if (inventoryFull != -1)
                 {
@@ -826,6 +802,34 @@ public class Player_Controller : MonoBehaviour
                     Debug.Log("Inventory Full");
                 }
             }
+            else
+            {
+                if (inventoryFull != -1)
+                {
+                    float diff = maxQuantityPerItem - playerItems[itemExists].quantity;
+
+                    playerItems[itemExists].quantity = maxQuantityPerItem;
+                    playerItems[inventoryFull] = itemAdded;
+                    playerItems[inventoryFull].quantity -= diff;
+                    playerItems[inventoryFull].hasItem = true;
+                }
+                else
+                {
+                    Debug.Log("Cannot split item");
+                }
+            }
+        }
+        else
+        {
+            if (inventoryFull != -1)
+            {
+                playerItems[inventoryFull] = itemAdded;
+                playerItems[inventoryFull].hasItem = true;
+            }
+            else
+            {
+                Debug.Log("Inventory Full");
+            }
         }
 
         UI_Controller.instance.CollectCoin();
@@ -835,6 +839,7 @@ public class Player_Controller : MonoBehaviour
     public void equipItem()
     {
         int avalibleSpot = -1;
+        int itemExists = -1;
         int selectedItem = int.Parse(EventSystem.current.currentSelectedGameObject.name);
         InventoryButton inventoryItem = UI_Controller.instance.inventoryButton[selectedItem];
 
@@ -847,17 +852,63 @@ public class Player_Controller : MonoBehaviour
         if(inventoryItem.item.name.ToLower().Contains("arrows"))
         {
             //Assume item is an arrow
+            itemExists = checkItemAlreadyExists(playerArrows, inventoryItem.item);
             avalibleSpot = checkArrowInventoryFull();
 
-            if (avalibleSpot != -1)
+            if (itemExists != -1)
             {
-                playerItems[selectedItem] = new Item();
-                playerArrows[avalibleSpot] = inventoryItem.item;
-                playerArrows[avalibleSpot].hasItem = true;
+                if (playerArrows[itemExists].quantity + inventoryItem.item.quantity <= maxQuantityPerItem)
+                {
+                    playerArrows[itemExists].quantity += inventoryItem.item.quantity;
+                    UI_Controller.instance.updateItemQuantity(itemExists);
+                }
+                else if (playerArrows[itemExists].quantity + inventoryItem.item.quantity <= maxQuantityPerItem)
+                {
+                    if (avalibleSpot != -1)
+                    {
+                        playerItems[selectedItem] = new Item();
+                        playerArrows[avalibleSpot] = inventoryItem.item;
+                        playerArrows[avalibleSpot].hasItem = true;
+                    }
+                    else
+                    {
+                        Debug.Log("Accessories Full");
+                    }
+                }
+                else
+                {
+                    if (avalibleSpot != -1)
+                    {
+                        playerItems[selectedItem] = new Item();
+                        float diff = maxQuantityPerItem - playerArrows[itemExists].quantity;
+                        playerArrows[itemExists].quantity = maxQuantityPerItem;
+
+
+                        playerArrows[avalibleSpot] = inventoryItem.item;
+                        playerArrows[avalibleSpot].quantity -= diff;
+                        playerArrows[avalibleSpot].hasItem = true;
+                    }
+                    else
+                    {
+                        float diff = maxQuantityPerItem - playerArrows[itemExists].quantity;
+                        playerArrows[itemExists].quantity = maxQuantityPerItem;
+                        playerItems[selectedItem].quantity -= diff;
+                        Debug.Log("Cannot add rest of item into arrow inventory");
+                    }
+                }
             }
             else
             {
-                Debug.Log("Accessories Full");
+                if (avalibleSpot != -1)
+                {
+                    playerItems[selectedItem] = new Item();
+                    playerArrows[avalibleSpot] = inventoryItem.item;
+                    playerArrows[avalibleSpot].hasItem = true;
+                }
+                else
+                {
+                    Debug.Log("Accessories Full");
+                }
             }
         }
         else
@@ -867,9 +918,29 @@ public class Player_Controller : MonoBehaviour
 
             if (avalibleSpot != -1)
             {
-                playerItems[selectedItem] = new Item();
-                playerAccessories[avalibleSpot] = inventoryItem.item;
-                playerAccessories[avalibleSpot].hasItem = true;
+                if(playerItems[selectedItem].quantity != 1)
+                {
+                    playerItems[selectedItem].quantity -= 1;
+
+                    //Have to create new item without make a indirect reference
+                    Item item = new Item();
+                    item.name = playerItems[selectedItem].name;
+                    item.description = playerItems[selectedItem].description;
+                    item.cost = playerItems[selectedItem].cost;
+                    item.equipable = playerItems[selectedItem].equipable;
+                    item.quantity = 1;
+                    item.itemInventoryImage = playerItems[selectedItem].itemInventoryImage;
+                    item.itemEquipedImage = playerItems[selectedItem].itemEquipedImage;
+
+                    playerAccessories[avalibleSpot] = item;
+                    playerAccessories[avalibleSpot].hasItem = true;
+                }
+                else
+                {
+                    playerItems[selectedItem] = new Item();
+                    playerAccessories[avalibleSpot] = inventoryItem.item;
+                    playerAccessories[avalibleSpot].hasItem = true;
+                }
             }
             else
             {
@@ -883,6 +954,7 @@ public class Player_Controller : MonoBehaviour
     public void unEquipItem()
     {
         int selectedItem = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        int itemExists = -1;
 
         if(EventSystem.current.currentSelectedGameObject.CompareTag("Arrow"))
         {
@@ -892,16 +964,63 @@ public class Player_Controller : MonoBehaviour
             }
 
             int avalibleSpot = checkInventoryFull();
+            itemExists = checkItemAlreadyExists(playerItems, playerArrows[selectedItem]);
 
-            if (avalibleSpot != -1)
+            if(itemExists != -1)
             {
-                playerItems[avalibleSpot] = playerArrows[selectedItem];
-                playerItems[avalibleSpot].hasItem = true;
-                playerArrows[selectedItem] = new Item();
+                if (playerItems[itemExists].quantity + playerArrows[selectedItem].quantity <= maxQuantityPerItem)
+                {
+                    playerItems[itemExists].quantity += playerArrows[selectedItem].quantity;
+                    playerArrows[selectedItem] = new Item();
+                }
+                else if (playerArrows[selectedItem].quantity == maxQuantityPerItem)
+                {
+                    if (avalibleSpot != -1)
+                    {
+                        playerItems[avalibleSpot] = playerArrows[selectedItem];
+                        playerItems[avalibleSpot].hasItem = true;
+                        playerArrows[selectedItem] = new Item();
+                    }
+                    else
+                    {
+                        Debug.Log("Inventory full cannot add accessory");
+                    }
+                }
+                else
+                {
+                    if (avalibleSpot != -1)
+                    {
+                        //playerItems[selectedItem] = new Item();
+                        float diff = maxQuantityPerItem - playerItems[itemExists].quantity;
+                        playerItems[itemExists].quantity = maxQuantityPerItem;
+
+
+                        playerItems[avalibleSpot] = playerArrows[selectedItem];
+                        playerItems[avalibleSpot].quantity -= diff;
+                        playerItems[avalibleSpot].hasItem = true;
+                        playerArrows[selectedItem] = new Item();
+                    }
+                    else
+                    {
+                        float diff = maxQuantityPerItem - playerArrows[itemExists].quantity;
+                        playerArrows[itemExists].quantity = maxQuantityPerItem;
+                        playerItems[selectedItem].quantity -= diff;
+                        Debug.Log("Cannot add rest of item into arrow inventory");
+                    }
+                }
             }
             else
             {
-                Debug.Log("Inventory Full");
+                if (avalibleSpot != -1)
+                {
+                    playerItems[avalibleSpot] = playerArrows[selectedItem];
+                    playerItems[avalibleSpot].hasItem = true;
+                    playerArrows[selectedItem] = new Item();
+                }
+                else
+                {
+                    Debug.Log("Inventory Full");
+                }
             }
         }
         else
@@ -912,16 +1031,42 @@ public class Player_Controller : MonoBehaviour
             }
 
             int avalibleSpot = checkInventoryFull();
+            itemExists = checkItemAlreadyExists(playerItems, playerAccessories[selectedItem]);
 
-            if (avalibleSpot != -1)
+            if(itemExists != -1)
             {
-                playerItems[avalibleSpot] = playerAccessories[selectedItem];
-                playerItems[avalibleSpot].hasItem = true;
-                playerAccessories[selectedItem] = new Item();
+                if (playerItems[itemExists].quantity + 1 <= maxQuantityPerItem)
+                {
+                    playerItems[itemExists].quantity += 1;
+                    playerAccessories[selectedItem] = new Item();
+                    //UI_Controller.instance.updateItemQuantity(itemExists);
+                }
+                else if (playerItems[itemExists].quantity == maxQuantityPerItem)
+                {
+                    if(avalibleSpot != -1)
+                    {
+                        playerItems[avalibleSpot] = playerAccessories[selectedItem];
+                        playerItems[avalibleSpot].hasItem = true;
+                        playerAccessories[selectedItem] = new Item();
+                    }
+                    else
+                    {
+                        Debug.Log("Inventory full cannot add accessory");
+                    }
+                }
             }
             else
             {
-                Debug.Log("Inventory Full");
+                if (avalibleSpot != -1)
+                {
+                    playerItems[avalibleSpot] = playerAccessories[selectedItem];
+                    playerItems[avalibleSpot].hasItem = true;
+                    playerAccessories[selectedItem] = new Item();
+                }
+                else
+                {
+                    Debug.Log("Inventory Full");
+                }
             }
         }
 
@@ -932,7 +1077,7 @@ public class Player_Controller : MonoBehaviour
     {
         for (int i = 0; i < array.Length; i++)
         {
-            if (itemAdded.name == array[i].name)
+            if (itemAdded.name == array[i].name && array[i].quantity != maxQuantityPerItem)
                 return i;
         }
 

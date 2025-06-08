@@ -332,7 +332,14 @@ public class UI_Controller : MonoBehaviour
                 temp.color = new Color(1, 1, 1, 1);
 
                 if (Player_Controller.instance.playerItems[i].quantity > 1)
+                {
                     updateItemQuantity(i);
+                }
+                else
+                {
+                    inventoryButton[i].quanitityText.text = "";
+                }
+                    
 
             }
             else
@@ -355,7 +362,13 @@ public class UI_Controller : MonoBehaviour
                 temp.color = new Color(1, 1, 1, 1);
 
                 if (Player_Controller.instance.playerArrows[i].quantity > 1)
+                {
                     updateArrowItemQuantity(i);
+                }
+                else
+                {
+                    arrowInventoryButtons[i].quanitityText.text = "";
+                }
 
             }
             else
@@ -377,10 +390,19 @@ public class UI_Controller : MonoBehaviour
                 temp.sprite = Player_Controller.instance.playerAccessories[i].itemInventoryImage;
                 temp.color = new Color(1, 1, 1, 1);
 
+                //if (Player_Controller.instance.playerAccessories[i].quantity > 1)
+                //{
+                //    updateAccessoryItemQuantity(i);
+                //}
+                //else
+                //{
+                //    accessoryInventoryButtons[i].quanitityText.text = "";
+                //}
             }
             else
             {
                 temp.color = new Color(0, 0, 0, 1);
+                //accessoryInventoryButtons[i].quanitityText.text = "";
             }
 
             accessoryInventoryButtons[i].item = Player_Controller.instance.playerAccessories[i];
@@ -395,6 +417,11 @@ public class UI_Controller : MonoBehaviour
     public void updateArrowItemQuantity(int index)
     {
         arrowInventoryButtons[index].quanitityText.text = Player_Controller.instance.playerArrows[index].quantity.ToString();
+    }
+
+    public void updateAccessoryItemQuantity(int index)
+    {
+        accessoryInventoryButtons[index].quanitityText.text = Player_Controller.instance.playerAccessories[index].quantity.ToString();
     }
 
     public void updateInventoryText()
