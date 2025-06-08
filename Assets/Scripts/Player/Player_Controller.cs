@@ -780,31 +780,24 @@ public class Player_Controller : MonoBehaviour
     #region inventory
     public void addItem(Item itemAdded)
     {
+        //check item already exists returns a index of an item that has the same name and not max quanitity
         int itemExists = checkItemAlreadyExists(playerItems, itemAdded);
+
+        //inventory full returns a index of the first iventory slot that is empty
         int inventoryFull = checkInventoryFull();
 
-        if (itemExists != -1)
+
+        
+        if (itemExists != -1) //Case that the player already has the item in their inventory.
         {
-            if(playerItems[itemExists].quantity + itemAdded.quantity <= maxQuantityPerItem)
+            if(playerItems[itemExists].quantity + itemAdded.quantity <= maxQuantityPerItem) //In the case that the item quantity is not max we want to add to the quanitity of the item that was collected
             {
                 playerItems[itemExists].quantity += itemAdded.quantity;
                 UI_Controller.instance.updateItemQuantity(itemExists);
             }
-            else if(playerItems[itemExists].quantity == maxQuantityPerItem)
+            else //Case for when the quanitity added is greater than max we want to SPLIT the item
             {
-                if (inventoryFull != -1)
-                {
-                    playerItems[inventoryFull] = itemAdded;
-                    playerItems[inventoryFull].hasItem = true;
-                }
-                else
-                {
-                    Debug.Log("Inventory Full");
-                }
-            }
-            else
-            {
-                if (inventoryFull != -1)
+                if (inventoryFull != -1) //If the iventory has room for split update item quanitites
                 {
                     float diff = maxQuantityPerItem - playerItems[itemExists].quantity;
 
@@ -813,13 +806,13 @@ public class Player_Controller : MonoBehaviour
                     playerItems[inventoryFull].quantity -= diff;
                     playerItems[inventoryFull].hasItem = true;
                 }
-                else
+                else //Not enough room dont add item
                 {
                     Debug.Log("Cannot split item");
                 }
             }
         }
-        else
+        else //Case that the player picked up a new item not in inventory.
         {
             if (inventoryFull != -1)
             {
@@ -828,7 +821,7 @@ public class Player_Controller : MonoBehaviour
             }
             else
             {
-                Debug.Log("Inventory Full");
+                Debug.Log("Inventory Slots Full");
             }
         }
 
@@ -849,35 +842,21 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        if(inventoryItem.item.name.ToLower().Contains("arrows"))
+        if(inventoryItem.item.name.ToLower().Contains("arrows")) //Check if we are adding arrow to arrow slow
         {
             //Assume item is an arrow
             itemExists = checkItemAlreadyExists(playerArrows, inventoryItem.item);
             avalibleSpot = checkArrowInventoryFull();
 
-            if (itemExists != -1)
+            if (itemExists != -1) //Case if the arrow type is already in arrow slot 
             {
-                if (playerArrows[itemExists].quantity + inventoryItem.item.quantity <= maxQuantityPerItem)
+                if (playerArrows[itemExists].quantity + inventoryItem.item.quantity <= maxQuantityPerItem) //Case adding to arrow quantity without split
                 {
                     playerArrows[itemExists].quantity += inventoryItem.item.quantity;
-                    UI_Controller.instance.updateItemQuantity(itemExists);
                 }
-                else if (playerArrows[itemExists].quantity + inventoryItem.item.quantity <= maxQuantityPerItem)
+                else //Case adding arrow amount that exceeds max quantity
                 {
-                    if (avalibleSpot != -1)
-                    {
-                        playerItems[selectedItem] = new Item();
-                        playerArrows[avalibleSpot] = inventoryItem.item;
-                        playerArrows[avalibleSpot].hasItem = true;
-                    }
-                    else
-                    {
-                        Debug.Log("Accessories Full");
-                    }
-                }
-                else
-                {
-                    if (avalibleSpot != -1)
+                    if (avalibleSpot != -1) //Check if there is a empty slot for new arrow
                     {
                         playerItems[selectedItem] = new Item();
                         float diff = maxQuantityPerItem - playerArrows[itemExists].quantity;
@@ -888,7 +867,7 @@ public class Player_Controller : MonoBehaviour
                         playerArrows[avalibleSpot].quantity -= diff;
                         playerArrows[avalibleSpot].hasItem = true;
                     }
-                    else
+                    else //Will allow split but only will add amount to max, remaining arrows stay in inventory slot.
                     {
                         float diff = maxQuantityPerItem - playerArrows[itemExists].quantity;
                         playerArrows[itemExists].quantity = maxQuantityPerItem;
@@ -897,7 +876,7 @@ public class Player_Controller : MonoBehaviour
                     }
                 }
             }
-            else
+            else //New arrow added
             {
                 if (avalibleSpot != -1)
                 {
@@ -907,19 +886,20 @@ public class Player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Accessories Full");
+                    Debug.Log("Arrow Slots Full");
                 }
             }
         }
-        else
+        else //Item is accessory
         {
             //Assume item is an accessory
             avalibleSpot = checkAccessoriesFull();
 
-            if (avalibleSpot != -1)
+            if (avalibleSpot != -1) //Check if accessory slot is availible
             {
-                if(playerItems[selectedItem].quantity != 1)
+                if(playerItems[selectedItem].quantity != 1) //Check if the item being equipped from inventory has more than 1 amount
                 {
+                    //Reduce inventory quanity by 1 
                     playerItems[selectedItem].quantity -= 1;
 
                     //Have to create new item without make a indirect reference
@@ -932,17 +912,18 @@ public class Player_Controller : MonoBehaviour
                     item.itemInventoryImage = playerItems[selectedItem].itemInventoryImage;
                     item.itemEquipedImage = playerItems[selectedItem].itemEquipedImage;
 
+                    //Set accessory to new item 
                     playerAccessories[avalibleSpot] = item;
                     playerAccessories[avalibleSpot].hasItem = true;
                 }
-                else
+                else //Player only has 1 of that specific accessory and can "delete" item from inventory.
                 {
                     playerItems[selectedItem] = new Item();
                     playerAccessories[avalibleSpot] = inventoryItem.item;
                     playerAccessories[avalibleSpot].hasItem = true;
                 }
             }
-            else
+            else //Not enough room
             {
                 Debug.Log("Accessories Full");
             }
@@ -956,7 +937,8 @@ public class Player_Controller : MonoBehaviour
         int selectedItem = int.Parse(EventSystem.current.currentSelectedGameObject.name);
         int itemExists = -1;
 
-        if(EventSystem.current.currentSelectedGameObject.CompareTag("Arrow"))
+        
+        if(EventSystem.current.currentSelectedGameObject.CompareTag("Arrow")) //Check if we are unequipping arrow
         {
             if (playerArrows[selectedItem].hasItem == false)
             {
@@ -966,41 +948,33 @@ public class Player_Controller : MonoBehaviour
             int avalibleSpot = checkInventoryFull();
             itemExists = checkItemAlreadyExists(playerItems, playerArrows[selectedItem]);
 
-            if(itemExists != -1)
+            if (playerArrows[selectedItem].quantity == maxQuantityPerItem && avalibleSpot != -1) //When we move arrows, if they are in a bundle of the max quantity, keep them together when moving them.
             {
-                if (playerItems[itemExists].quantity + playerArrows[selectedItem].quantity <= maxQuantityPerItem)
+                playerItems[avalibleSpot] = playerArrows[selectedItem];
+                playerItems[avalibleSpot].hasItem = true;
+                playerArrows[selectedItem] = new Item();
+            }
+            else if (itemExists != -1) //Check if item exists in inventory
+            {
+                if (playerItems[itemExists].quantity + playerArrows[selectedItem].quantity <= maxQuantityPerItem)  //If item does exists and amount added is not greater than max, unequip item
                 {
                     playerItems[itemExists].quantity += playerArrows[selectedItem].quantity;
                     playerArrows[selectedItem] = new Item();
                 }
-                else if (playerArrows[selectedItem].quantity == maxQuantityPerItem)
+                else //Otherwise we need to split item
                 {
-                    if (avalibleSpot != -1)
+                    if (avalibleSpot != -1) //Slot is avalible in inventory for split
                     {
-                        playerItems[avalibleSpot] = playerArrows[selectedItem];
-                        playerItems[avalibleSpot].hasItem = true;
-                        playerArrows[selectedItem] = new Item();
-                    }
-                    else
-                    {
-                        Debug.Log("Inventory full cannot add accessory");
-                    }
-                }
-                else
-                {
-                    if (avalibleSpot != -1)
-                    {
-                        //playerItems[selectedItem] = new Item();
                         float diff = maxQuantityPerItem - playerItems[itemExists].quantity;
                         playerItems[itemExists].quantity = maxQuantityPerItem;
 
-
+                        //In case a bug is happening with arrows: Might need to create new reference here 
                         playerItems[avalibleSpot] = playerArrows[selectedItem];
                         playerItems[avalibleSpot].quantity -= diff;
                         playerItems[avalibleSpot].hasItem = true;
                         playerArrows[selectedItem] = new Item();
                     }
-                    else
+                    else //Not enough room so only add amount to item that exists.
                     {
                         float diff = maxQuantityPerItem - playerArrows[itemExists].quantity;
                         playerArrows[itemExists].quantity = maxQuantityPerItem;
@@ -1009,21 +983,21 @@ public class Player_Controller : MonoBehaviour
                     }
                 }
             }
-            else
+            else //Item does not exist
             {
-                if (avalibleSpot != -1)
+                if (avalibleSpot != -1) //We have room for item to be unequppied
                 {
                     playerItems[avalibleSpot] = playerArrows[selectedItem];
                     playerItems[avalibleSpot].hasItem = true;
                     playerArrows[selectedItem] = new Item();
                 }
-                else
+                else //Not enough room
                 {
                     Debug.Log("Inventory Full");
                 }
             }
         }
-        else
+        else //Item being unquipped is accessory
         {
             if (playerAccessories[selectedItem].hasItem == false)
             {
@@ -1033,37 +1007,23 @@ public class Player_Controller : MonoBehaviour
             int avalibleSpot = checkInventoryFull();
             itemExists = checkItemAlreadyExists(playerItems, playerAccessories[selectedItem]);
 
-            if(itemExists != -1)
+            if(itemExists != -1) //Item exists in inventory
             {
-                if (playerItems[itemExists].quantity + 1 <= maxQuantityPerItem)
+                if (playerItems[itemExists].quantity + 1 <= maxQuantityPerItem) //Amount being moved does not exceed max quantity.
                 {
                     playerItems[itemExists].quantity += 1;
                     playerAccessories[selectedItem] = new Item();
-                    //UI_Controller.instance.updateItemQuantity(itemExists);
-                }
-                else if (playerItems[itemExists].quantity == maxQuantityPerItem)
-                {
-                    if(avalibleSpot != -1)
-                    {
-                        playerItems[avalibleSpot] = playerAccessories[selectedItem];
-                        playerItems[avalibleSpot].hasItem = true;
-                        playerAccessories[selectedItem] = new Item();
-                    }
-                    else
-                    {
-                        Debug.Log("Inventory full cannot add accessory");
-                    }
                 }
             }
-            else
+            else //Item does not exist or item does exist but not enough room in slot
             {
-                if (avalibleSpot != -1)
+                if (avalibleSpot != -1) //Room for item to be unequipped to
                 {
                     playerItems[avalibleSpot] = playerAccessories[selectedItem];
                     playerItems[avalibleSpot].hasItem = true;
                     playerAccessories[selectedItem] = new Item();
                 }
-                else
+                else //Not enough room
                 {
                     Debug.Log("Inventory Full");
                 }
