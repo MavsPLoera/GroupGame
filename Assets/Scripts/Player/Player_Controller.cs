@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -88,7 +89,10 @@ public class Player_Controller : MonoBehaviour
     public Vector2 swingLeftSize;
 
     [Header("Player Misc.")]
-    public Item[] playerItems = new Item[12];
+    public Item[] playerItems = new Item[15];
+    public Item[] playerArrows = new Item[3];
+    public Item[] playerAccessories = new Item[3];
+
     public GameObject facingTowards;
     public GameObject arrowSpawn;
     public GameObject respawnPosition;
@@ -138,6 +142,8 @@ public class Player_Controller : MonoBehaviour
         //Default amount of healing potions
         healingPotions = 3;
         playerMovementSpeedUnchanging = playerMovementspeed;
+
+
     }
 
     // Update is called once per frame
@@ -289,10 +295,10 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Secondary
-        if ((Input.GetButton("Jump") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && !(arrows <= 0) && !isMouseOverUI())
-        {
-            StartCoroutine(secondaryMove());
-        }
+        //if ((Input.GetButton("Jump") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && !(arrows <= 0) && !isMouseOverUI())
+        //{
+        //    StartCoroutine(secondaryMove());
+        //}
 
         //Interact Button
         if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.E)) && !Dialogue_Controller.instance.inConversation)
@@ -327,6 +333,7 @@ public class Player_Controller : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject();
     }
 
+    #region movement/abilities
     public IEnumerator swing()
     {
         playerMovementspeed = playerMovementSpeedUnchanging * .3f;
@@ -471,43 +478,6 @@ public class Player_Controller : MonoBehaviour
         canDash = true;
     }
 
-    private IEnumerator temporaryInvulnerability()
-    {
-        //Fix to resolve player inputs not being detected
-        //canSwing = true;
-        //canSecondary = true;
-        //canUlt = true;
-
-        //BECAREFUL ABOUT THIS LINE, IF WE CHANGE THE LAYERS THIS WILL BE WRONG
-        Physics2D.IgnoreLayerCollision(7, 8, true);
-        
-        rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
-        playerAnimator.Play("Player_Hit", 0);
-        invincible = true;
-        canInput = false;
-
-        yield return new WaitForSeconds(.333f);
-        playerAnimator.Play("Player_Idle", 0);
-        canInput = true;
-
-        yield return StartCoroutine(flickerSprite());
-        invincible = false;
-
-        Physics2D.IgnoreLayerCollision(7, 8, false);
-    }
-
-    private IEnumerator flickerSprite()
-    {
-        for (int i = 0; i < flickerAmount; i++)
-        {
-            spriteRenderer.color = new Color(255f, 0f, 0f, 255f);
-            yield return new WaitForSeconds(flickerDuration);
-            spriteRenderer.color = new Color(0f, 0f, 0f, 255f);
-            yield return new WaitForSeconds(flickerDuration);
-        }
-        spriteRenderer.color = Color.white;
-    }
-
     //Used to change the direction of a player during warp
     public void changeFacingDirectionWarp(Warp_Controller.destinationFacingDirection direction)
     {
@@ -595,8 +565,9 @@ public class Player_Controller : MonoBehaviour
             movementDirection = Vector2.zero;
         }
     }
+    #endregion
 
-    //Sample game win
+    #region gamestate
     [ContextMenu("gameWin")]
     public void test()
     {
@@ -715,80 +686,12 @@ public class Player_Controller : MonoBehaviour
         canInput = true;
         invincible = false;
     }
+    #endregion
 
-    public void playChangingPitchSound(AudioClip sound)
-    {
-        float temp = Random.Range(.9f, 1.1f);
-        playerChangingAudioSource.pitch = temp;
-        playerChangingAudioSource.PlayOneShot(sound);
-    }
-
-    private IEnumerator unlockedNewAbility(System.Action callback = null)
-    {
-        canInput = false;
-        abilityUnlockedLight.SetActive(true);
-        changeFacingDirectionWarp(Warp_Controller.destinationFacingDirection.Down);
-        playerAnimator.Play("Player_Ult", 0);
-        playerAudioSource.PlayOneShot(unlockedNewAbilitySound);
-
-        yield return new WaitForSeconds(1.5f);
-
-        abilityUnlockedLight.SetActive(false);
-        canInput = true;
-        callback?.Invoke();
-    }
-
-    public void addItem(Item itemAdded)
-    {
-        int hasItem = -1;
-        int temp;
-
-        for (int i = 0; i < playerItems.Length; i++)
-        {
-            if(itemAdded.name == playerItems[i].name)
-                hasItem = i;
-        }
-
-        if(hasItem != -1)
-        {
-            playerItems[hasItem].quantity += itemAdded.quantity;
-            UI_Controller.instance.updateItemQuantity(hasItem);
-            UI_Controller.instance.CollectCoin();
-        }
-        else
-        {
-            temp = checkInventoryFull();
-            if (temp != -1)
-            {
-                playerItems[temp] = itemAdded;
-                UI_Controller.instance.CollectCoin();
-            }
-            else
-            {
-                Debug.Log("Inventory Full");
-            }
-        }
-    }
-
-    public int checkInventoryFull()
-    {
-        int indexToReturn = -1;
-        for (int i = 0; i < playerItems.Length; i++)
-        {
-            if (playerItems[i].name == "")
-            {
-                indexToReturn = i;
-                return indexToReturn;
-            }
-                
-        }
-
-        return indexToReturn;
-    }
-
+    #region player damaged
     public void TakeDamage(float damage)
     {
-        if(invincible)
+        if (invincible)
         {
             return;
         }
@@ -813,6 +716,271 @@ public class Player_Controller : MonoBehaviour
         }
         playerHealth -= damage;
     }
+
+    private IEnumerator temporaryInvulnerability()
+    {
+        //Fix to resolve player inputs not being detected
+        //canSwing = true;
+        //canSecondary = true;
+        //canUlt = true;
+
+        //BECAREFUL ABOUT THIS LINE, IF WE CHANGE THE LAYERS THIS WILL BE WRONG
+        Physics2D.IgnoreLayerCollision(7, 8, true);
+
+        rb.AddForce(-(facingTowards.transform.position - transform.position) * playerHitKnockBack);
+        playerAnimator.Play("Player_Hit", 0);
+        invincible = true;
+        canInput = false;
+
+        yield return new WaitForSeconds(.333f);
+        playerAnimator.Play("Player_Idle", 0);
+        canInput = true;
+
+        yield return StartCoroutine(flickerSprite());
+        invincible = false;
+
+        Physics2D.IgnoreLayerCollision(7, 8, false);
+    }
+
+    private IEnumerator flickerSprite()
+    {
+        for (int i = 0; i < flickerAmount; i++)
+        {
+            spriteRenderer.color = new Color(255f, 0f, 0f, 255f);
+            yield return new WaitForSeconds(flickerDuration);
+            spriteRenderer.color = new Color(0f, 0f, 0f, 255f);
+            yield return new WaitForSeconds(flickerDuration);
+        }
+        spriteRenderer.color = Color.white;
+    }
+    #endregion
+
+    public void playChangingPitchSound(AudioClip sound)
+    {
+        float temp = Random.Range(.9f, 1.1f);
+        playerChangingAudioSource.pitch = temp;
+        playerChangingAudioSource.PlayOneShot(sound);
+    }
+
+    private IEnumerator unlockedNewAbility(System.Action callback = null)
+    {
+        canInput = false;
+        abilityUnlockedLight.SetActive(true);
+        changeFacingDirectionWarp(Warp_Controller.destinationFacingDirection.Down);
+        playerAnimator.Play("Player_Ult", 0);
+        playerAudioSource.PlayOneShot(unlockedNewAbilitySound);
+
+        yield return new WaitForSeconds(1.5f);
+
+        abilityUnlockedLight.SetActive(false);
+        canInput = true;
+        callback?.Invoke();
+    }
+
+    #region inventory
+    public void addItem(Item itemAdded)
+    {
+        if (itemAdded.name.ToLower().Contains("arrow"))
+        {
+            int itemExists = checkItemAlreadyExists(playerArrows, itemAdded);
+            int inventoryFull = checkArrowInventoryFull();
+
+            if (itemExists != -1)
+            {
+                playerArrows[itemExists].quantity += itemAdded.quantity;
+                UI_Controller.instance.updateArrowItemQuantity(itemExists);
+            }
+            else
+            {
+                if (inventoryFull != -1)
+                {
+                    playerArrows[inventoryFull] = itemAdded;
+                    playerArrows[inventoryFull].hasItem = true;
+                }
+                else
+                {
+                    Debug.Log("Arrow Inventory Full");
+                }
+            }
+
+        }
+        else
+        {
+            int itemExists = checkItemAlreadyExists(playerItems, itemAdded);
+            int inventoryFull = checkInventoryFull();
+
+            if (itemExists != -1)
+            {
+                playerItems[itemExists].quantity += itemAdded.quantity;
+                UI_Controller.instance.updateItemQuantity(itemExists);
+            }
+            else
+            {
+                if (inventoryFull != -1)
+                {
+                    playerItems[inventoryFull] = itemAdded;
+                    playerItems[inventoryFull].hasItem = true;
+                }
+                else
+                {
+                    Debug.Log("Inventory Full");
+                }
+            }
+        }
+
+        UI_Controller.instance.CollectCoin();
+        UI_Controller.instance.updateInventory();
+    }
+
+    public void equipItem()
+    {
+        int avalibleSpot = -1;
+        int selectedItem = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        InventoryButton inventoryItem = UI_Controller.instance.inventoryButton[selectedItem];
+
+        if (inventoryItem.item.equipable == false)
+        {
+            Debug.Log("Item cannot be equipped.");
+            return;
+        }
+
+        if(inventoryItem.item.name.ToLower().Contains("arrows"))
+        {
+            //Assume item is an arrow
+            avalibleSpot = checkArrowInventoryFull();
+
+            if (avalibleSpot != -1)
+            {
+                playerItems[selectedItem] = new Item();
+                playerArrows[avalibleSpot] = inventoryItem.item;
+                playerArrows[avalibleSpot].hasItem = true;
+            }
+            else
+            {
+                Debug.Log("Accessories Full");
+            }
+        }
+        else
+        {
+            //Assume item is an accessory
+            avalibleSpot = checkAccessoriesFull();
+
+            if (avalibleSpot != -1)
+            {
+                playerItems[selectedItem] = new Item();
+                playerAccessories[avalibleSpot] = inventoryItem.item;
+                playerAccessories[avalibleSpot].hasItem = true;
+            }
+            else
+            {
+                Debug.Log("Accessories Full");
+            }
+        }
+
+        UI_Controller.instance.updateInventory();
+    }
+
+    public void unEquipItem()
+    {
+        int selectedItem = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+
+        if(EventSystem.current.currentSelectedGameObject.CompareTag("Arrow"))
+        {
+            if (playerArrows[selectedItem].hasItem == false)
+            {
+                return;
+            }
+
+            int avalibleSpot = checkInventoryFull();
+
+            if (avalibleSpot != -1)
+            {
+                playerItems[avalibleSpot] = playerArrows[selectedItem];
+                playerItems[avalibleSpot].hasItem = true;
+                playerArrows[selectedItem] = new Item();
+            }
+            else
+            {
+                Debug.Log("Inventory Full");
+            }
+        }
+        else
+        {
+            if (playerAccessories[selectedItem].hasItem == false)
+            {
+                return;
+            }
+
+            int avalibleSpot = checkInventoryFull();
+
+            if (avalibleSpot != -1)
+            {
+                playerItems[avalibleSpot] = playerAccessories[selectedItem];
+                playerItems[avalibleSpot].hasItem = true;
+                playerAccessories[selectedItem] = new Item();
+            }
+            else
+            {
+                Debug.Log("Inventory Full");
+            }
+        }
+
+        UI_Controller.instance.updateInventory();
+    }
+
+    public int checkItemAlreadyExists(Item[] array, Item itemAdded)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (itemAdded.name == array[i].name)
+                return i;
+        }
+
+        return -1;
+    }
+
+    public int checkInventoryFull()
+    {
+        int indexToReturn = -1;
+        for (int i = 0; i < playerItems.Length; i++)
+        {
+            if (playerItems[i].hasItem == false)
+            {
+                indexToReturn = i;
+                return indexToReturn;
+            }
+                
+        }
+
+        return indexToReturn;
+    }
+
+    public int checkArrowInventoryFull()
+    {
+        int indexToReturn = -1;
+
+        for(int i = 0; i < playerArrows.Length; i++)
+        {
+            if (playerArrows[i].hasItem == false)
+                return i;
+        }
+
+        return indexToReturn; 
+    }
+
+    public int checkAccessoriesFull()
+    {
+        int indexToReturn = -1;
+
+        for (int i = 0; i < playerAccessories.Length; i++)
+        {
+            if (playerAccessories[i].hasItem == false)
+                return i;
+        }
+
+        return indexToReturn;
+    }
+    #endregion
 
     public void giveReward(float maxHealthIncrease, int maxPotionsIncrease, float swordDamageIncrease, float goldReward, int healthPoitionReward)
     {
@@ -1005,6 +1173,8 @@ public class Quest
 [System.Serializable]
 public class Item
 {
+    public bool hasItem;
+    public bool equipable;
     public string name;
     public float cost;
     public float quantity;

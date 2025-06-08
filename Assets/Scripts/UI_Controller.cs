@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 using UnityEngine.Audio;
 using NUnit.Framework.Constraints;
+using System;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -67,7 +68,9 @@ public class UI_Controller : MonoBehaviour
     [Header("Inventory UI Objects.")]
     public GameObject OptionsPanel;
     public GameObject firstButtonInInventory;
-    public InventoryButton[] inventoryButtonImages;
+    public InventoryButton[] inventoryButton;
+    public InventoryButton[] arrowInventoryButtons;
+    public InventoryButton[] accessoryInventoryButtons;
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemDescriptionText;
 
@@ -306,20 +309,24 @@ public class UI_Controller : MonoBehaviour
         Player_Controller.instance.isPaused = false;
     }
 
-
-    /*
-     * INVENTORY
-     */
-
+    #region inventory
     public void openOptions()
     {
         OptionsPanel.gameObject.SetActive(true);
 
-        for (int i = 0; i < inventoryButtonImages.Length; i++)
-        {
-            Image temp = inventoryButtonImages[i].image;
+        updateInventory();
 
-            if (Player_Controller.instance.playerItems[i].itemInventoryImage != null)
+        EventSystem.current.SetSelectedGameObject(firstButtonInInventory);
+    }
+
+    public void updateInventory()
+    {
+        //Update inventory
+        for (int i = 0; i < inventoryButton.Length; i++)
+        {
+            Image temp = inventoryButton[i].image;
+
+            if (Player_Controller.instance.playerItems[i].hasItem)
             {
                 temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
                 temp.color = new Color(1, 1, 1, 1);
@@ -328,33 +335,79 @@ public class UI_Controller : MonoBehaviour
                     updateItemQuantity(i);
 
             }
+            else
+            {
+                temp.color = new Color(0, 0, 0, 1);
+                inventoryButton[i].quanitityText.text = "";
+            }
 
-            inventoryButtonImages[i].item = Player_Controller.instance.playerItems[i];
+            inventoryButton[i].item = Player_Controller.instance.playerItems[i];
         }
 
-        EventSystem.current.SetSelectedGameObject(firstButtonInInventory);
+        //Update Arrows
+        for (int i = 0; i < arrowInventoryButtons.Length; i++)
+        {
+            Image temp = arrowInventoryButtons[i].image;
+
+            if (Player_Controller.instance.playerArrows[i].hasItem)
+            {
+                temp.sprite = Player_Controller.instance.playerArrows[i].itemInventoryImage;
+                temp.color = new Color(1, 1, 1, 1);
+
+                if (Player_Controller.instance.playerArrows[i].quantity > 1)
+                    updateArrowItemQuantity(i);
+
+            }
+            else
+            {
+                temp.color = new Color(0, 0, 0, 1);
+                arrowInventoryButtons[i].quanitityText.text = "";
+            }
+
+            arrowInventoryButtons[i].item = Player_Controller.instance.playerArrows[i];
+        }
+
+        //Update Accessories
+        for (int i = 0; i < accessoryInventoryButtons.Length; i++)
+        {
+            Image temp = accessoryInventoryButtons[i].image;
+
+            if (Player_Controller.instance.playerAccessories[i].hasItem)
+            {
+                temp.sprite = Player_Controller.instance.playerAccessories[i].itemInventoryImage;
+                temp.color = new Color(1, 1, 1, 1);
+
+            }
+            else
+            {
+                temp.color = new Color(0, 0, 0, 1);
+            }
+
+            accessoryInventoryButtons[i].item = Player_Controller.instance.playerAccessories[i];
+        }
     }
 
     public void updateItemQuantity(int index)
     {
-        inventoryButtonImages[index].quanitityText.text = Player_Controller.instance.playerItems[index].quantity.ToString();
+        inventoryButton[index].quanitityText.text = Player_Controller.instance.playerItems[index].quantity.ToString();
+    }
+
+    public void updateArrowItemQuantity(int index)
+    {
+        arrowInventoryButtons[index].quanitityText.text = Player_Controller.instance.playerArrows[index].quantity.ToString();
     }
 
     public void updateInventoryText()
     {
         int buttonIndex = int.Parse(EventSystem.current.currentSelectedGameObject.name);
-        Item temp = inventoryButtonImages[buttonIndex].item;
+        Item temp = inventoryButton[buttonIndex].item;
 
         itemNameText.text = temp.name;
         itemDescriptionText.text = temp.description;
     }
+    #endregion
 
-
-
-    /*
-     *  SETTINGS - VOLUME
-     */
-
+    #region settings - volume
     public void changeMasterVolume()
     {
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(masterVolume.value) * 20);
@@ -369,7 +422,9 @@ public class UI_Controller : MonoBehaviour
     {
         audioMixer.SetFloat("SFXVolume", Mathf.Log10(sfxVolume.value) * 20);
     }
+    #endregion
 
+    #region settings - game resolution
     public void changeScreenResColor()
     {
         resolutionButton.GetComponent<Image>().color = Color.white;
@@ -379,7 +434,9 @@ public class UI_Controller : MonoBehaviour
     {
         resolutionButton.GetComponent<Image>().color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
     }
+    #endregion
 
+    #region pause menu selectable behaviour
     public void ChangeSelectedButtonText()
     {
         GameObject temp = EventSystem.current.currentSelectedGameObject;
@@ -467,6 +524,7 @@ public class UI_Controller : MonoBehaviour
         tempToggle.normalColor = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
         temp.colors = tempToggle;
     }
+    #endregion
 
     public void OpenOptions()
     {

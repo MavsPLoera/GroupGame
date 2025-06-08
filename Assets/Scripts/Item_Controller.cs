@@ -10,15 +10,16 @@ public class Item_Controller : MonoBehaviour
     private void Start()
     {
         TextMeshPro costText = GetComponentInChildren<TextMeshPro>();
-        costText.text = item.cost.ToString();
+
+        if(item.cost != 0)
+            costText.text = item.cost.ToString();
 
         item.itemInventoryImage = GetComponent<SpriteRenderer>().sprite;
     }
 
-
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        float temp = collision.gameObject.GetComponent<Player_Controller>().gold;
+        float temp = Player_Controller.instance.gold;
 
         if(temp - item.cost >= 0)
         {
@@ -36,7 +37,7 @@ public class Item_Controller : MonoBehaviour
 
     public void showItemDescription()
     {
-        string[] temp = { $"narrator:\"{item.name} - cost {item.cost} gold.{{c}} {item.description}\"" };
+        string[] temp = { $"narrator:\"{item.name} - cost {(item.cost > 1f ? item.cost.ToString() : $"no")} gold.{{c}} {item.description}\"" };
         List<DialogueLine> dialogueLines = DialogueParser_Controller.instance.ParseConversation(temp);
         StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(dialogueLines));
     }
