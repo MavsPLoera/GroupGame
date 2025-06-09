@@ -173,6 +173,7 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Stamina regen
+        //Change values for regenning and using stamina values editable in editor
         if (currentStamina >= maxStamina)
         {
             currentStamina = maxStamina;
