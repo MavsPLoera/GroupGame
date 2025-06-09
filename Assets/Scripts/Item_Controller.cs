@@ -26,7 +26,7 @@ public class Item_Controller : MonoBehaviour
             Player_Controller.instance.gold -= item.cost;
             Player_Controller.instance.addItem(item);
             Debug.Log("Bought Item!");
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else
         {
