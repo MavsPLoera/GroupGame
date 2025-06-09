@@ -22,6 +22,9 @@ public class Player_Controller : MonoBehaviour
     public int playerLives = 3; //Make UI Element
     public int maxHealthPotions = 5;
     public float maxHealth = 100;
+    public float currentStamina = 100;
+    public float maxStamina = 100;
+    public float staminaRegenPerSecond = 5f;
     public float gold = 0;
     public float flickerAmount = 10;
 
@@ -50,6 +53,7 @@ public class Player_Controller : MonoBehaviour
     public float ultimateCooldown;
     public float invulnerabilityTime;
     public float healthBarEaseTime;
+    public float staminaBarEaseTime;
     public float flickerDuration;
     public float reloadCoolDown;
 
@@ -100,9 +104,12 @@ public class Player_Controller : MonoBehaviour
     public Sword_Controller swordController;
     public GameObject ultLight;
     public GameObject abilityUnlockedLight;
-    public float timer = 0.0f;
+    public float healthEaseTimer = 0.0f;
+    public float staminaEaseTimer = 0.0f;
+    public float staminaRegenTimer = 0.0f;
     public Slider healthBarSlider;
     public Slider easeHealthBarSlider;
+    public Slider staminaBarSlider;
     public SpriteRenderer spriteRenderer;
     public GameObject arrow;
     public BoxCollider2D boxCollider;
@@ -141,6 +148,7 @@ public class Player_Controller : MonoBehaviour
 
         //Default amount of healing potions
         healingPotions = 3;
+        currentStamina = maxStamina;
         playerMovementSpeedUnchanging = playerMovementspeed;
 
 
@@ -149,22 +157,48 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (healthBarSlider.value != playerHealth)
         {
             healthBarSlider.value = playerHealth;
         }
-
-        //Fix this, slider is not lerpign properlly
+        
         if (easeHealthBarSlider.value != playerHealth)
         {
-            timer += Time.deltaTime;
-            easeHealthBarSlider.value = Mathf.Lerp(easeHealthBarSlider.value, healthBarSlider.value, timer/healthBarEaseTime);
+            healthEaseTimer += Time.deltaTime;
+            easeHealthBarSlider.value = Mathf.Lerp(easeHealthBarSlider.value, healthBarSlider.value, healthEaseTimer / healthBarEaseTime);
         }
         else
         {
-            timer = 0.0f;
+            healthEaseTimer = 0.0f;
         }
+
+        //Stamina regen
+        if (currentStamina >= maxStamina)
+        {
+            currentStamina = maxStamina;
+        }
+        else
+        {
+            staminaRegenTimer += Time.deltaTime;
+
+            if (staminaRegenTimer >= 1.0f)
+            {
+                currentStamina += 5;
+                staminaRegenTimer = 0.0f;
+            }
+        }
+
+        //Lerping of stamina bar
+        if(staminaBarSlider.value != currentStamina)
+        {
+            staminaEaseTimer += Time.deltaTime;
+            staminaBarSlider.value = Mathf.Lerp(staminaBarSlider.value, currentStamina, staminaEaseTimer / staminaBarEaseTime);
+        }
+        else
+        {
+            staminaEaseTimer = 0.0f;
+        }
+
 
         if (Input.GetKeyDown(KeyCode.Escape) && !isPaused && !isTransitioning)
         {
@@ -289,7 +323,7 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Sword Swing
-        if ((Input.GetButton("Fire1") || Input.GetKeyDown(KeyCode.Z)) && canSwing && !isMouseOverUI())
+        if ((Input.GetButton("Fire1") || Input.GetKeyDown(KeyCode.Z)) && canSwing && !isMouseOverUI() && ((currentStamina - 25f) >= 0f))
         {
             StartCoroutine(swing());
         }
@@ -336,6 +370,9 @@ public class Player_Controller : MonoBehaviour
     #region movement/abilities
     public IEnumerator swing()
     {
+        currentStamina -= 25f;
+
+
         playerMovementspeed = playerMovementSpeedUnchanging * .3f;
 
         //Set animator to swing and stop player from being able to input and swing again.
