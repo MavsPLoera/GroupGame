@@ -18,6 +18,7 @@ public class Music_Controller : MonoBehaviour
     public AudioClip gameWinMusic;
     public AudioClip pausedMusic;
     public AudioClip mainMenuMusic;
+    //public AudioClip tempShopMusic;
     public Dictionary<AudioClip, float> clipTimes = new();
     public float transitionTime = .5f;
     private float volume;
@@ -45,6 +46,7 @@ public class Music_Controller : MonoBehaviour
         clipTimes[gameWinMusic] = 0f;
         clipTimes[pausedMusic] = 0f;
         clipTimes[mainMenuMusic] = 0f;
+        //clipTimes[tempShopMusic] = 0f;
 
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
@@ -86,6 +88,9 @@ public class Music_Controller : MonoBehaviour
             case Warp_Controller.destinationMusic.Cemetary:
                 temp = cemetaryMusic;
                 break;
+            //case Warp_Controller.destinationMusic.CaveShop:
+            //    temp = tempShopMusic;
+            //    break;
         }
 
         if(musicAudioSource.clip != temp)

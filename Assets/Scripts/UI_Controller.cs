@@ -66,7 +66,7 @@ public class UI_Controller : MonoBehaviour
     public Slider sfxVolume;
 
     [Header("Inventory UI Objects.")]
-    public GameObject OptionsPanel;
+    public GameObject InventoryPanel;
     public GameObject firstButtonInInventory;
     public InventoryButton[] inventoryButton;
     public InventoryButton[] arrowInventoryButtons;
@@ -312,7 +312,7 @@ public class UI_Controller : MonoBehaviour
     #region inventory
     public void openOptions()
     {
-        OptionsPanel.gameObject.SetActive(true);
+        InventoryPanel.gameObject.SetActive(true);
 
         updateInventory();
 

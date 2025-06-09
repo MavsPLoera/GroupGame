@@ -221,7 +221,7 @@ public class Player_Controller : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if(!UI_Controller.instance.OptionsPanel.activeSelf)
+            if(!UI_Controller.instance.InventoryPanel.activeSelf)
             {
                 UI_Controller.instance.openOptions();
                 rb.linearVelocity = Vector2.zero;
@@ -230,7 +230,7 @@ public class Player_Controller : MonoBehaviour
             }
             else
             {
-                UI_Controller.instance.OptionsPanel.SetActive(false);
+                UI_Controller.instance.InventoryPanel.SetActive(false);
                 canInput = true;
             }
             
