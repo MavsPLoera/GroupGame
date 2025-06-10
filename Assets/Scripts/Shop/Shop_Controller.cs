@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Shop_Controller : MonoBehaviour
 {
-    public GameObject[] itemsToBuy;
+    public ItemStock[] stock;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,9 +18,17 @@ public class Shop_Controller : MonoBehaviour
 
     public void EnterShop()
     {
-        for(int i = 0; i < itemsToBuy.Length; i++)
+        for(int i = 0; i < stock.Length; i++)
         {
-            itemsToBuy[i].SetActive(true);
+            if(stock[i].invetory != 0)
+                stock[i].item.SetActive(true);
         }
     }
+}
+
+[System.Serializable]
+public class ItemStock
+{
+    public int invetory;
+    public GameObject item;
 }
