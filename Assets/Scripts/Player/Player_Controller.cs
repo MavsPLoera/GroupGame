@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -92,11 +93,17 @@ public class Player_Controller : MonoBehaviour
     public Vector2 swingLeftOffset;
     public Vector2 swingLeftSize;
 
-    [Header("Player Misc.")]
+    [Header("Player Invetory")]
     public Item[] playerItems = new Item[15];
     public Item[] playerArrows = new Item[3];
     public Item[] playerAccessories = new Item[3];
+    public int hasArrowsIndex = 0; //Will update this index based on the players arrow slot
     public float maxQuantityPerItem;
+    public Dictionary<string, Item> itemDiscovered = new Dictionary<string, Item>(); //Use this to bring up a you found new item UI.
+    public GameObject foundNewItemLight;
+    public bool FoundNewItemOpen;
+
+    [Header("Player Misc.")]
     public GameObject facingTowards;
     public GameObject arrowSpawn;
     public GameObject respawnPosition;
@@ -200,7 +207,6 @@ public class Player_Controller : MonoBehaviour
             staminaEaseTimer = 0.0f;
         }
 
-
         if (Input.GetKeyDown(KeyCode.Escape) && !isPaused && !isTransitioning)
         {
             UI_Controller.instance.PauseGame();
@@ -210,14 +216,29 @@ public class Player_Controller : MonoBehaviour
             UI_Controller.instance.UnpauseGame();
         }
 
+        if (FoundNewItemOpen)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                DeactiveFoundNewItem();
+                UI_Controller.instance.deactiveFoundNewItemUI();
+                return;
+            }
+            else
+            {
+                return;
+            }
+        }
+
         //Swap R input to allow the player to force complete dialogue system
-        if(Dialogue_Controller.instance.inConversation)
+        if (Dialogue_Controller.instance.inConversation)
         {
             if ((Input.GetKeyDown(KeyCode.R) || Input.GetButton("Fire3")) && Dialogue_Controller.instance.isBuilding && Dialogue_Controller.instance.lineCanBeInterupted)
             {
                 Dialogue_Controller.instance.ForceComplete();
             }
         }
+
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -232,6 +253,7 @@ public class Player_Controller : MonoBehaviour
             {
                 UI_Controller.instance.InventoryPanel.SetActive(false);
                 canInput = true;
+
             }
             
         }
@@ -330,13 +352,14 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Secondary
-        //if ((Input.GetButton("Jump") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && !(arrows <= 0) && !isMouseOverUI())
-        //{
-        //    StartCoroutine(secondaryMove());
-        //}
+        if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && playerArrows[hasArrowsIndex].quantity > 0 && !isMouseOverUI())
+        {
+            StartCoroutine(secondaryMove());
+        }
 
         //Interact Button
-        if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.E)) && !Dialogue_Controller.instance.inConversation)
+        //((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.E)) && !Dialogue_Controller.instance.inConversation)
+        if (Input.GetKeyDown(KeyCode.E) && !Dialogue_Controller.instance.inConversation)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, facingTowards.transform.position - transform.position, 1f, LayerMask.GetMask("Interact"));
 
@@ -419,6 +442,18 @@ public class Player_Controller : MonoBehaviour
         playerMovementspeed = playerMovementSpeedUnchanging;
     }
 
+    public bool healingPotionInInventory()
+    {
+        for(int i = 0; i < playerItems.Length; i++)
+        {
+            if (playerItems[i].name.ToLower().Contains("heal"))
+                return true;
+
+        }
+
+        return false;
+    }
+
     public IEnumerator secondaryMove()
     {
         //Prevent the player from shooting multiple arrows at the same time, let the animation fully play out before creating an arrow.
@@ -432,7 +467,14 @@ public class Player_Controller : MonoBehaviour
         yield return new WaitForSeconds(.333f);
         playChangingPitchSound(bowShootSound);
         Instantiate(arrow, arrowSpawn.transform.position, gameObject.transform.rotation);
-        arrows--;
+        playerArrows[hasArrowsIndex].quantity--;
+
+        if (playerArrows[hasArrowsIndex].quantity == 0)
+        {
+            playerArrows[hasArrowsIndex] = new Item();
+            hasArrowsIndex = findOccupiedArrowSlot();
+        }
+
 
         UI_Controller.instance.ShootArrow();
 
@@ -446,6 +488,17 @@ public class Player_Controller : MonoBehaviour
         playerAnimator.Play("Player_Idle", 0);
         canSecondary = true;
         canInput = true;
+    }
+
+    public int findOccupiedArrowSlot()
+    {
+        for (int i = 0; i < playerArrows.Length; i++)
+        {
+            if (playerArrows[i].hasItem && playerArrows[i].quantity > 0)
+                return i;
+        }
+
+        return 0;
     }
 
     public IEnumerator reloadArrows()
@@ -1123,6 +1176,20 @@ public class Player_Controller : MonoBehaviour
 
         return indexToReturn;
     }
+
+    public void FoundNewItem(Item item)
+    {
+        FoundNewItemOpen = true;
+        playerAnimator.Play("Player_Idle", 0);
+        rb.linearVelocity = Vector2.zero;
+        itemDiscovered.Add(item.name, item);
+    }
+
+    public void DeactiveFoundNewItem()
+    {
+        FoundNewItemOpen = false;
+    }
+
     #endregion
 
     public void giveReward(float maxHealthIncrease, int maxPotionsIncrease, float swordDamageIncrease, float goldReward, int healthPoitionReward)
