@@ -3,6 +3,7 @@ using UnityEngine;
 public class Shop_Controller : MonoBehaviour
 {
     public ItemStock[] stock;
+    public string welcomeMessgae;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
