@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7794630436942580428}
   - component: {fileID: 2804875610700895058}
   - component: {fileID: 4819943586642115805}
-  - component: {fileID: 7406445946725844368}
+  - component: {fileID: 6356405353141310016}
   m_Layer: 16
   m_Name: PurchaseableItem
   m_TagString: Untagged
@@ -150,7 +150,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -166,7 +166,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 0.6777788}
   m_EdgeRadius: 0
---- !u!114 &7406445946725844368
+--- !u!114 &6356405353141310016
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4226175562733241432}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 602f18f1c4f71c54a8b3706c4fca97fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 97223e41687ffb6408946073e48aafe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   item:
@@ -511,7 +511,7 @@ PrefabInstance:
     - target: {fileID: 2974196580118030254, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
       propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7406445946725844368}
+      objectReference: {fileID: 6356405353141310016}
     - target: {fileID: 2974196580118030254, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
       propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -522,7 +522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2974196580118030254, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
       propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Item_Controller, Assembly-CSharp
+      value: ShopItem_Controller, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2974196580118030254, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
       propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -531,6 +531,34 @@ PrefabInstance:
     - target: {fileID: 4008002087176779082, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
       propertyPath: m_Name
       value: Interact
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519546026537503533, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
+      propertyPath: interaction.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519546026537503533, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
+      propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519546026537503533, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
+      propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6356405353141310016}
+    - target: {fileID: 4519546026537503533, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
+      propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519546026537503533, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
+      propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519546026537503533, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
+      propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ShopItem_Controller, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519546026537503533, guid: b87f799e1dcfc6d41987b674abbe6386, type: 3}
+      propertyPath: interaction.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

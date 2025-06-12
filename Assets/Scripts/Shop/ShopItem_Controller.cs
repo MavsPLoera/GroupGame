@@ -1,16 +1,48 @@
+using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ShopItem_Controller : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public Item item;
+    private void Start()
     {
-        
+        TextMeshPro costText = GetComponentInChildren<TextMeshPro>();
+
+        //if (item.cost != 0)
+        //    costText.text = item.cost.ToString();
+
+        item.itemInventoryImage = GetComponent<SpriteRenderer>().sprite;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BuyItem()
     {
-        
+        float temp = Player_Controller.instance.gold;
+
+        if (temp - item.cost >= 0)
+        {
+            if (!Player_Controller.instance.itemDiscovered.ContainsKey(item.name))
+            {
+                Player_Controller.instance.FoundNewItem(item);
+                UI_Controller.instance.foundNewItem(item);
+            }
+
+            Player_Controller.instance.gold -= item.cost;
+            Player_Controller.instance.addItem(item);
+            Debug.Log("Bought Item!");
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            //Call UI to say you dont have enough funds
+            Debug.Log("Youre Broke!");
+        }
+    }
+
+    public void showItemDescription()
+    {
+        string[] temp = { $"narrator:\"{item.name}{(item.quantity > 1 ? $" X{item.quantity}" : "")} - cost {(item.cost > 1f ? item.cost.ToString() : $"no")} gold.{{c}} {item.description}\"" };
+        List<DialogueLine> dialogueLines = DialogueParser_Controller.instance.ParseConversation(temp);
+        StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(dialogueLines));
     }
 }

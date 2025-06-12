@@ -66,8 +66,8 @@ public class Camera_Controller : MonoBehaviour
 
     public IEnumerator cameraShake()
     {
+        //Need to fix this
         isShaking = true;
-        brain.enabled = false;
         Vector3 startPosition = transform.position;
         float elapsedTime = 0f;
 

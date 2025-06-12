@@ -19,10 +19,20 @@ public class Shop_Controller : MonoBehaviour
 
     public void EnterShop()
     {
+        //Play welcome message
+
         for(int i = 0; i < stock.Length; i++)
         {
             if(stock[i].invetory != 0)
                 stock[i].item.SetActive(true);
+        }
+    }
+
+    public void ReStock(int newValue)
+    {
+        for (int i = 0; i < stock.Length; i++)
+        {
+            stock[i].invetory = newValue;
         }
     }
 }

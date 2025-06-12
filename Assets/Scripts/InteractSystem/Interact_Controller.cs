@@ -4,7 +4,6 @@ using UnityEngine.Events;
 public class Interact_Controller : MonoBehaviour
 {
     public UnityEvent interaction;
-    public float radiusToShowInteractUI;
 
     //void Update()
     //{
