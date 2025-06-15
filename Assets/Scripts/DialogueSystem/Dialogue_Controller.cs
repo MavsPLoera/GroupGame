@@ -191,7 +191,15 @@ public class Dialogue_Controller : MonoBehaviour
     {
         isBuilding = true;
 
-        nameText.text = dialougeLine.speakerName;
+        if(dialougeLine.speakerName == "narrator")
+        {
+            nameText.text = "";
+        } 
+        else
+        {
+            nameText.text = dialougeLine.speakerName;
+        }
+        
 
         //[TO DO] Play commands here
 
@@ -233,11 +241,18 @@ public class Dialogue_Controller : MonoBehaviour
     {
         isBuilding = true;
 
-        nameText.text = dialougeLine.speakerName;
+        if (dialougeLine.speakerName == "narrator")
+        {
+            nameText.text = "";
+        }
+        else
+        {
+            nameText.text = dialougeLine.speakerName;
+        }
+
         dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
 
         //[TO DO] Play commands here
-
 
         if (dialougeLine.dialogueChoices != null && !(dialougeLine.dialogueChoices.Count() > choiceButtons.Length))
         {
