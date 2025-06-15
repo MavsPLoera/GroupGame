@@ -193,6 +193,8 @@ public class Dialogue_Controller : MonoBehaviour
 
         nameText.text = dialougeLine.speakerName;
 
+        //[TO DO] Play commands here
+
         //Prevent String interupts by setting text to dialogue line once then letting player see the text
         while (dialogueText.maxVisibleCharacters < dialogueText.textInfo.characterCount)
         {
@@ -233,6 +235,9 @@ public class Dialogue_Controller : MonoBehaviour
 
         nameText.text = dialougeLine.speakerName;
         dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
+
+        //[TO DO] Play commands here
+
 
         if (dialougeLine.dialogueChoices != null && !(dialougeLine.dialogueChoices.Count() > choiceButtons.Length))
         {
