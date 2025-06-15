@@ -41,8 +41,8 @@ public class ShopItem_Controller : MonoBehaviour
 
     public void showItemDescription()
     {
-        string[] temp = { $"narrator:\"{item.name}{(item.quantity > 1 ? $" X{item.quantity}" : "")} - cost {(item.cost > 1f ? item.cost.ToString() : $"no")} gold.{{c}} {item.description}\"" };
-        List<DialogueLine> dialogueLines = DialogueParser_Controller.instance.ParseConversation(temp);
-        StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(dialogueLines));
+        //string[] temp = { $"narrator:\"{item.name}{(item.quantity > 1 ? $" X{item.quantity}" : "")} - cost {(item.cost > 1f ? item.cost.ToString() : $"no")} gold.{{c}} {item.description}\"" };
+        //List<DialogueLine> dialogueLines = DialogueParser_Controller.instance.retreiveConversation(temp);
+        //StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(dialogueLines));
     }
 }

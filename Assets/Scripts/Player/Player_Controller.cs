@@ -233,7 +233,7 @@ public class Player_Controller : MonoBehaviour
         //Swap R input to allow the player to force complete dialogue system
         if (Dialogue_Controller.instance.inConversation)
         {
-            if ((Input.GetKeyDown(KeyCode.R) || Input.GetButton("Fire3")) && Dialogue_Controller.instance.isBuilding && Dialogue_Controller.instance.lineCanBeInterupted)
+            if ((Input.GetKeyDown(KeyCode.R) || Input.GetButton("Fire3")) && Dialogue_Controller.instance.isBuilding && (Dialogue_Controller.instance.lineCantBeInterupted == false))
             {
                 Dialogue_Controller.instance.ForceComplete();
             }

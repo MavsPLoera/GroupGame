@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class SimpleInteract_Controller : MonoBehaviour
 {
-    public string[] testConversation;
-    public string[] testAlreadyInteractedConversation;
+    public string interactionFile;
+    public string alreadyInteractedFile;
     public bool alreadyInteractedWith = false;
-    public List<DialogueLine> conversationParsed;
 
     public void Interact()
     {
         if (!alreadyInteractedWith)
         {
-            conversationParsed = DialogueParser_Controller.instance.ParseConversation(testConversation);
-            StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(conversationParsed));
+            List<DialogueLine> temp = DialogueParser_Controller.instance.retreiveConversation(interactionFile);
+            StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(temp));
             alreadyInteractedWith = true;
         }
         else
         {
-            conversationParsed = DialogueParser_Controller.instance.ParseConversation(testAlreadyInteractedConversation);
-            StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(conversationParsed));
-            alreadyInteractedWith = true;
+            List<DialogueLine> temp = DialogueParser_Controller.instance.retreiveConversation(alreadyInteractedFile);
+            StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(temp));
         }
     }
 }

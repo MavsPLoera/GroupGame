@@ -2,7 +2,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ButtonChoice_Controller : MonoBehaviour
@@ -10,6 +9,7 @@ public class ButtonChoice_Controller : MonoBehaviour
     public Button Button;
     public TextMeshProUGUI ButtonText;
     public int SkipToWhatLine;
+    public List<DialogueLine> response;
 
     public void SetButtonText(string text)
     {
@@ -19,6 +19,11 @@ public class ButtonChoice_Controller : MonoBehaviour
     public void SetSkipToWhatLine(int skipToWhatLine)
     {
         SkipToWhatLine = skipToWhatLine;
+    }
+
+    public void SetResponse(List<DialogueLine> response)
+    {
+        this.response = response;
     }
 
 }

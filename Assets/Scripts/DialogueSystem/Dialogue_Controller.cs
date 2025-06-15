@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using static DialogueControllerOverride;
 
 public class Dialogue_Controller : MonoBehaviour
 {
@@ -15,15 +16,15 @@ public class Dialogue_Controller : MonoBehaviour
 
     public int charactersPerCycle = 5;
     public float speed = 3f;
-    private int skipToLine = -1;
     public int characterSoundDelay;
     private int defaultCharactersPerCycle;
     private float defaultSpeed;
     public Coroutine buildingText = null;
 
+    public BuildMode mode;
     public bool isBuilding = false;
     public bool inConversation = false;
-    public bool lineCanBeInterupted = true;
+    public bool lineCantBeInterupted = false;
     public bool waitForUserInput = true;
     public bool buttonNotSelected = true;
 
@@ -60,129 +61,124 @@ public class Dialogue_Controller : MonoBehaviour
         buttonNotSelected = false;
     }
 
-    public void setSkipToIndex(int index)
-    {
-        skipToLine = index;
-    }
-
-    public IEnumerator WaitForUserChoiceSelection()
+    public IEnumerator WaitForUserChoiceSelection(List<DialogueLine> currentList, int currentLineIndex)
     {
         while (buttonNotSelected)
             yield return null;
 
         GameObject temp = EventSystem.current.currentSelectedGameObject;
 
-        setSkipToIndex(temp.GetComponent<ButtonChoice_Controller>().SkipToWhatLine);
+        //Update list with new responses from choice
+        List<DialogueLine> response = temp.GetComponent<ButtonChoice_Controller>().response;
+
+        if (response != null)
+        {
+            int addingLineIndex = currentLineIndex + 1;
+
+            foreach (DialogueLine line in response)
+            {
+                currentList.Insert(addingLineIndex++, line);
+            }
+        }
+    }
+
+    //resets controller values back to default
+    public void resetValues()
+    {
+        mode = BuildMode.TYPEWRITER;
+        buttonNotSelected = true;
+        lineCantBeInterupted = false;
+        waitForUserInput = true;
+        charactersPerCycle = defaultCharactersPerCycle;
+        speed = defaultSpeed;
     }
 
     public IEnumerator DialogueInteraction(List<DialogueLine> dialogue)
     {
         inConversation = true;
         DialogueBox.SetActive(true);
-        DialogueLine line = null;
-        Player_Controller.instance.canInput = false;
 
+        //Loop through all the lines passed in from the interaction. If dialogue choices are present we will add the response to the list at the current index.
         for (int i = 0; i < dialogue.Count; i++)
         {
-            line = dialogue[i];
+            DialogueLine line = dialogue[i];
 
-            if (line.dialogue != null)
+            //Check if the dialogue line wants to override the controller defaults, if the line has an override change the values.
+            if (line.controllerOverride != null)
             {
-                //Make this better
-                if (line.dialogue.dialogueModifier != null)
-                {
-                    if (line.dialogue.dialogueModifier.charactersPerCycle != 0)
-                        charactersPerCycle = line.dialogue.dialogueModifier.charactersPerCycle;
+                if (line.controllerOverride.charactersPerCycle != -1)
+                    charactersPerCycle = line.controllerOverride.charactersPerCycle;
 
-                    if (line.dialogue.dialogueModifier.characterBuildSpeed > 0.0f)
-                        speed = line.dialogue.dialogueModifier.characterBuildSpeed;
+                if (line.controllerOverride.speed != -1f)
+                    speed = line.controllerOverride.speed;
 
-                    lineCanBeInterupted = !line.dialogue.dialogueModifier.cantBeInterupted;
-                    waitForUserInput = line.dialogue.dialogueModifier.waitForUserInput;
-                }
-
-                switch (line.dialogue.signal)
-                {
-                    case Dialogue.StartSignal.C:
-                    case Dialogue.StartSignal.NONE:
-                        dialogueText.text = line.dialogue.dialogue;
-                        dialogueText.maxVisibleCharacters = 0;
-                        break;
-                    case Dialogue.StartSignal.A:
-                        dialogueText.text += line.dialogue.dialogue;
-                        break;
-                    case Dialogue.StartSignal.WA:
-                        yield return new WaitForSeconds(line.dialogue.delay);
-                        dialogueText.text += line.dialogue.dialogue;
-                        break;
-                    case Dialogue.StartSignal.WC:
-                        yield return new WaitForSeconds(line.dialogue.delay);
-                        dialogueText.text = line.dialogue.dialogue;
-                        dialogueText.maxVisibleCharacters = 0;
-                        break;
-                }
-                dialogueText.ForceMeshUpdate();
-
-                if (!isBuilding)
-                {
-                    if (line.dialogue.buildMethod == Dialogue.BuildMethod.typeWriter)
-                    {
-                        buildingText = StartCoroutine(BuildTextTypeWriter(line));
-                    }
-                    else
-                    {
-                        buildingText = StartCoroutine(BuildTextInstant(line));
-                    }
-                }
-
-                yield return buildingText;
-
-                if (waitForUserInput)
-                {
-                    yield return StartCoroutine(WaitForUserInput());
-                }
-                else if (line.choices != null)
-                {
-                    yield return StartCoroutine(WaitForUserChoiceSelection());
-
-                    for (int j = 0; j < choiceButtons.Length; j++)
-                    {
-                        choiceButtons[j].gameObject.SetActive(false);
-                    }
-
-                    if (skipToLine >= dialogue.Count)
-                    {
-                        Debug.LogError("Skipping to line that is outside avalible dialogue lines");
-                        i = dialogue.Count;
-                    }
-                    else
-                    {
-                        i = skipToLine - 1;
-                        nameText.text = "";
-                        dialogueText.text = "";
-                    }
-                }
-
-                if (line.command != null)
-                {
-                    foreach (string dialogueCommand in line.command)
-                    {
-                        DialogueCommands_Controller.instance.CallCommand(dialogueCommand);
-                    }
-                }
-
-                //Reset Dialogue Modifiers
-                buttonNotSelected = true;
-                lineCanBeInterupted = true;
-                waitForUserInput = true;
-                charactersPerCycle = defaultCharactersPerCycle;
-                speed = defaultSpeed;
+                lineCantBeInterupted = line.controllerOverride.cantBeInterrupted;
+                waitForUserInput = line.controllerOverride.waitForUserInput;
+                mode = line.controllerOverride.mode;
             }
+
+            //Prep dialogue text for the type of start signal the line has provided.
+            switch (line.dialogueStartSignal)
+            {
+                case DialogueLine.StartSignal.C:
+                case DialogueLine.StartSignal.NONE:
+                    dialogueText.text = line.dialogue;
+                    dialogueText.maxVisibleCharacters = 0;
+                    break;
+                case DialogueLine.StartSignal.A:
+                    dialogueText.text += line.dialogue;
+                    break;
+                case DialogueLine.StartSignal.WA:
+                    yield return new WaitForSeconds(line.startSignalDelay);
+                    dialogueText.text += line.dialogue;
+                    break;
+                case DialogueLine.StartSignal.WC:
+                    yield return new WaitForSeconds(line.startSignalDelay);
+                    dialogueText.text = line.dialogue;
+                    dialogueText.maxVisibleCharacters = 0;
+                    break;
+            }
+            dialogueText.ForceMeshUpdate();
+
+            //Depending on the BuildMode set, callthe respective function.
+            if (mode == BuildMode.TYPEWRITER)
+            {
+                buildingText = StartCoroutine(BuildTextTypeWriter(line));
+            }
+            else
+            {
+                buildingText = StartCoroutine(BuildTextInstant(line));
+            }
+
+            //Wait for line to finish building to screen.
+            yield return buildingText;
+
+            /*
+             * First case, just a regular dialogue line that waits for user input.
+             * 
+             * Second case, we have dialogue choice and want to wait for user to respond to choice instead.
+             */
+            if (waitForUserInput && line.dialogueChoices == null)
+            {
+                yield return StartCoroutine(WaitForUserInput());
+            }
+            else if (line.dialogueChoices != null)
+            {
+                yield return StartCoroutine(WaitForUserChoiceSelection(dialogue, i));
+
+                for (int j = 0; j < choiceButtons.Length; j++)
+                {
+                    choiceButtons[j].gameObject.SetActive(false);
+                }
+            }
+
+            //Reset values back to normal if they were modified.
+            resetValues();
         }
+
+        //Turn off dialogue box
         DialogueBox.SetActive(false);
-        Player_Controller.instance.canInput = true;
         inConversation = false;
-        skipToLine = -1;
     }
 
     public void ForceComplete()
@@ -195,7 +191,7 @@ public class Dialogue_Controller : MonoBehaviour
     {
         isBuilding = true;
 
-        nameText.text = dialougeLine.name;
+        nameText.text = dialougeLine.speakerName;
 
         //Prevent String interupts by setting text to dialogue line once then letting player see the text
         while (dialogueText.maxVisibleCharacters < dialogueText.textInfo.characterCount)
@@ -203,27 +199,27 @@ public class Dialogue_Controller : MonoBehaviour
             dialogueText.maxVisibleCharacters += charactersPerCycle;
 
             if (dialogueText.maxVisibleCharacters % characterSoundDelay == 0)
-                textAudioSource.PlayOneShot(textAudioClip);
+                textAudioSource.PlayOneShot(textAudioSource.clip);
 
             yield return new WaitForSeconds(.015f / speed);
         }
 
-        if (dialougeLine.choices != null && !(dialougeLine.choices.Count() > choiceButtons.Length))
+        if (dialougeLine.dialogueChoices != null && !(dialougeLine.dialogueChoices.Count() > choiceButtons.Length))
         {
-            for (int i = 0; i < dialougeLine.choices.Count; i++)
+            for (int i = 0; i < dialougeLine.dialogueChoices.Count(); i++)
             {
                 choiceButtons[i].gameObject.SetActive(true);
                 ButtonChoice_Controller temp = choiceButtons[i].GetComponent<ButtonChoice_Controller>();
-                temp.SetButtonText(dialougeLine.choices[i].choiceText);
-                temp.SetSkipToWhatLine(dialougeLine.choices[i].choiceIndex);
+                temp.SetButtonText(dialougeLine.dialogueChoices[i].choiceText);
+                temp.SetResponse(dialougeLine.dialogueChoices[i].responseToChoice);
             }
 
             EventSystem.current.SetSelectedGameObject(choiceButtons[0].gameObject);
         }
-        //else
-        //{
-        //    Debug.LogError($"To many choices, Dialogue controller only has {choiceButtons.Length} buttons.");
-        //}
+        else if (dialougeLine.dialogueChoices != null && (dialougeLine.dialogueChoices.Count() > choiceButtons.Length))
+        {
+            Debug.LogError($"To many choices, Dialogue controller only has {choiceButtons.Length} buttons.");
+        }
 
         buildingText = null;
         isBuilding = false;
@@ -235,8 +231,25 @@ public class Dialogue_Controller : MonoBehaviour
     {
         isBuilding = true;
 
-        nameText.text = dialougeLine.name;
+        nameText.text = dialougeLine.speakerName;
         dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
+
+        if (dialougeLine.dialogueChoices != null && !(dialougeLine.dialogueChoices.Count() > choiceButtons.Length))
+        {
+            for (int i = 0; i < dialougeLine.dialogueChoices.Count(); i++)
+            {
+                choiceButtons[i].gameObject.SetActive(true);
+                ButtonChoice_Controller temp = choiceButtons[i].GetComponent<ButtonChoice_Controller>();
+                temp.SetButtonText(dialougeLine.dialogueChoices[i].choiceText);
+                temp.SetResponse(dialougeLine.dialogueChoices[i].responseToChoice);
+            }
+
+            EventSystem.current.SetSelectedGameObject(choiceButtons[0].gameObject);
+        }
+        else if (dialougeLine.dialogueChoices != null && (dialougeLine.dialogueChoices.Count() > choiceButtons.Length))
+        {
+            Debug.LogError($"To many choices, Dialogue controller only has {choiceButtons.Length} buttons.");
+        }
 
         buildingText = null;
         isBuilding = false;
