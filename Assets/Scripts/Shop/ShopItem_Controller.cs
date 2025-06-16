@@ -28,6 +28,7 @@ public class ShopItem_Controller : MonoBehaviour
     {
         List<DialogueLine> itemDescriptionLine = new List<DialogueLine>();
 
+        #region Item interaction
         DialogueLine line1 = new DialogueLine();
         line1.speakerName = "narrator";
         line1.dialogue = $"{item.name}{(item.quantity > 1 ? $" X{item.quantity}" : "")} - cost {(item.cost > 1f ? item.cost.ToString() : $"no")} gold.";
@@ -72,6 +73,7 @@ public class ShopItem_Controller : MonoBehaviour
 
         line3.dialogueChoices = new DialogueChoice[] {YesChoice, NoChoice};
         itemDescriptionLine.Add(line3);
+        #endregion
 
         StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(itemDescriptionLine));
     }
