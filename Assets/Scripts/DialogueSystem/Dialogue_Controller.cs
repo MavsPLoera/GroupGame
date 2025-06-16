@@ -27,6 +27,7 @@ public class Dialogue_Controller : MonoBehaviour
     public bool lineCantBeInterupted = false;
     public bool waitForUserInput = true;
     public bool buttonNotSelected = true;
+    public bool recievedInput = false;
 
     public AudioSource textAudioSource;
     public AudioClip textAudioClip;
@@ -52,8 +53,12 @@ public class Dialogue_Controller : MonoBehaviour
     public IEnumerator WaitForUserInput()
     {
         //Keep looping until either R or Right GamePad is pressed.
-        while ((!Input.GetButtonDown("Fire3") && !Input.GetKeyDown(KeyCode.R)))
+        while (!recievedInput)
+        {
             yield return null;
+        }
+
+        recievedInput = false;
     }
 
     public void ButtonPressed()
@@ -77,8 +82,10 @@ public class Dialogue_Controller : MonoBehaviour
 
             foreach (DialogueLine line in response)
             {
-                currentList.Insert(addingLineIndex++, line);
+                currentList.Insert(addingLineIndex, line);
+                addingLineIndex++;
             }
+
         }
     }
 
@@ -172,6 +179,28 @@ public class Dialogue_Controller : MonoBehaviour
                 }
             }
 
+            //Call line commands, was having a weird issue with commands causing user input to be ignored so for now the commands happen at the end of a line.
+            if (line.commands != null)
+            {
+                if (line.commands.commandsToCall != null)
+                {
+                    for (int j = 0; j < line.commands.commandsToCall.Length; j++)
+                    {
+                        DialogueCommands_Controller.instance.CallCommand(line.commands.commandsToCall[i]);
+                    }
+                }
+
+                if (line.commands.delegateDialogueCommands != null)
+                {
+                    line.commands.delegateDialogueCommands();
+
+                    //Unsubscribe all commands after executing them.
+                    line.commands.delegateDialogueCommands = null;
+                }
+
+                Debug.Log("Commands Called");
+            }
+
             //Reset values back to normal if they were modified.
             resetValues();
         }
@@ -199,9 +228,6 @@ public class Dialogue_Controller : MonoBehaviour
         {
             nameText.text = dialougeLine.speakerName;
         }
-        
-
-        //[TO DO] Play commands here
 
         //Prevent String interupts by setting text to dialogue line once then letting player see the text
         while (dialogueText.maxVisibleCharacters < dialogueText.textInfo.characterCount)
@@ -216,6 +242,8 @@ public class Dialogue_Controller : MonoBehaviour
 
         if (dialougeLine.dialogueChoices != null && !(dialougeLine.dialogueChoices.Count() > choiceButtons.Length))
         {
+            yield return new WaitForSeconds(.25f);
+
             for (int i = 0; i < dialougeLine.dialogueChoices.Count(); i++)
             {
                 choiceButtons[i].gameObject.SetActive(true);
@@ -233,7 +261,6 @@ public class Dialogue_Controller : MonoBehaviour
 
         buildingText = null;
         isBuilding = false;
-
         yield return null;
     }
 
@@ -252,10 +279,26 @@ public class Dialogue_Controller : MonoBehaviour
 
         dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
 
-        //[TO DO] Play commands here
+        if (dialougeLine.commands != null)
+        {
+            if (dialougeLine.commands.commandsToCall != null)
+            {
+                for (int i = 0; i < dialougeLine.commands.commandsToCall.Length; i++)
+                {
+                    DialogueCommands_Controller.instance.CallCommand(dialougeLine.commands.commandsToCall[i]);
+                }
+            }
+
+            dialougeLine.commands.delegateDialogueCommands?.Invoke();
+
+            //Unsubscribe all commands after executing them.
+            dialougeLine.commands.delegateDialogueCommands = null;
+        }
 
         if (dialougeLine.dialogueChoices != null && !(dialougeLine.dialogueChoices.Count() > choiceButtons.Length))
         {
+            yield return new WaitForSeconds(.25f);
+
             for (int i = 0; i < dialougeLine.dialogueChoices.Count(); i++)
             {
                 choiceButtons[i].gameObject.SetActive(true);

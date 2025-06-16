@@ -92,7 +92,7 @@ public class DialogueLine
      */
 
     public DialogueControllerOverride controllerOverride = null;
-    public string[] commands = null;
+    public DialogueCommands commands = null;
     public DialogueChoice[] dialogueChoices = null;
 
     public enum StartSignal { NONE, A, C, WA, WC }
@@ -119,6 +119,15 @@ public class DialogueControllerOverride
     {
         return "Char/cylce: " + charactersPerCycle + ", Speed: " + speed + ", CantBeInterrupted: " + cantBeInterrupted + ", WaitForUserInput: " + waitForUserInput + ", Mode: " + mode;
     }
+}
+
+public class DialogueCommands
+{
+    //Used to call general commands that are in the DialogueCommands manager
+    public string[] commandsToCall;
+
+    public delegate void DialogueCommand();
+    public DialogueCommand delegateDialogueCommands;
 }
 
 public class DialogueChoice

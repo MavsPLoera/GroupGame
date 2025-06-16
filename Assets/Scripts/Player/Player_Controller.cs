@@ -237,6 +237,11 @@ public class Player_Controller : MonoBehaviour
             {
                 Dialogue_Controller.instance.ForceComplete();
             }
+            else if ((Input.GetKeyDown(KeyCode.R) || Input.GetButton("Fire3")) && !Dialogue_Controller.instance.isBuilding && (Dialogue_Controller.instance.recievedInput == false))
+            {
+                Debug.Log("Recieved Input");
+                Dialogue_Controller.instance.recievedInput = true;
+            }
         }
 
 
@@ -933,7 +938,7 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        if(inventoryItem.item.name.ToLower().Contains("arrows")) //Check if we are adding arrow to arrow slow
+        if(inventoryItem.item.name.ToLower().Contains("arrow")) //Check if we are adding arrow to arrow slow
         {
             //Assume item is an arrow
             itemExists = checkItemAlreadyExists(playerArrows, inventoryItem.item);

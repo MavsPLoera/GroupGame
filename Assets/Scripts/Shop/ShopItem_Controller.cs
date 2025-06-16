@@ -19,30 +19,13 @@ public class ShopItem_Controller : MonoBehaviour
     {
         float temp = Player_Controller.instance.gold;
 
-        if (temp - item.cost >= 0)
-        {
-            if (!Player_Controller.instance.itemDiscovered.ContainsKey(item.name))
-            {
-                Player_Controller.instance.FoundNewItem(item);
-                UI_Controller.instance.foundNewItem(item);
-            }
-
-            Player_Controller.instance.gold -= item.cost;
-            Player_Controller.instance.addItem(item);
-            Debug.Log("Bought Item!");
-            gameObject.SetActive(false);
-        }
-        else
-        {
-            //Call UI to say you dont have enough funds
-            Debug.Log("Youre Broke!");
-        }
+        Player_Controller.instance.gold -= item.cost;
+        Player_Controller.instance.addItem(item);
+        gameObject.SetActive(false);
     }
 
     public void showItemDescription()
     {
-        //TODO
-        //string[] temp = { $"narrator:\"{item.name}{(item.quantity > 1 ? $" X{item.quantity}" : "")} - cost {(item.cost > 1f ? item.cost.ToString() : $"no")} gold.{{c}} {item.description}\"" };
         List<DialogueLine> itemDescriptionLine = new List<DialogueLine>();
 
         DialogueLine line1 = new DialogueLine();
@@ -57,6 +40,38 @@ public class ShopItem_Controller : MonoBehaviour
             line2.dialogue = item.description;
             itemDescriptionLine.Add(line2);
         }
+
+        //Ask player if they want the item
+        DialogueLine line3 = new DialogueLine();
+        line3.speakerName = "narrator";
+        line3.dialogue = "Do you wish to buy the item?";
+
+        //Yes Response
+        DialogueLine YesResponse = new DialogueLine();
+        YesResponse.speakerName = "narrator";
+
+        if(Player_Controller.instance.gold - item.cost >= 0)
+        {
+            YesResponse.dialogue = "You have bought the item.";
+            YesResponse.commands = new DialogueCommands();
+            YesResponse.commands.delegateDialogueCommands += BuyItem;
+        }
+        else
+        {
+            YesResponse.dialogue = "Seems you dont have enough gold.";
+        }
+
+        DialogueChoice YesChoice = new DialogueChoice();
+        YesChoice.choiceText = "Yes";
+        YesChoice.responseToChoice = new List<DialogueLine> { YesResponse };
+
+
+        //No response
+        DialogueChoice NoChoice = new DialogueChoice();
+        NoChoice.choiceText = "No";
+
+        line3.dialogueChoices = new DialogueChoice[] {YesChoice, NoChoice};
+        itemDescriptionLine.Add(line3);
 
         StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(itemDescriptionLine));
     }
