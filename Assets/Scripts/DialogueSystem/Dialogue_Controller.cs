@@ -190,14 +190,10 @@ public class Dialogue_Controller : MonoBehaviour
                     }
                 }
 
-                if (line.commands.delegateDialogueCommands != null)
-                {
-                    line.commands.delegateDialogueCommands();
+                line.commands.delegateDialogueCommands?.Invoke();
 
-                    //Unsubscribe all commands after executing them.
-                    line.commands.delegateDialogueCommands = null;
-                }
-
+                //Unsubscribe all commands after executing them.
+                line.commands.delegateDialogueCommands = null;
                 Debug.Log("Commands Called");
             }
 
