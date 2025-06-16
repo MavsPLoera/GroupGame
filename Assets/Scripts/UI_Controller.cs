@@ -651,11 +651,20 @@ public class UI_Controller : MonoBehaviour
         }
     }
 
-    public void OpenSelectableInventory()
+    public IEnumerator OpenSelectableInventory(Item item)
     {
         updateSelectableInventory();
         SelectableInventoryPanel.SetActive(true);
         EventSystem.current.SetSelectedGameObject(firstButtonInSelectableInventory);
+
+        yield return StartCoroutine(waitForSelectedItem());
+
+        item = EventSystem.current.currentSelectedGameObject.GetComponent<InventoryButton>().item;
+    }
+
+    public void MadeSelection()
+    {
+        waitingForSelection = false;
     }
 
     public IEnumerator waitForSelectedItem()
@@ -666,8 +675,6 @@ public class UI_Controller : MonoBehaviour
         }
 
         waitingForSelection = true;
-
-        yield return EventSystem.current.currentSelectedGameObject.GetComponent<InventoryButton>().item;
 
     }
 

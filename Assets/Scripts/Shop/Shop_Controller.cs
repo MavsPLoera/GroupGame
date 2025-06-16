@@ -12,6 +12,7 @@ public class Shop_Controller : MonoBehaviour
     public string exitShopMessage;
 
     public GameObject shopInteractBox;
+    private Item selectedItem = null;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,6 +55,14 @@ public class Shop_Controller : MonoBehaviour
     {
         shopInteractBox.SetActive(true);
     }
+
+    //[ContextMenu("Test")]
+    //public void Test()
+    //{
+    //    StartCoroutine(UI_Controller.instance.OpenSelectableInventory(selectedItem));
+
+    //    Debug.Log(selectedItem);
+    //}
 
     public void askAboutItem()
     {
