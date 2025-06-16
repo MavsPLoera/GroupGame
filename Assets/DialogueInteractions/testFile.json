@@ -1,0 +1,53 @@
+[
+    {
+        "speakerName": "Preston",
+        "dialogue": "Test dialogue Line",
+        "dialogueStartSignal": 0,
+        "startSignalDelay": 0.0,
+        "controllerOverride": {
+            "charactersPerSecond": 2.0,
+            "cantBeInterrupted": true,
+            "mode": 0
+        },
+        "commands": [ null ],
+        "dialougeChoices": [
+            {
+                "choiceText": "Yes",
+                "responseToChoice": [
+                    {
+                        "speakerName": "Preston",
+                        "dialogue": "Excellent",
+                        "dialogueStartSignal": 0,
+                        "startSignalDelay": 0.0,
+                        "controllerOverride": null,
+                        "commands": [ null ],
+                        "dialougeChoices": [ null ]
+                    }
+                ]
+            },
+            {
+                "choiceText": "No",
+                "responseToChoice": [
+                    {
+                        "speakerName": "Preston",
+                        "dialogue": "So you have chosen death",
+                        "dialogueStartSignal": 0,
+                        "startSignalDelay": 0.0,
+                        "controllerOverride": null,
+                        "commands": [ null ],
+                        "dialougeChoices": [ null ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "speakerName": "Jason",
+        "dialogue": "Test dialogue Line",
+        "dialogueStartSignal": 0,
+        "startSignalDelay": 0.0,
+        "controllerOverride": null,
+        "commands": [ null ],
+        "dialougeChoices": [ null ]
+    }
+]
