@@ -74,6 +74,16 @@ public class UI_Controller : MonoBehaviour
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemDescriptionText;
 
+    [Header("Selectable Inventory UI Objects.")]
+    public GameObject SelectableInventoryPanel;
+    public GameObject firstButtonInSelectableInventory;
+    public InventoryButton[] selectableInventoryButton;
+    public InventoryButton[] selectableArrowInventoryButtons;
+    public InventoryButton[] selectableAccessoryInventoryButtons;
+    private bool waitingForSelection = true;
+    //public TextMeshProUGUI itemNameText;
+    //public TextMeshProUGUI itemDescriptionText;
+
     [Header("Found New Item UI Objects.")]
     public GameObject FoundNewItemPanel;
     public TextMeshProUGUI ItemNameText;
@@ -555,6 +565,115 @@ public class UI_Controller : MonoBehaviour
         ColorBlock tempToggle = temp.colors;
         tempToggle.normalColor = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
         temp.colors = tempToggle;
+    }
+    #endregion
+
+    #region Selectable Inventory
+
+    //Might need to redo items to make the inventory code cleaner.
+    public void updateSelectableInventory()
+    {
+        //Update inventory
+        for (int i = 0; i < selectableInventoryButton.Length; i++)
+        {
+            Image temp = selectableInventoryButton[i].image;
+
+            if (Player_Controller.instance.playerItems[i].hasItem)
+            {
+                temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
+                temp.color = new Color(1, 1, 1, 1);
+
+                if (Player_Controller.instance.playerItems[i].quantity > 1)
+                {
+                    updateItemQuantity(i);
+                }
+                else
+                {
+                    selectableInventoryButton[i].quanitityText.text = "";
+                }
+
+
+            }
+            else
+            {
+                temp.color = new Color(0, 0, 0, 1);
+                selectableInventoryButton[i].quanitityText.text = "";
+            }
+
+            selectableInventoryButton[i].item = Player_Controller.instance.playerItems[i];
+        }
+
+        //Update Arrows
+        for (int i = 0; i < selectableArrowInventoryButtons.Length; i++)
+        {
+            Image temp = selectableArrowInventoryButtons[i].image;
+
+            if (Player_Controller.instance.playerArrows[i].hasItem)
+            {
+                temp.sprite = Player_Controller.instance.playerArrows[i].itemInventoryImage;
+                temp.color = new Color(1, 1, 1, 1);
+
+                if (Player_Controller.instance.playerArrows[i].quantity > 1)
+                {
+                    updateArrowItemQuantity(i);
+                }
+                else
+                {
+                    selectableArrowInventoryButtons[i].quanitityText.text = "";
+                }
+
+            }
+            else
+            {
+                temp.color = new Color(0, 0, 0, 1);
+                selectableArrowInventoryButtons[i].quanitityText.text = "";
+            }
+
+            selectableArrowInventoryButtons[i].item = Player_Controller.instance.playerArrows[i];
+        }
+
+        //Update Accessories
+        for (int i = 0; i < selectableAccessoryInventoryButtons.Length; i++)
+        {
+            Image temp = selectableAccessoryInventoryButtons[i].image;
+
+            if (Player_Controller.instance.playerAccessories[i].hasItem)
+            {
+                temp.sprite = Player_Controller.instance.playerAccessories[i].itemInventoryImage;
+                temp.color = new Color(1, 1, 1, 1);
+            }
+            else
+            {
+                temp.color = new Color(0, 0, 0, 1);
+            }
+
+            selectableAccessoryInventoryButtons[i].item = Player_Controller.instance.playerAccessories[i];
+        }
+    }
+
+    public void OpenSelectableInventory()
+    {
+        updateSelectableInventory();
+        SelectableInventoryPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstButtonInSelectableInventory);
+    }
+
+    public IEnumerator waitForSelectedItem()
+    {
+        while(waitingForSelection)
+        {
+            yield return null;
+        }
+
+        waitingForSelection = true;
+
+        yield return EventSystem.current.currentSelectedGameObject.GetComponent<InventoryButton>().item;
+
+    }
+
+    public Item returnItem()
+    {
+        return EventSystem.current.currentSelectedGameObject.GetComponent<InventoryButton>().item;
     }
     #endregion
 

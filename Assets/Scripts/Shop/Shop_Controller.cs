@@ -1,9 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Shop_Controller : MonoBehaviour
 {
     public ItemStock[] stock;
     public string welcomeMessgae;
+    public string shopKeeperName;
+    public string playerAsksAboutItemMessage;
+    public string shopKeeperQuestionsJson;
+    public string shopKeeperWhatItemMessage;
+    public string exitShopMessage;
+
+    public GameObject shopInteractBox;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,8 +28,14 @@ public class Shop_Controller : MonoBehaviour
     public void EnterShop()
     {
         //Play welcome message
+        List<DialogueLine> temp = new List<DialogueLine>();
+        DialogueLine welcome = new DialogueLine();
+        welcome.speakerName = "narrator";
+        welcome.dialogue = welcomeMessgae;
+        temp.Add(welcome);
+        Dialogue_Controller.instance.DialogueInteraction(temp);
 
-        for(int i = 0; i < stock.Length; i++)
+        for (int i = 0; i < stock.Length; i++)
         {
             if(stock[i].invetory != 0)
                 stock[i].item.SetActive(true);
@@ -34,6 +48,51 @@ public class Shop_Controller : MonoBehaviour
         {
             stock[i].invetory = newValue;
         }
+    }
+
+    public void TalkToShopKeep()
+    {
+        shopInteractBox.SetActive(true);
+    }
+
+    public void askAboutItem()
+    {
+        shopInteractBox.SetActive(false);
+        List<DialogueLine> temp = new List<DialogueLine>();
+        DialogueLine welcome = new DialogueLine();
+        welcome.speakerName = shopKeeperName;
+        welcome.dialogue = playerAsksAboutItemMessage;
+
+
+        TalkToShopKeep();
+    }
+
+    public void sellItem()
+    {
+        shopInteractBox.SetActive(false);
+        List<DialogueLine> temp = new List<DialogueLine>();
+        DialogueLine sell = new DialogueLine();
+        sell.speakerName = shopKeeperName;
+        sell.dialogue = shopKeeperWhatItemMessage;
+
+        TalkToShopKeep();
+    }
+
+    public void exitShop()
+    {
+        shopInteractBox.SetActive(false);
+        List<DialogueLine> temp = new List<DialogueLine>();
+        DialogueLine goodbye = new DialogueLine();
+        goodbye.speakerName = shopKeeperName;
+        goodbye.dialogue = exitShopMessage;
+    }
+
+    public void askQuestions()
+    {
+        shopInteractBox.SetActive(false);
+        List<DialogueLine> questions = DialogueParser_Controller.instance.retreiveConversation(shopKeeperQuestionsJson);
+
+        TalkToShopKeep();
     }
 }
 
