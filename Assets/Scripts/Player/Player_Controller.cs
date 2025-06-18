@@ -58,10 +58,6 @@ public class Player_Controller : MonoBehaviour
     public float flickerDuration;
     public float reloadCoolDown;
 
-    [Header("Player Quests")]
-    public List<Quest> quests = new List<Quest>();
-    public List<Quest> completedQuests = new List<Quest>();
-
     [Header("Player Audio")]
     public AudioSource playerAudioSource;
     public AudioSource playerChangingAudioSource;
@@ -1006,7 +1002,6 @@ public class Player_Controller : MonoBehaviour
                     item.equipable = playerItems[selectedItem].equipable;
                     item.quantity = 1;
                     item.itemInventoryImage = playerItems[selectedItem].itemInventoryImage;
-                    item.itemEquipedImage = playerItems[selectedItem].itemEquipedImage;
 
                     //Set accessory to new item 
                     playerAccessories[avalibleSpot] = item;
@@ -1320,10 +1315,6 @@ public class Player_Controller : MonoBehaviour
                 // Game_Progress_Controller.instance.StartCH2();
             }));
 
-            quests[1].isComplete = true;
-            quests.Add(new Quest("Lonesome Road", "You have looted the catacombs in the sewers and now have proven your worth. Find and clear out dungeons on your way to Kharon's Hollow, the Holy Grail of crypts. You should first travel to \"The Bleak\", a forest northwest of town. Rumors are a tomb is nearby", false));
-            UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
-            UI_Controller.instance.ActiveQuest();
         }
         else if(collision.gameObject.CompareTag("UnlockUlt"))
         {
@@ -1336,10 +1327,6 @@ public class Player_Controller : MonoBehaviour
                 // Game_Progress_Controller.instance.StartCH3();
             }));
 
-            quests[2].isComplete = true;
-            quests.Add(new Quest("Heavy is The Crown", "The dead king's time has come. Head to Kharon's Hollow... and defile it. Steal what ought to be yours", false));
-            UI_Controller.instance.questIndex = Player_Controller.instance.quests.Count - 1;
-            UI_Controller.instance.ActiveQuest();
         }
         else if(collision.gameObject.CompareTag("Win"))
         {
@@ -1359,33 +1346,6 @@ public class Player_Controller : MonoBehaviour
 }
 
 [System.Serializable]
-public class Quest
-{
-    public int questID;
-    public string questTitle;
-    public string questDescription;
-    public bool isComplete;
-
-    public float maxHealthIncrease;
-    public int maxPotionsIncrease;
-    public float swordDamageIncrease;
-    public float goldReward;
-    public int healthPoitionReward;
-
-    public Quest(string questTitle, string questDescription, bool isComplete)
-    {
-        this.questTitle = questTitle;
-        this.questDescription = questDescription;
-        this.isComplete = isComplete;
-    }
-
-    public override string ToString()
-    {
-        return $"{questTitle}, {questDescription}, ({(isComplete ? "Complete" : "Incomplete")})";
-    }
-}
-
-[System.Serializable]
 public class Item
 {
     public bool hasItem;
@@ -1395,5 +1355,7 @@ public class Item
     public float quantity;
     public string description;
     public Sprite itemInventoryImage;
-    public Sprite itemEquipedImage;
+
+    public enum ItemType { REGLUAR, ACCESSORY, ARROW};
+    public float sellValue;
 }

@@ -37,8 +37,6 @@ public class Game_Progress_Controller : MonoBehaviour
     {
         savedRespawn = Player_Controller.instance.respawnPosition.transform.position;
         StartIntro();
-        Player_Controller.instance.quests
-            .Add(new Quest("Make Contact", "Make haste to The Pale Mare in Saltmourne. Your contact is waiting there for you.", false));
     }
 
     public void StartIntro()
@@ -68,10 +66,6 @@ public class Game_Progress_Controller : MonoBehaviour
         AreaLock_Controller.instance.unlockSecondaryNeededAreas();
         chapterIdx = 2;
         // Disgusting -> terrible terrible hardcoded 
-        if(Player_Controller.instance.quests.Count >= 2)
-        {
-            Player_Controller.instance.quests[1].isComplete = true;
-        }
     }
 
     public void StartCH3()
@@ -117,7 +111,6 @@ public class Game_Progress_Controller : MonoBehaviour
         UI_Controller.instance.CollectHealth();
         UI_Controller.instance.UpdatePlayerLives();
         UI_Controller.instance.ShootArrow();
-        UI_Controller.instance.ActiveQuest();
         // Redo chapter cutscene.
         switch (chapterIdx)
         {
@@ -149,7 +142,6 @@ public class Game_Progress_Controller : MonoBehaviour
     // they've been accepted and completed rather than approach it this way.
     public void CompleteQuest(int questIdx)
     {
-        Player_Controller.instance.quests[questIdx].isComplete = true;
         if (questIdx == 0) AreaLock_Controller.instance.unlockSewers();
     }
 }

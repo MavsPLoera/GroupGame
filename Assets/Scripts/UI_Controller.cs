@@ -197,21 +197,6 @@ public class UI_Controller : MonoBehaviour
         HealthPotionsText.text = Player_Controller.instance.healingPotions.ToString() + " / " + Player_Controller.instance.maxHealthPotions.ToString();
     }
 
-    public void ActiveQuest()
-    {
-        if (Player_Controller.instance.quests.Count != 0)
-        {
-            currentQuestTitle.text = Player_Controller.instance.quests[questIndex].questTitle;
-            currentQuestStatus.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
-        }
-        else
-        {
-            currentQuestTitle.text = "No active quest";
-            currentQuestStatus.text = "";
-        }
-
-    }
-
     public void ShootArrow()
     {
         ArrowText.text = Player_Controller.instance.arrows.ToString() + " / " + Player_Controller.instance.maxArrows.ToString();
@@ -249,61 +234,10 @@ public class UI_Controller : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstButtonInPauseMenu);
 
         Time.timeScale = 0;
-        QuestMenuTitleText.gameObject.SetActive(true);
-
-        if (Player_Controller.instance.quests.Count != 0)
-        {
-            IndexText.gameObject.SetActive(true);
-            QuestTitleText.gameObject.SetActive(true);
-            QuestDescriptionText.gameObject.SetActive(true);
-            QuestStatusText.gameObject.SetActive(true);
-            indexRightButton.gameObject.SetActive(true);
-            indexLeftButton.gameObject.SetActive(true);
-            NoQuestsText.gameObject.SetActive(false);
-
-            IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
-            QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
-            QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
-            QuestStatusText.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
-        }
-        else
-        {
-            IndexText.gameObject.SetActive(false);
-            QuestTitleText.gameObject.SetActive(false);
-            QuestDescriptionText.gameObject.SetActive(false);
-            QuestStatusText.gameObject.SetActive(false);
-            indexRightButton.gameObject.SetActive(false);
-            indexLeftButton.gameObject.SetActive(false);
-            NoQuestsText.text = "No active quests";
-            NoQuestsText.gameObject.SetActive(true);
-        }
+        
 
         Player_Controller.instance.canInput = false;
         Player_Controller.instance.isPaused = true;
-    }
-
-    public void indexQuestRight()
-    {
-        if (!(questIndex + 1 > Player_Controller.instance.quests.Count - 1))
-        {
-            questIndex++;
-            IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
-            QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
-            QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
-            currentQuestStatus.text = QuestStatusText.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
-        }
-    }
-
-    public void indexQuestLeft()
-    {
-        if (!(questIndex - 1 < 0))
-        {
-            questIndex--;
-            IndexText.text = $"{questIndex + 1} / {Player_Controller.instance.quests.Count}";
-            QuestTitleText.text = Player_Controller.instance.quests[questIndex].questTitle;
-            QuestDescriptionText.text = Player_Controller.instance.quests[questIndex].questDescription;
-            currentQuestStatus.text = QuestStatusText.text = Player_Controller.instance.quests[questIndex].isComplete ? "Complete" : "Incomplete";
-        }
     }
 
     public void UnpauseGame()
@@ -321,7 +255,6 @@ public class UI_Controller : MonoBehaviour
 
         Time.timeScale = 1;
 
-        ActiveQuest();
         Player_Controller.instance.canInput = true;
         Player_Controller.instance.isPaused = false;
     }
