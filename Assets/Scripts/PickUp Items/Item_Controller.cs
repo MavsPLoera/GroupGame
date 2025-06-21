@@ -8,14 +8,14 @@ public class Item_Controller : MonoBehaviour
 
     private void Start()
     {
-        item.itemInventoryImage = GetComponent<SpriteRenderer>().sprite;
+        item.itemImage = GetComponent<SpriteRenderer>().sprite;
     }
 
     public void PickUpItem()
     {
         float temp = Player_Controller.instance.gold;
 
-        if (!Player_Controller.instance.itemDiscovered.ContainsKey(item.name))
+        if (!Player_Controller.instance.itemDiscovered.ContainsKey(item.itemName))
         {
             Player_Controller.instance.FoundNewItem(item);
             UI_Controller.instance.foundNewItem(item);

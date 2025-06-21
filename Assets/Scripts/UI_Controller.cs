@@ -69,8 +69,6 @@ public class UI_Controller : MonoBehaviour
     public GameObject InventoryPanel;
     public GameObject firstButtonInInventory;
     public InventoryButton[] inventoryButton;
-    public InventoryButton[] arrowInventoryButtons;
-    public InventoryButton[] accessoryInventoryButtons;
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemDescriptionText;
 
@@ -116,6 +114,13 @@ public class UI_Controller : MonoBehaviour
     public AudioClip textSFX;
     public AudioSource UIAudioSource;
     private AudioClip lastPlayedSong; //NO TOUCHIE
+
+    [Header("UI Events")]
+    public static Action OpenInventory;
+    public static Action UpdateInvetorySlot;
+    public static Action UpdateInventory;
+
+
 
     public static UI_Controller instance;
 
@@ -163,6 +168,16 @@ public class UI_Controller : MonoBehaviour
         changeMasterVolume();
         changeMusicVolume();
         changeSFXVolume();
+    }
+
+    public void OnEnable()
+    {
+        
+    }
+
+    public void OnDisable()
+    {
+        
     }
 
     public void EnterArea(string name)
@@ -276,12 +291,12 @@ public class UI_Controller : MonoBehaviour
         {
             Image temp = inventoryButton[i].image;
 
-            if (Player_Controller.instance.playerItems[i].hasItem)
+            if (Player_Controller.instance.itemInSlot[i])
             {
-                temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
+                temp.sprite = Player_Controller.instance.playerInventory[i].itemImage;
                 temp.color = new Color(1, 1, 1, 1);
 
-                if (Player_Controller.instance.playerItems[i].quantity > 1)
+                if (Player_Controller.instance.playerInventory[i].quantity > 1)
                 {
                     updateItemQuantity(i);
                 }
@@ -289,8 +304,6 @@ public class UI_Controller : MonoBehaviour
                 {
                     inventoryButton[i].quanitityText.text = "";
                 }
-                    
-
             }
             else
             {
@@ -298,63 +311,16 @@ public class UI_Controller : MonoBehaviour
                 inventoryButton[i].quanitityText.text = "";
             }
 
-            inventoryButton[i].item = Player_Controller.instance.playerItems[i];
-        }
-
-        //Update Arrows
-        for (int i = 0; i < arrowInventoryButtons.Length; i++)
-        {
-            Image temp = arrowInventoryButtons[i].image;
-
-            if (Player_Controller.instance.playerArrows[i].hasItem)
-            {
-                temp.sprite = Player_Controller.instance.playerArrows[i].itemInventoryImage;
-                temp.color = new Color(1, 1, 1, 1);
-
-                if (Player_Controller.instance.playerArrows[i].quantity > 1)
-                {
-                    updateArrowItemQuantity(i);
-                }
-                else
-                {
-                    arrowInventoryButtons[i].quanitityText.text = "";
-                }
-
-            }
-            else
-            {
-                temp.color = new Color(0, 0, 0, 1);
-                arrowInventoryButtons[i].quanitityText.text = "";
-            }
-
-            arrowInventoryButtons[i].item = Player_Controller.instance.playerArrows[i];
-        }
-
-        //Update Accessories
-        for (int i = 0; i < accessoryInventoryButtons.Length; i++)
-        {
-            Image temp = accessoryInventoryButtons[i].image;
-
-            if (Player_Controller.instance.playerAccessories[i].hasItem)
-            {
-                temp.sprite = Player_Controller.instance.playerAccessories[i].itemInventoryImage;
-                temp.color = new Color(1, 1, 1, 1);
-            }
-            else
-            {
-                temp.color = new Color(0, 0, 0, 1);
-            }
-
-            accessoryInventoryButtons[i].item = Player_Controller.instance.playerAccessories[i];
+            inventoryButton[i].item = Player_Controller.instance.playerInventory[i];
         }
     }
 
     public void foundNewItem(Item newItem)
     {
-        ItemNameText.text = newItem.name;
-        ItemDescriptionText.text = newItem.description;
-        ItemImage.sprite = newItem.itemInventoryImage;
-        FoundNewItemPanel.SetActive(true);
+        //ItemNameText.text = newItem.name;
+        //ItemDescriptionText.text = newItem.description;
+        //ItemImage.sprite = newItem.itemInventoryImage;
+        //FoundNewItemPanel.SetActive(true);
     }
 
     public void deactiveFoundNewItemUI()
@@ -364,21 +330,21 @@ public class UI_Controller : MonoBehaviour
 
     public void updateItemQuantity(int index)
     {
-        inventoryButton[index].quanitityText.text = Player_Controller.instance.playerItems[index].quantity.ToString();
+        inventoryButton[index].quanitityText.text = Player_Controller.instance.playerInventory[index].quantity.ToString();
     }
 
-    public void updateArrowItemQuantity(int index)
-    {
-        arrowInventoryButtons[index].quanitityText.text = Player_Controller.instance.playerArrows[index].quantity.ToString();
-    }
+    //public void updateArrowItemQuantity(int index)
+    //{
+    //    arrowInventoryButtons[index].quanitityText.text = Player_Controller.instance.playerInventory[index].quantity.ToString();
+    //}
 
     public void updateInventoryText()
     {
-        int buttonIndex = int.Parse(EventSystem.current.currentSelectedGameObject.name);
-        Item temp = inventoryButton[buttonIndex].item;
+        //int buttonIndex = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        //Item temp = inventoryButton[buttonIndex].item;
 
-        itemNameText.text = temp.name;
-        itemDescriptionText.text = temp.description;
+        //itemNameText.text = temp.itemName;
+        //itemDescriptionText.text = temp.description;
     }
     #endregion
 
@@ -506,82 +472,82 @@ public class UI_Controller : MonoBehaviour
     //Might need to redo items to make the inventory code cleaner.
     public void updateSelectableInventory()
     {
-        //Update inventory
-        for (int i = 0; i < selectableInventoryButton.Length; i++)
-        {
-            Image temp = selectableInventoryButton[i].image;
+        ////Update inventory
+        //for (int i = 0; i < selectableInventoryButton.Length; i++)
+        //{
+        //    Image temp = selectableInventoryButton[i].image;
 
-            if (Player_Controller.instance.playerItems[i].hasItem)
-            {
-                temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
-                temp.color = new Color(1, 1, 1, 1);
+        //    if (Player_Controller.instance.playerItems[i].hasItem)
+        //    {
+        //        temp.sprite = Player_Controller.instance.playerItems[i].itemInventoryImage;
+        //        temp.color = new Color(1, 1, 1, 1);
 
-                if (Player_Controller.instance.playerItems[i].quantity > 1)
-                {
-                    updateItemQuantity(i);
-                }
-                else
-                {
-                    selectableInventoryButton[i].quanitityText.text = "";
-                }
+        //        if (Player_Controller.instance.playerItems[i].quantity > 1)
+        //        {
+        //            updateItemQuantity(i);
+        //        }
+        //        else
+        //        {
+        //            selectableInventoryButton[i].quanitityText.text = "";
+        //        }
 
 
-            }
-            else
-            {
-                temp.color = new Color(0, 0, 0, 1);
-                selectableInventoryButton[i].quanitityText.text = "";
-            }
+        //    }
+        //    else
+        //    {
+        //        temp.color = new Color(0, 0, 0, 1);
+        //        selectableInventoryButton[i].quanitityText.text = "";
+        //    }
 
-            selectableInventoryButton[i].item = Player_Controller.instance.playerItems[i];
-        }
+        //    selectableInventoryButton[i].item = Player_Controller.instance.playerItems[i];
+        //}
 
-        //Update Arrows
-        for (int i = 0; i < selectableArrowInventoryButtons.Length; i++)
-        {
-            Image temp = selectableArrowInventoryButtons[i].image;
+        ////Update Arrows
+        //for (int i = 0; i < selectableArrowInventoryButtons.Length; i++)
+        //{
+        //    Image temp = selectableArrowInventoryButtons[i].image;
 
-            if (Player_Controller.instance.playerArrows[i].hasItem)
-            {
-                temp.sprite = Player_Controller.instance.playerArrows[i].itemInventoryImage;
-                temp.color = new Color(1, 1, 1, 1);
+        //    if (Player_Controller.instance.playerArrows[i].hasItem)
+        //    {
+        //        temp.sprite = Player_Controller.instance.playerArrows[i].itemInventoryImage;
+        //        temp.color = new Color(1, 1, 1, 1);
 
-                if (Player_Controller.instance.playerArrows[i].quantity > 1)
-                {
-                    updateArrowItemQuantity(i);
-                }
-                else
-                {
-                    selectableArrowInventoryButtons[i].quanitityText.text = "";
-                }
+        //        if (Player_Controller.instance.playerArrows[i].quantity > 1)
+        //        {
+        //            updateArrowItemQuantity(i);
+        //        }
+        //        else
+        //        {
+        //            selectableArrowInventoryButtons[i].quanitityText.text = "";
+        //        }
 
-            }
-            else
-            {
-                temp.color = new Color(0, 0, 0, 1);
-                selectableArrowInventoryButtons[i].quanitityText.text = "";
-            }
+        //    }
+        //    else
+        //    {
+        //        temp.color = new Color(0, 0, 0, 1);
+        //        selectableArrowInventoryButtons[i].quanitityText.text = "";
+        //    }
 
-            selectableArrowInventoryButtons[i].item = Player_Controller.instance.playerArrows[i];
-        }
+        //    selectableArrowInventoryButtons[i].item = Player_Controller.instance.playerArrows[i];
+        //}
 
-        //Update Accessories
-        for (int i = 0; i < selectableAccessoryInventoryButtons.Length; i++)
-        {
-            Image temp = selectableAccessoryInventoryButtons[i].image;
+        ////Update Accessories
+        //for (int i = 0; i < selectableAccessoryInventoryButtons.Length; i++)
+        //{
+        //    Image temp = selectableAccessoryInventoryButtons[i].image;
 
-            if (Player_Controller.instance.playerAccessories[i].hasItem)
-            {
-                temp.sprite = Player_Controller.instance.playerAccessories[i].itemInventoryImage;
-                temp.color = new Color(1, 1, 1, 1);
-            }
-            else
-            {
-                temp.color = new Color(0, 0, 0, 1);
-            }
+        //    if (Player_Controller.instance.playerAccessories[i].hasItem)
+        //    {
+        //        temp.sprite = Player_Controller.instance.playerAccessories[i].itemInventoryImage;
+        //        temp.color = new Color(1, 1, 1, 1);
+        //    }
+        //    else
+        //    {
+        //        temp.color = new Color(0, 0, 0, 1);
+        //    }
 
-            selectableAccessoryInventoryButtons[i].item = Player_Controller.instance.playerAccessories[i];
-        }
+        //    selectableAccessoryInventoryButtons[i].item = Player_Controller.instance.playerAccessories[i];
+        //}
     }
 
     public IEnumerator OpenSelectableInventory(Item item)

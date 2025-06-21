@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ShopItem_Controller : MonoBehaviour
 {
-    public Item item;
+    public Arrow item;
     private void Start()
     {
         TextMeshPro costText = GetComponentInChildren<TextMeshPro>();
@@ -12,14 +12,15 @@ public class ShopItem_Controller : MonoBehaviour
         //if (item.cost != 0)
         //    costText.text = item.cost.ToString();
 
-        item.itemInventoryImage = GetComponent<SpriteRenderer>().sprite;
+        item.itemImage = GetComponent<SpriteRenderer>().sprite;
     }
 
     public void BuyItem()
     {
         float temp = Player_Controller.instance.gold;
 
-        Player_Controller.instance.gold -= item.cost;
+        //Update this later
+        Player_Controller.instance.gold -= 5f;
         Player_Controller.instance.addItem(item);
         gameObject.SetActive(false);
     }
@@ -31,16 +32,17 @@ public class ShopItem_Controller : MonoBehaviour
         #region Item interaction
         DialogueLine line1 = new DialogueLine();
         line1.speakerName = "narrator";
-        line1.dialogue = $"{item.name}{(item.quantity > 1 ? $" X{item.quantity}" : "")} - cost {(item.cost > 1f ? item.cost.ToString() : $"no")} gold.";
+        //line1.dialogue = $"{item.itemName}{(item.quantity > 1 ? $" X{item.quantity}" : "")} - cost {(item.cost > 1f ? item.cost.ToString() : $"no")} gold.";
+        line1.dialogue = $"{item.itemName}{(item.quantity > 1 ? $" X{item.quantity}" : "")} - cost 5 gold.";
         itemDescriptionLine.Add(line1);
 
-        if (item.description != "")
-        {
-            DialogueLine line2 = new DialogueLine();
-            line2.speakerName = "narrator";
-            line2.dialogue = item.description;
-            itemDescriptionLine.Add(line2);
-        }
+        //if (item.description != "")
+        //{
+        //    DialogueLine line2 = new DialogueLine();
+        //    line2.speakerName = "narrator";
+        //    line2.dialogue = item.description;
+        //    itemDescriptionLine.Add(line2);
+        //}
 
         //Ask player if they want the item
         DialogueLine line3 = new DialogueLine();
@@ -51,7 +53,8 @@ public class ShopItem_Controller : MonoBehaviour
         DialogueLine YesResponse = new DialogueLine();
         YesResponse.speakerName = "narrator";
 
-        if(Player_Controller.instance.gold - item.cost >= 0)
+        //Update this later 
+        if(Player_Controller.instance.gold - 5f >= 0)
         {
             YesResponse.dialogue = "You have bought the item.";
             YesResponse.commands = new DialogueCommands();

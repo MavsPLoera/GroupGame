@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static DialogueControllerOverride;
+using System;
 
 public class Dialogue_Controller : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class Dialogue_Controller : MonoBehaviour
 
     public AudioSource textAudioSource;
     public AudioClip textAudioClip;
+
+    public static Action<List<DialogueLine>> triggerDialogue;
 
     public static Dialogue_Controller instance;
 
