@@ -95,6 +95,7 @@ public class Player_Controller : MonoBehaviour
     public int hasArrowsIndex = 0; //Will update this index based on the players arrow slot
     public int maxQuantityPerItem;
     public Dictionary<string, Item> itemDiscovered = new Dictionary<string, Item>(); //Use this to bring up a you found new item UI.
+    public Dictionary<string, string> itemInformation = new Dictionary<string, string>(); //Use this to let the player know what information that have figured out about an item.
     public GameObject foundNewItemLight;
     public bool FoundNewItemOpen;
 
@@ -256,7 +257,7 @@ public class Player_Controller : MonoBehaviour
         {
             if (!UI_Controller.instance.InventoryPanel.activeSelf)
             {
-                UI_Controller.instance.openOptions();
+                UI_Controller.instance.openInventory();
                 rb.linearVelocity = Vector2.zero;
                 playerAnimator.Play("Player_Idle", 0);
                 canInput = false;
@@ -889,8 +890,6 @@ public class Player_Controller : MonoBehaviour
         //inventory full returns a index of the first iventory slot that is empty
         int inventoryFull = checkInventorySlotsFull();
 
-
-
         if (itemExists != -1) //Case that the player already has the item in their inventory.
         {
             if (playerInventory[itemExists].quantity + itemAdded.quantity <= maxQuantityPerItem) //In the case that the item quantity is not max we want to add to the quanitity of the item that was collected
@@ -1017,9 +1016,8 @@ public class Player_Controller : MonoBehaviour
 
                     //Have to create new item without make a indirect reference
                     Accessory item = new Accessory();
-                    //item.itemName = playerItems[selectedItem].name;
-                    //item.description = playerItems[selectedItem].description;
-                    //item.cost = playerItems[selectedItem].cost;
+                    item.itemName = playerInventory[selectedItem].itemName;
+                    item.sellValue = playerInventory[selectedItem].sellValue;
                     item.quantity = 1;
                     item.itemImage = playerInventory[selectedItem].itemImage;
 
@@ -1039,6 +1037,47 @@ public class Player_Controller : MonoBehaviour
             else //Not enough room
             {
                 Debug.Log("Accessories Full");
+            }
+        }
+        else if (playerInventory[selectedItem] is HealthPotion)
+        {
+            //Assume item is an potion
+            itemExists = checkPotionAlreadyExists(playerInventory[selectedItem]);
+            avalibleSpot = checkPotionSlotFull();
+
+            if (itemExists != -1) //Case if the arrow type is already in arrow slot 
+            {
+                if (playerInventory[itemExists].quantity + playerInventory[selectedItem].quantity <= maxQuantityPerItem) //Case adding to potion quantity without split
+                {
+                    playerInventory[itemExists].quantity += playerInventory[selectedItem].quantity;
+
+                    //Remove item from selected slot
+                    playerInventory[selectedItem] = null;
+                    itemInSlot[selectedItem] = false;
+                }
+                else //Case adding arrow amount that exceeds max quantity
+                {
+                    int diff = maxQuantityPerItem - playerInventory[itemExists].quantity;
+                    playerInventory[itemExists].quantity = maxQuantityPerItem;
+                    playerInventory[selectedItem].quantity -= diff;
+
+                    Debug.Log("Cannot add rest of item into arrow inventory");
+                }
+            }
+            else //New potion added
+            {
+                if (avalibleSpot != -1)
+                {
+                    playerInventory[avalibleSpot] = playerInventory[selectedItem];
+                    itemInSlot[avalibleSpot] = true;
+
+                    playerInventory[selectedItem] = null;
+                    itemInSlot[selectedItem] = false;
+                }
+                else
+                {
+                    Debug.Log("Potion Slot Full");
+                }
             }
         }
 
@@ -1118,17 +1157,6 @@ public class Player_Controller : MonoBehaviour
         UI_Controller.instance.updateInventory();
     }
 
-    public int checkItemAlreadyExists(Item itemAdded)
-    {
-        for (int i = 0; i < playerInventory.Length; i++)
-        {
-            if (itemInSlot[i] && itemAdded.itemName == playerInventory[i].itemName && playerInventory[i].quantity != maxQuantityPerItem)
-                return i;
-        }
-
-        return -1;
-    }
-
     public int checkInventoryItemAlreadyExists(Item itemToDequip)
     {
         for (int i = 0; i < firstAccessorySlot; i++)
@@ -1145,6 +1173,16 @@ public class Player_Controller : MonoBehaviour
         {
             if (itemInSlot[i] && itemToEquip.itemName == playerInventory[i].itemName && playerInventory[i].quantity != maxQuantityPerItem)
                 return i;
+        }
+
+        return -1;
+    }
+
+    public int checkPotionAlreadyExists(Item itemToEquip)
+    {
+        if (itemInSlot[firstPotionSlot] && itemToEquip.itemName == playerInventory[firstPotionSlot].itemName && playerInventory[firstPotionSlot].quantity != maxQuantityPerItem)
+        {
+            return firstPotionSlot;
         }
 
         return -1;
@@ -1178,10 +1216,26 @@ public class Player_Controller : MonoBehaviour
     {
         for (int i = firstAccessorySlot; i < (firstAccessorySlot + numberOfAccessorySlots); i++)
         {
-            if (itemInSlot[i])
+            if (itemInSlot[i] == false)
                 return i;
         }
         return -1;
+    }
+
+    public int checkPotionSlotFull()
+    {
+        if(itemInSlot[firstPotionSlot] == false)
+        {
+            return firstPotionSlot;
+        }
+
+        return -1;
+    }
+
+    public void dropItem(int index)
+    {
+        playerInventory[index] = null;
+        itemInSlot[index] = false;
     }
 
     public void FoundNewItem(Item item)
@@ -1196,7 +1250,6 @@ public class Player_Controller : MonoBehaviour
     {
         FoundNewItemOpen = false;
     }
-
     #endregion
 
     public void giveReward(float maxHealthIncrease, int maxPotionsIncrease, float swordDamageIncrease, float goldReward, int healthPoitionReward)
@@ -1360,11 +1413,9 @@ public abstract class Item
     public int quantity;
     public Sprite itemImage;
 
-    public abstract void useItem();
-    public abstract void inspectItem();
-    public void dropItem()
+    public string inspectItem()
     {
-
+        return "";
     }
 }
 
@@ -1379,58 +1430,22 @@ public class Book : Item
         this.quantity = quantity;
         this.itemImage = itemImage;
     }
-
-    public override void inspectItem()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void useItem()
-    {
-        throw new NotImplementedException();
-    }
 }
 
 [System.Serializable]
 public class HealthPotion : Item
 {
     public int health;
-
-    public override void inspectItem()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void useItem()
-    {
-        //Inventory_Controller.healPlayer(health);
-    }
 }
 
 [System.Serializable]
 public class Arrow : Item
 {
-    public override void inspectItem()
-    {
-        throw new NotImplementedException();
-    }
 
-    public override void useItem()
-    {
-        throw new NotImplementedException();
-    }
 }
 
 [System.Serializable]
 public class Accessory : Item
 {
-    public override void inspectItem()
-    {
-        throw new NotImplementedException();
-    }
 
-    public override void useItem()
-    {
-        throw new NotImplementedException();
-    }
 }

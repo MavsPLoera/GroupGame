@@ -69,6 +69,10 @@ public class UI_Controller : MonoBehaviour
     public GameObject InventoryPanel;
     public GameObject firstButtonInInventory;
     public InventoryButton[] inventoryButton;
+    private int currentSelectedButtonIndex;
+    private GameObject lastSelectedObject;
+    public GameObject itemOoptionsUI;
+    public GameObject itemOptionsFirstButton;
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemDescriptionText;
 
@@ -275,13 +279,44 @@ public class UI_Controller : MonoBehaviour
     }
 
     #region inventory
-    public void openOptions()
+    public void openInventory()
     {
         InventoryPanel.gameObject.SetActive(true);
 
         updateInventory();
 
         EventSystem.current.SetSelectedGameObject(firstButtonInInventory);
+    }
+
+    public void openItemUseOptions()
+    {
+        itemOoptionsUI.SetActive(true);
+        lastSelectedObject = EventSystem.current.currentSelectedGameObject;
+        currentSelectedButtonIndex = int.Parse(lastSelectedObject.name);
+        EventSystem.current.SetSelectedGameObject(itemOptionsFirstButton);
+    }
+
+    public void closeItemUseOptions()
+    {
+        currentSelectedButtonIndex = -1;
+        EventSystem.current.SetSelectedGameObject(lastSelectedObject);
+        itemOoptionsUI.SetActive(false);
+    }
+
+    public void ChangeSelectedButtonItemUseText()
+    {
+        GameObject temp = EventSystem.current.currentSelectedGameObject;
+        TextMeshProUGUI buttonText = temp.GetComponentInChildren<TextMeshProUGUI>();
+        buttonText.color = Color.white;
+        buttonText.ForceMeshUpdate();
+    }
+
+    public void ChangeSelectedButtonItemUseTextBack()
+    {
+        GameObject temp = EventSystem.current.currentSelectedGameObject;
+        TextMeshProUGUI buttonText = temp.GetComponentInChildren<TextMeshProUGUI>();
+        buttonText.color = new Color(0.4823529f, 0.4823529f, 0.4823529f, 1f);
+        buttonText.ForceMeshUpdate();
     }
 
     public void updateInventory()
