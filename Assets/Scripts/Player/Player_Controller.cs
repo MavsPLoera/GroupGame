@@ -167,7 +167,7 @@ public class Player_Controller : MonoBehaviour
         currentStamina = maxStamina;
         playerMovementSpeedUnchanging = playerMovementspeed;
 
-        itemInformation.Add("Arrows", "Classic choice");
+        itemInformation.Add("Arrows", "Arrows, Classic choice");
     }
 
     // Update is called once per frame
@@ -265,7 +265,7 @@ public class Player_Controller : MonoBehaviour
             }
             else
             {
-                UI_Controller.instance.InventoryPanel.SetActive(false);
+                UI_Controller.instance.closeInventory();
                 canInput = true;
 
             }
@@ -410,6 +410,7 @@ public class Player_Controller : MonoBehaviour
         UI_Controller.equipItem += equipItem;
         UI_Controller.dropItem += dropItem;
         UI_Controller.inspectItem += checkItemInformation;
+        UI_Controller.itemInSlot += checkItemInSlot;
     }
 
     public void OnDisable()
@@ -417,6 +418,7 @@ public class Player_Controller : MonoBehaviour
         UI_Controller.equipItem -= equipItem;
         UI_Controller.dropItem -= dropItem;
         UI_Controller.inspectItem -= checkItemInformation;
+        UI_Controller.itemInSlot -= checkItemInSlot;
     }
 
     #region movement/abilities
@@ -1170,6 +1172,11 @@ public class Player_Controller : MonoBehaviour
         }
 
         UI_Controller.instance.updateInventory();
+    }
+
+    public bool checkItemInSlot(int index)
+    {
+        return itemInSlot[index];
     }
 
     public int checkInventoryItemAlreadyExists(Item itemToDequip)

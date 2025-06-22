@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine.Audio;
 using NUnit.Framework.Constraints;
 using System;
+using NUnit.Framework;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -128,6 +129,7 @@ public class UI_Controller : MonoBehaviour
     public static Action<int> equipItem;
     public static Action<int> dropItem;
     public static Func<int, string> inspectItem;
+    public static Func<int, bool> itemInSlot;
     public static Action UpdateInvetorySlot;
     public static Action UpdateInventory;
 
@@ -295,17 +297,30 @@ public class UI_Controller : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstButtonInInventory);
     }
 
+    public void closeInventory()
+    {
+        InventoryPanel.gameObject.SetActive(false);
+        inventoryButton[currentSelectedButtonIndex].itemUseOptions.SetActive(false);
+        currentSelectedButtonIndex = -1;
+    }
+
     public void openItemUseOptions()
     {
-        itemOoptionsUI.SetActive(true);
         lastSelectedObject = EventSystem.current.currentSelectedGameObject;
         currentSelectedButtonIndex = int.Parse(lastSelectedObject.name);
-        EventSystem.current.SetSelectedGameObject(itemOptionsFirstButton);
+
+        bool temp = itemInSlot(currentSelectedButtonIndex);
+
+        if(temp)
+        {
+            inventoryButton[currentSelectedButtonIndex].itemUseOptions.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(inventoryButton[currentSelectedButtonIndex].equipButton);
+        }
     }
 
     public void closeItemUseOptions()
     {
-        currentSelectedButtonIndex = -1;
+        inventoryButton[currentSelectedButtonIndex].itemUseOptions.SetActive(false);
         EventSystem.current.SetSelectedGameObject(lastSelectedObject);
         itemOoptionsUI.SetActive(false);
     }
@@ -896,6 +911,8 @@ public class InventoryButton
 {
     public Image image;
     public TextMeshProUGUI quanitityText;
+    public GameObject itemUseOptions;
+    public GameObject equipButton;
 
     public Item item { get; set; }
 }
