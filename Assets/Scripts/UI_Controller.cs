@@ -73,6 +73,10 @@ public class UI_Controller : MonoBehaviour
     private GameObject lastSelectedObject;
     public GameObject itemOoptionsUI;
     public GameObject itemOptionsFirstButton;
+    public GameObject ItemUseOptionButtons;
+    public GameObject CheckDecisionUI;
+    public GameObject DropButton;
+    public GameObject YesButton;
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemDescriptionText;
 
@@ -383,6 +387,20 @@ public class UI_Controller : MonoBehaviour
 
         //itemNameText.text = temp.itemName;
         //itemDescriptionText.text = temp.description;
+    }
+
+    public void checkPlayerDecision()
+    {
+        ItemUseOptionButtons.SetActive(false);
+        CheckDecisionUI.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(YesButton);
+    }
+
+    public void closeCheckPlayerDecision()
+    {
+        ItemUseOptionButtons.SetActive(true);
+        CheckDecisionUI.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(DropButton);
     }
 
     public void EquipItem()
