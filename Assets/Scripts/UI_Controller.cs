@@ -127,7 +127,7 @@ public class UI_Controller : MonoBehaviour
     public static Action OpenInventory;
     public static Action<int> equipItem;
     public static Action<int> dropItem;
-    public static Action<int> inspectItem;
+    public static Func<int, string> inspectItem;
     public static Action UpdateInvetorySlot;
     public static Action UpdateInventory;
 
@@ -418,8 +418,34 @@ public class UI_Controller : MonoBehaviour
 
     public void InspectItem()
     {
-        inspectItem?.Invoke(currentSelectedButtonIndex);
-        closeItemUseOptions();
+        string temp = inspectItem?.Invoke(currentSelectedButtonIndex);
+
+        Debug.Log(temp);
+
+        if (temp != null)
+        {
+            List<DialogueLine> list = new List<DialogueLine>();
+
+            DialogueLine dialogueLine = new DialogueLine();
+            dialogueLine.dialogue = temp;
+            dialogueLine.speakerName = "narrator";
+
+            list.Add(dialogueLine);
+
+            StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(list));
+        }
+        else
+        {
+            List<DialogueLine> list = new List<DialogueLine>();
+
+            DialogueLine dialogueLine = new DialogueLine();
+            dialogueLine.dialogue = "You are uncertain as to what this is.";
+            dialogueLine.speakerName = "narrator";
+
+            list.Add(dialogueLine);
+
+            StartCoroutine(Dialogue_Controller.instance.DialogueInteraction(list));
+        }
     }
     #endregion
 

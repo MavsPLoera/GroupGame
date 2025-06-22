@@ -111,6 +111,7 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Player Events.")]
 
+
     [Header("Player Misc.")]
     public GameObject facingTowards;
     public GameObject arrowSpawn;
@@ -166,7 +167,7 @@ public class Player_Controller : MonoBehaviour
         currentStamina = maxStamina;
         playerMovementSpeedUnchanging = playerMovementspeed;
 
-
+        itemInformation.Add("Arrows", "Classic choice");
     }
 
     // Update is called once per frame
@@ -408,14 +409,14 @@ public class Player_Controller : MonoBehaviour
     {
         UI_Controller.equipItem += equipItem;
         UI_Controller.dropItem += dropItem;
-        //Add inspect item;
+        UI_Controller.inspectItem += checkItemInformation;
     }
 
     public void OnDisable()
     {
         UI_Controller.equipItem -= equipItem;
         UI_Controller.dropItem -= dropItem;
-        //Add inspect item;
+        UI_Controller.inspectItem -= checkItemInformation;
     }
 
     #region movement/abilities
@@ -1253,8 +1254,11 @@ public class Player_Controller : MonoBehaviour
         UI_Controller.instance.updateInventory();
     }
 
-    public Item checkItemInformation()
+    public string checkItemInformation(int index)
     {
+        if (itemInformation.ContainsKey(playerInventory[index].itemName))
+            return itemInformation[playerInventory[index].itemName];
+
         return null;
     }
 
@@ -1425,18 +1429,12 @@ public class Player_Controller : MonoBehaviour
     }
 }
 
-[System.Serializable]
-public abstract class Item
+public class Item
 {
     public string itemName;
     public float sellValue;
     public int quantity;
     public Sprite itemImage;
-
-    public string inspectItem()
-    {
-        return "";
-    }
 }
 
 [System.Serializable]
