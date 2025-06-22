@@ -411,6 +411,13 @@ public class Player_Controller : MonoBehaviour
         //Add inspect item;
     }
 
+    public void OnDisable()
+    {
+        UI_Controller.equipItem -= equipItem;
+        UI_Controller.dropItem -= dropItem;
+        //Add inspect item;
+    }
+
     #region movement/abilities
     public IEnumerator swing()
     {
