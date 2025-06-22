@@ -121,6 +121,9 @@ public class UI_Controller : MonoBehaviour
 
     [Header("UI Events")]
     public static Action OpenInventory;
+    public static Action<int> equipItem;
+    public static Action<int> dropItem;
+    public static Action<int> inspectItem;
     public static Action UpdateInvetorySlot;
     public static Action UpdateInventory;
 
@@ -380,6 +383,25 @@ public class UI_Controller : MonoBehaviour
 
         //itemNameText.text = temp.itemName;
         //itemDescriptionText.text = temp.description;
+    }
+
+    public void EquipItem()
+    {
+        equipItem?.Invoke(currentSelectedButtonIndex);
+        closeItemUseOptions();
+    }
+
+    public void DropItem()
+    {
+        dropItem?.Invoke(currentSelectedButtonIndex);
+        //Add are you sure
+        closeItemUseOptions();
+    }
+
+    public void InspectItem()
+    {
+        inspectItem?.Invoke(currentSelectedButtonIndex);
+        closeItemUseOptions();
     }
     #endregion
 

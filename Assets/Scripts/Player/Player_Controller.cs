@@ -404,6 +404,13 @@ public class Player_Controller : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject();
     }
 
+    public void OnEnable()
+    {
+        UI_Controller.equipItem += equipItem;
+        UI_Controller.dropItem += dropItem;
+        //Add inspect item;
+    }
+
     #region movement/abilities
     public IEnumerator swing()
     {
@@ -931,11 +938,11 @@ public class Player_Controller : MonoBehaviour
         UI_Controller.instance.updateInventory();
     }
 
-    public void equipItem()
+    public void equipItem(int index)
     {
         int avalibleSpot = -1;
         int itemExists = -1;
-        int selectedItem = int.Parse(EventSystem.current.currentSelectedGameObject.name);
+        int selectedItem = index;
 
         //Add more to this but we just want to check what type 
         if (!(playerInventory[selectedItem] is Arrow || playerInventory[selectedItem] is Accessory || playerInventory[selectedItem] is HealthPotion))
@@ -1236,6 +1243,12 @@ public class Player_Controller : MonoBehaviour
     {
         playerInventory[index] = null;
         itemInSlot[index] = false;
+        UI_Controller.instance.updateInventory();
+    }
+
+    public Item checkItemInformation()
+    {
+        return null;
     }
 
     public void FoundNewItem(Item item)
