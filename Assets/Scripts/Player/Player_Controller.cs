@@ -1429,6 +1429,7 @@ public class Player_Controller : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class Item
 {
     public string itemName;
