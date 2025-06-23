@@ -301,7 +301,7 @@ public class UI_Controller : MonoBehaviour
     {
         InventoryPanel.gameObject.SetActive(false);
         inventoryButton[currentSelectedButtonIndex].itemUseOptions.SetActive(false);
-        currentSelectedButtonIndex = -1;
+        currentSelectedButtonIndex = 0;
     }
 
     public void openItemUseOptions()
