@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using System;
+using JetBrains.Annotations;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -93,7 +94,12 @@ public class Player_Controller : MonoBehaviour
     public bool[] itemInSlot = new bool[22]; //Represents inventory in a binary format, since System.Serializble makes null values not possible we have to use to sort of bool system to keep track of inventory slots.
     public Item[] playerInventory = new Item[22];
     public int hasArrowsIndex = 0; //Will update this index based on the players arrow slot
-    public int maxQuantityPerItem;
+    public int maximumArrowsPerSlot;
+    public int maximumAccessoriesPerSlot;
+    public int maximumBooksPerSlot;
+    public int maximumPotionsPerSlot;
+    public int maximumGeneralItemsPerSlot;
+
     public Dictionary<string, Item> itemDiscovered = new Dictionary<string, Item>(); //Use this to bring up a you found new item UI.
     public Dictionary<string, string> itemInformation = new Dictionary<string, string>(); //Use this to let the player know what information that have figured out about an item.
     public GameObject foundNewItemLight;
@@ -899,6 +905,44 @@ public class Player_Controller : MonoBehaviour
     }
 
     #region inventory
+    public void inspectItem(int index)
+    {
+        Item itemToInspect = playerInventory[index];
+
+        if(itemToInspect is Book)
+        {
+            //open book
+        }
+        else
+        {
+            //trigger dialogue 
+        }
+    }
+
+    public int getMaxQuantity(Item item)
+    {
+        if (item is Book)
+        {
+            return maximumBooksPerSlot;
+        }
+        else if(item is Arrow)
+        {
+            return maximumArrowsPerSlot;
+        }
+        else if(item is Accessory)
+        {
+            return maximumAccessoriesPerSlot;
+        }
+        else if(item is HealthPotion)
+        {
+            return maximumPotionsPerSlot;
+        }
+        else
+        {
+            return maximumGeneralItemsPerSlot;
+        }
+    }
+
     public void addItem(Item itemAdded)
     {
         //check item already exists returns a index of an item that has the same name and not max quanitity
@@ -906,6 +950,8 @@ public class Player_Controller : MonoBehaviour
 
         //inventory full returns a index of the first iventory slot that is empty
         int inventoryFull = checkInventorySlotsFull();
+
+        int maxQuantityPerItem = getMaxQuantity(itemAdded);
 
         if (itemExists != -1) //Case that the player already has the item in their inventory.
         {
@@ -960,6 +1006,8 @@ public class Player_Controller : MonoBehaviour
             Debug.Log("Item cannot be equipped.");
             return;
         }
+
+        int maxQuantityPerItem = getMaxQuantity(playerInventory[index]);
 
         if (playerInventory[selectedItem] is Arrow) //Check if we are adding arrow to arrow slow
         {
@@ -1113,6 +1161,7 @@ public class Player_Controller : MonoBehaviour
 
         int avalibleSpot = checkInventorySlotsFull();
         int itemExists = checkInventoryItemAlreadyExists(playerInventory[selectedItem]);
+        int maxQuantityPerItem = getMaxQuantity(playerInventory[selectedItem]);
 
         if (playerInventory[selectedItem].quantity == maxQuantityPerItem && avalibleSpot != -1) //When we move arrows, if they are in a bundle of the max quantity, keep them together when moving them.
         {
@@ -1181,6 +1230,8 @@ public class Player_Controller : MonoBehaviour
 
     public int checkInventoryItemAlreadyExists(Item itemToDequip)
     {
+        int maxQuantityPerItem = getMaxQuantity(itemToDequip);
+
         for (int i = 0; i < firstAccessorySlot; i++)
         {
             if(itemInSlot[i] && itemToDequip.itemName == playerInventory[i].itemName && playerInventory[i].quantity != maxQuantityPerItem)
@@ -1191,7 +1242,9 @@ public class Player_Controller : MonoBehaviour
 
     public int checkArrowAlreadyExists(Item itemToEquip)
     {
-        for(int i =  firstArrowSlot; i < (firstArrowSlot + numberOfArrowSlots); i++)
+        int maxQuantityPerItem = getMaxQuantity(itemToEquip);
+
+        for (int i =  firstArrowSlot; i < (firstArrowSlot + numberOfArrowSlots); i++)
         {
             if (itemInSlot[i] && itemToEquip.itemName == playerInventory[i].itemName && playerInventory[i].quantity != maxQuantityPerItem)
                 return i;
@@ -1202,6 +1255,8 @@ public class Player_Controller : MonoBehaviour
 
     public int checkPotionAlreadyExists(Item itemToEquip)
     {
+        int maxQuantityPerItem = getMaxQuantity(itemToEquip);
+
         if (itemInSlot[firstPotionSlot] && itemToEquip.itemName == playerInventory[firstPotionSlot].itemName && playerInventory[firstPotionSlot].quantity != maxQuantityPerItem)
         {
             return firstPotionSlot;
@@ -1449,13 +1504,6 @@ public class Item
 public class Book : Item
 {
     public string[] pages;
-
-    public Book(string itemName, int quantity, Sprite itemImage)
-    {
-        this.itemName = itemName;
-        this.quantity = quantity;
-        this.itemImage = itemImage;
-    }
 }
 
 [System.Serializable]
@@ -1467,11 +1515,15 @@ public class HealthPotion : Item
 [System.Serializable]
 public class Arrow : Item
 {
-
+    public int damage;
+    public int damageOverTime;
 }
 
 [System.Serializable]
 public class Accessory : Item
 {
-
+    public int attackBoost;
+    public int healthBoost;
+    public int staminaBoost;
+    public int staminaRegenBoost;
 }
