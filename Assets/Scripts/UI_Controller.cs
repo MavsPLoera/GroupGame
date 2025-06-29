@@ -351,8 +351,27 @@ public class UI_Controller : MonoBehaviour
             if (Player_Controller.instance.itemInSlot[i])
             {
                 temp.sprite = Player_Controller.instance.playerInventory[i].itemImage;
-                temp.color = new Color(1, 1, 1, 1);
+                
+                //Checking if slot is corrupted
+                if (Player_Controller.instance.itemSlotCorruptted[i])
+                {
+                    temp.color = Color.red;
+                    inventoryButton[i].corruptionParticle.SetActive(true);
+                    inventoryButton[i].image.color = Color.red;
+                    inventoryButton[i].Button.image.color = Color.red;
+                    inventoryButton[i].quanitityText.color = Color.red;
+                }
+                else
+                {
+                    //Colors should be white if the slot is not corruptted.
+                    temp.color = new Color(1, 1, 1, 1);
+                    inventoryButton[i].corruptionParticle.SetActive(false);
+                    inventoryButton[i].image.color = new Color(1, 1, 1, 1);
+                    inventoryButton[i].Button.image.color = new Color(1, 1, 1, 1);
+                    inventoryButton[i].quanitityText.color = new Color(1, 1, 1, 1);
+                }
 
+                //Item quantity is greater than 1
                 if (Player_Controller.instance.playerInventory[i].quantity > 1)
                 {
                     updateItemQuantity(i);
@@ -365,6 +384,16 @@ public class UI_Controller : MonoBehaviour
             else
             {
                 temp.color = new Color(0, 0, 0, 1);
+
+                //Only inventory buttons will have these fields filled. Not the most elegant solution but it works.
+                if (i < Player_Controller.numberOfInventorySlots)
+                {
+                    inventoryButton[i].corruptionParticle.SetActive(false);
+                    inventoryButton[i].image.color = new Color(0, 0, 0, 0);
+                    inventoryButton[i].Button.image.color = new Color(1, 1, 1, 1);
+                    inventoryButton[i].quanitityText.color = new Color(0, 0, 0, 0);
+                }
+
                 inventoryButton[i].quanitityText.text = "";
             }
 
@@ -909,10 +938,12 @@ public class Resolution
 [System.Serializable]
 public class InventoryButton
 {
+    public Button Button;
     public Image image;
     public TextMeshProUGUI quanitityText;
     public GameObject itemUseOptions;
     public GameObject equipButton;
+    public GameObject corruptionParticle;
 
     public Item item { get; set; }
 }

@@ -92,6 +92,7 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Player Invetory")]
     public bool[] itemInSlot = new bool[22]; //Represents inventory in a binary format, since System.Serializble makes null values not possible we have to use to sort of bool system to keep track of inventory slots.
+    public bool[] itemSlotCorruptted = new bool[22]; //Will do this as a simple solution for implementing corruption
     public Item[] playerInventory = new Item[22];
     public int hasArrowsIndex = 0; //Will update this index based on the players arrow slot
     public int maximumArrowsPerSlot;
@@ -106,10 +107,10 @@ public class Player_Controller : MonoBehaviour
     public bool FoundNewItemOpen;
 
     //Player inventory index values (DONT CHANGE THESE)
-    private const int numberOfInventorySlots = 15;
-    private const int numberOfAccessorySlots = 3;
-    private const int numberOfArrowSlots = 3;
-    private const int numberOfPotionSlots = 1;
+    public const int numberOfInventorySlots = 15;
+    public const int numberOfAccessorySlots = 3;
+    public const int numberOfArrowSlots = 3;
+    public const int numberOfPotionSlots = 1;
 
     private const int firstAccessorySlot = 15;
     private const int firstArrowSlot = 18;
