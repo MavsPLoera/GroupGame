@@ -18,6 +18,10 @@ public class Player_Controller : MonoBehaviour
     public float swordDamageUltIncrease = 5f;
     public float healingAmount;
     public float playerHitKnockBack;
+    [Range(5f, 20f)]
+    public float firstSwingForce;
+    [Range(5f, 20f)]
+    public float secondSwingForce;
     public int healingPotions = 3; //Make UI element
     public int arrows = 15; //Make UI Element
     public int maxArrows = 15;
@@ -38,6 +42,8 @@ public class Player_Controller : MonoBehaviour
     public bool canSecondary = true;
     public bool canUlt = true;
     public bool canSwing = false;
+    public bool canSwingAgain = false;
+    public bool playerSuccesfullyHitSwingAgain = false;
     public bool unlockedSecondaryMove = false;
     public bool unlockedUltMove = false;
     public bool isPaused = false;
@@ -232,19 +238,19 @@ public class Player_Controller : MonoBehaviour
             UI_Controller.instance.UnpauseGame();
         }
 
-        if (FoundNewItemOpen)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                DeactiveFoundNewItem();
-                UI_Controller.instance.deactiveFoundNewItemUI();
-                return;
-            }
-            else
-            {
-                return;
-            }
-        }
+        //if (FoundNewItemOpen)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.R))
+        //    {
+        //        DeactiveFoundNewItem();
+        //        UI_Controller.instance.deactiveFoundNewItemUI();
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        return;
+        //    }
+        //}
 
         //Swap R input to allow the player to force complete dialogue system
         if (Dialogue_Controller.instance.inConversation)
@@ -325,10 +331,10 @@ public class Player_Controller : MonoBehaviour
 
             rb.linearVelocity = movementDirection.normalized * playerMovementspeed;
         }
-        else
-        {
-            rb.linearVelocity = new Vector2(x_raw,y_raw) * playerMovementspeed;
-        }
+        //else
+        //{
+        //    rb.linearVelocity = new Vector2(x_raw,y_raw) * playerMovementspeed;
+        //}
 
         if(healingSelf)
         {
@@ -367,10 +373,18 @@ public class Player_Controller : MonoBehaviour
         }
 
         //Sword Swing
-        if ((Input.GetButton("Fire1") || Input.GetKeyDown(KeyCode.Z)) && canSwing && !isMouseOverUI() && ((currentStamina - 25f) >= 0f))
+        if ((Input.GetButton("Fire1") || Input.GetKeyDown(KeyCode.Z)))
         {
-            StartCoroutine(swing());
+            if (canSwing && !isMouseOverUI() && ((currentStamina - 5f) >= 0f))
+            {
+                StartCoroutine(swing());
+            }
+            else if(canSwingAgain && !isMouseOverUI() && ((currentStamina - 5f) >= 0f))
+            {
+                playerSuccesfullyHitSwingAgain = true;
+            }
         }
+
 
         //Secondary
         //if ((Input.GetButton("Fire2") || Input.GetKeyDown(KeyCode.X)) && unlockedSecondaryMove && canSecondary && playerArrows[hasArrowsIndex].quantity > 0 && !isMouseOverUI())
@@ -431,24 +445,48 @@ public class Player_Controller : MonoBehaviour
     #region movement/abilities
     public IEnumerator swing()
     {
-        currentStamina -= 25f;
-
-
-        playerMovementspeed = playerMovementSpeedUnchanging * .3f;
+        currentStamina -= 5f;
+        rb.linearVelocity = Vector2.zero;
+        playerMovementspeed = playerMovementSpeedUnchanging * .2f;
 
         //Set animator to swing and stop player from being able to input and swing again.
         playerAnimator.Play("Player_Swing", 0);
-        rb.linearVelocity = Vector2.zero;
         canSwing = false;
-        playerAudioSource.PlayOneShot(swordSwingSound);
+
+        yield return new WaitUntil(() => !playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Player_Swing"));
+
+        //playerAudioSource.PlayOneShot(swordSwingSound);
+        rb.AddForce(new Vector2(facingTowards.transform.localPosition.x * firstSwingForce, facingTowards.transform.localPosition.y * firstSwingForce), ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(.05f);
+
+        rb.linearVelocity = Vector2.zero;
 
         //Let the full animation play out. I am not sure why getting the length of the animation does not work but .6f does fine.
-        yield return new WaitForSeconds(.6f);
+        yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length - .05f);
+
+        if(playerSuccesfullyHitSwingAgain)
+        {
+            playerAnimator.Play("Player_SecondSwing", 0);
+            yield return new WaitUntil(() => !playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Player_SecondSwing"));
+
+            rb.AddForce(new Vector2(facingTowards.transform.localPosition.x * secondSwingForce, facingTowards.transform.localPosition.y * secondSwingForce), ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(.05f);
+
+            rb.linearVelocity = Vector2.zero;
+
+            yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length - .05f);
+        }
+
+        yield return new WaitForSeconds(.05f);
 
         //After the animation finished set the animation state to idle and allow player to be able to swing again and input.
         playerAnimator.Play("Player_Idle", 0);
         playerMovementspeed = playerMovementSpeedUnchanging;
         canSwing = true;
+        canSwingAgain = false;
+        playerSuccesfullyHitSwingAgain = false;
     }
 
     public IEnumerator healPlayer()
@@ -479,17 +517,17 @@ public class Player_Controller : MonoBehaviour
         playerMovementspeed = playerMovementSpeedUnchanging;
     }
 
-    public bool healingPotionInInventory()
-    {
-        //for(int i = 0; i < playerItems.Length; i++)
-        //{
-        //    if (playerItems[i].name.ToLower().Contains("heal"))
-        //        return true;
+    //public bool healingPotionInInventory()
+    //{
+    //    //for(int i = 0; i < playerItems.Length; i++)
+    //    //{
+    //    //    if (playerItems[i].name.ToLower().Contains("heal"))
+    //    //        return true;
 
-        //}
+    //    //}
 
-        return false;
-    }
+    //    return false;
+    //}
 
     public IEnumerator secondaryMove()
     {
