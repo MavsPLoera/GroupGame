@@ -455,12 +455,12 @@ public class Player_Controller : MonoBehaviour
 
         yield return new WaitUntil(() => !playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Player_Swing"));
 
-        //playerAudioSource.PlayOneShot(swordSwingSound);
         rb.AddForce(new Vector2(facingTowards.transform.localPosition.x * firstSwingForce, facingTowards.transform.localPosition.y * firstSwingForce), ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(.05f);
 
         rb.linearVelocity = Vector2.zero;
+        playChangingPitchSound(swordSwingSound);
 
         //Let the full animation play out. I am not sure why getting the length of the animation does not work but .6f does fine.
         yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length - .05f);
@@ -475,6 +475,7 @@ public class Player_Controller : MonoBehaviour
             yield return new WaitForSeconds(.05f);
 
             rb.linearVelocity = Vector2.zero;
+            playChangingPitchSound(swordSwingSound);
 
             yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length - .05f);
         }
