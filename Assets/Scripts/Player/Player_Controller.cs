@@ -331,12 +331,12 @@ public class Player_Controller : MonoBehaviour
 
             rb.linearVelocity = movementDirection.normalized * playerMovementspeed;
         }
-        //else
-        //{
-        //    rb.linearVelocity = new Vector2(x_raw,y_raw) * playerMovementspeed;
-        //}
+        else
+        {
+            rb.linearVelocity = (new Vector2(x_raw, y_raw) * playerMovementspeed).normalized;
+        }
 
-        if(healingSelf)
+        if (healingSelf)
         {
             return;
         }
@@ -446,7 +446,7 @@ public class Player_Controller : MonoBehaviour
     public IEnumerator swing()
     {
         currentStamina -= 5f;
-        rb.linearVelocity = Vector2.zero;
+        //rb.linearVelocity = Vector2.zero;
         playerMovementspeed = playerMovementSpeedUnchanging * .2f;
 
         //Set animator to swing and stop player from being able to input and swing again.
@@ -455,35 +455,38 @@ public class Player_Controller : MonoBehaviour
 
         yield return new WaitUntil(() => !playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Player_Swing"));
 
-        rb.AddForce(new Vector2(facingTowards.transform.localPosition.x * firstSwingForce, facingTowards.transform.localPosition.y * firstSwingForce), ForceMode2D.Impulse);
+        //rb.AddForce(new Vector2(facingTowards.transform.localPosition.x * firstSwingForce, facingTowards.transform.localPosition.y * firstSwingForce), ForceMode2D.Impulse);
 
-        yield return new WaitForSeconds(.05f);
+        //yield return new WaitForSeconds(.05f);
 
-        rb.linearVelocity = Vector2.zero;
+        //rb.linearVelocity = Vector2.zero;
+
         playChangingPitchSound(swordSwingSound);
 
         //Let the full animation play out. I am not sure why getting the length of the animation does not work but .6f does fine.
-        yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length - .05f);
+        yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         if(playerSuccesfullyHitSwingAgain)
         {
             playerAnimator.Play("Player_SecondSwing", 0);
             yield return new WaitUntil(() => !playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Player_SecondSwing"));
 
-            rb.AddForce(new Vector2(facingTowards.transform.localPosition.x * secondSwingForce, facingTowards.transform.localPosition.y * secondSwingForce), ForceMode2D.Impulse);
+            //rb.AddForce(new Vector2(facingTowards.transform.localPosition.x * secondSwingForce, facingTowards.transform.localPosition.y * secondSwingForce), ForceMode2D.Impulse);
 
-            yield return new WaitForSeconds(.05f);
+            //yield return new WaitForSeconds(.05f);
 
-            rb.linearVelocity = Vector2.zero;
+            //rb.linearVelocity = Vector2.zero;
+
             playChangingPitchSound(swordSwingSound);
 
-            yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length - .05f);
+            yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length);
         }
-
-        yield return new WaitForSeconds(.05f);
 
         //After the animation finished set the animation state to idle and allow player to be able to swing again and input.
         playerAnimator.Play("Player_Idle", 0);
+
+        yield return new WaitForSeconds(.05f);
+
         playerMovementspeed = playerMovementSpeedUnchanging;
         canSwing = true;
         canSwingAgain = false;
