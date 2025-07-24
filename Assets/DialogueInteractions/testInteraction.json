@@ -9,8 +9,8 @@
             "cantBeInterrupted": true,
             "mode": 0
         },
-        "commands": [ null ],
-        "dialougeChoices": [
+        "commands": null,
+        "dialogueChoices": [
             {
                 "choiceText": "Yes",
                 "responseToChoice": [
@@ -20,8 +20,8 @@
                         "dialogueStartSignal": 0,
                         "startSignalDelay": 0.0,
                         "controllerOverride": null,
-                        "commands": [ null ],
-                        "dialougeChoices": [ null ]
+                        "commands": null,
+                        "dialogueChoices": null
                     }
                 ]
             },
@@ -34,8 +34,8 @@
                         "dialogueStartSignal": 0,
                         "startSignalDelay": 0.0,
                         "controllerOverride": null,
-                        "commands": [ null ],
-                        "dialougeChoices": [ null ]
+                        "commands": null,
+                        "dialogueChoices": null
                     }
                 ]
             }
@@ -45,9 +45,9 @@
         "speakerName": "Jason",
         "dialogue": "Test dialogue Line",
         "dialogueStartSignal": 0,
-        "startSignalDelay": 0.0,
+        "startSignalDelay": 0.75,
         "controllerOverride": null,
-        "commands": [ null ],
-        "dialougeChoices": [ null ]
+        "commands": null,
+        "dialogueChoices": null
     }
 ]
