@@ -4,7 +4,7 @@ Defiler is a quest-based metroidvania inspired by *The Legend of Zelda* with a g
 *Sprites and Tiles were created by [electricLEMON](https://electriclemon.itch.io/)*
 
 ### How to Play Defiler
-If you are wanting to play the game download the Defiler.zip and extract the contents. Once extracted double click the Defiler.exe and enjoy playing!
+If you are wanting to play the game download the [Defiler.zip](https://drive.google.com/file/d/1XeJ9aT02LWGrk6MAXxQ3K5trL1lIG5gB/view?usp=drive_link) and extract the contents. Once extracted double click the Defiler.exe and enjoy playing!
 
 # In Game Images
 <img width="1920" height="1080" alt="defiler title" src="https://github.com/user-attachments/assets/45974e8e-1103-4895-b613-1b31402d2d28" /> <br />
